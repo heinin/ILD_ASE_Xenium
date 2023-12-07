@@ -414,18 +414,18 @@ prop_kept_cells <- round(aft_cells/bf_cells*100, 2)
 prop_kept_cells
 
 # DimPlots of before and after for each sample
-#DimPlotCompare <- function(sm){
-#  bf_cells <- ncol(subset(merged_spatial_unfiltered, subset = sample == sm))
-#  a <- DimPlot(subset(merged_spatial_unfiltered, subset = sample == sm),
-#               reduction = "sp") + NoLegend() +
-#    labs(title = paste0(sm, ", Unfiltered, ", bf_cells, " nuclei"))
-#  
-#  aft_cells <- ncol(subset(merged_spatial, subset = sample == sm))
-#  b <- DimPlot(subset(merged_spatial, subset = sample == sm),
-#               reduction = "sp") + NoLegend() +
-#    labs(title = paste0(sm, ", Filtered, ", aft_cells, " nuclei"))
-#  ggarrange(a,b)
-#}
+DimPlotCompare <- function(sm){
+  bf_cells <- ncol(subset(merged_spatial_unfiltered, subset = sample == sm))
+  a <- DimPlot(subset(merged_spatial_unfiltered, subset = sample == sm),
+               reduction = "sp") + NoLegend() +
+    labs(title = paste0(sm, ", Unfiltered, ", bf_cells, " nuclei"))
+  
+  aft_cells <- ncol(subset(merged_spatial, subset = sample == sm))
+  b <- DimPlot(subset(merged_spatial, subset = sample == sm),
+               reduction = "sp") + NoLegend() +
+    labs(title = paste0(sm, ", Filtered, ", aft_cells, " nuclei"))
+  ggarrange(a,b)
+}
 
 #saveRDS(merged_spatial, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered.rds")
 
