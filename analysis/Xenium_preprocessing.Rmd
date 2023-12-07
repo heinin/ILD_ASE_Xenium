@@ -30,6 +30,7 @@ suppressPackageStartupMessages({library(cli)
 
 ```{r}
 
+setwd("/home/hnatri/ILD_ASE_Xenium/")
 set.seed(9999)
 options(scipen = 99999)
 options(ggrepel.max.overlaps = Inf)
