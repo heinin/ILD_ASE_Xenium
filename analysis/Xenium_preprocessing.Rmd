@@ -1,0 +1,432 @@
+---
+title: "Xenium_preprocessing"
+author: "heinin"
+date: "2023-12-06"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+Processing Xenium data for clustering.
+
+```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)})
+
+```
+
+### Environment variables
+
+```{r}
+
+set.seed(9999)
+options(scipen = 99999)
+options(ggrepel.max.overlaps = Inf)
+
+# A function for better VlnPlot
+BetterVlnPlot <- function(data, features, ylim = NA){
+  VlnPlot(data, pt.size = 0, features = features, 
+          group.by = "sample", y.max = ylim) + labs(x = "") + NoLegend()
+}
+
+
+```
+
+### Cell type markers
+
+```{r}
+epithelial_features <- c("EGFR", "DUOX1", "NKX2-1", "AGER", "RTKN2", "NAPSA", "PGC", "SFTA2",
+                         "SFTPC", "SFTPD", "KRT14", "KRT15", "KRT5", "KRT6A", "S100A2",
+                         "TP63", "KRT17", "AGR3", "C20orf85", "FOXJ1", "GCLM", "DMBT1",
+                         "EPCAM", "KRT18", "MGST1", "MMP7", "FOXI1", "MUC5B", "SCGB1A1", 
+                         "SCGB3A2", "WFDC2", "ATF3", "KRT8", "SOX9", "SPINK1", "GKN2",
+                         "MMP10", "SOX2", "CDH26", "TP73", "CFTR", "HES1", "PKM", "SOX4",
+                         "NUCB2", "RNASE1", "SAA2", "AKR1C1", "AKR1C2", "BPIFA1", "CEACAM5",
+                         "ERN2", "FCGBP", "GSR", "LTF", "CCNA1", "ICAM1", "ITGB1")
+endothelial_features <- c("APLN", "CA4", "HEY1", "BMPR2", "CD34", "EPAS1", "FCN3", 
+                          "GNG11", "PECAM1", "APLNR", "COL15A1", "PLVAP", "ACKR1",
+                          "POSTN", "CLDN5", "RAMP2", "ZEB1", "HAS1", "KDR", "CDKN2A")
+immune_features <- c("PPARG", "BANK1", "CD19", "CD79A", "LTB", "MS4A1", "TNFRSF13C", 
+                     "CD86", "GZMB", "HLA-DRA", "CCR7", "CXCR4", "PTPRC", "TCL1A", 
+                     "CD69", "CD4", "CD8A", "CD8B", "CD2", "CD28", "CD3D", "CD3E", 
+                     "CD3G", "FOXP3", "GZMK", "TRAC", "ITM2C", "CD27", "CCL5", "LCK", 
+                     "FABP4", "MARCO", "MCEMP1", "SPP1", "FCN1", "S100A12", "S100A8", 
+                     "S100A9", "CCL22", "ITGAM", "NFKB1",  "IFIT2", "FGFBP2", "GNLY", 
+                     "KLRB1", "KLRC1", "NKG7", "LILRA4", "BCL2", "CD79B", "CXCR5", 
+                     "CXCL9", "GPR183", "HLA-DQA1", "KLRG1", "BCL2L11", "CD52", 
+                     "SLC1A3", "TNFRSF9", "CTLA4",  "IL2RA", "LAG3", "PDCD1", "PDIA6", 
+                     "PIM2", "IL7R", "LEF1", "FASLG", "HAVCR2", "ISG20", "CPA3", 
+                     "KIT", "TPSAB1", "C1QC", "CD68", "MS4A7", "AIF1", "CD14", 
+                     "FCGR3A", "FCER1G", "SLC25A37", "CD247", "GZMA", "IRF7")
+mesenchymal_features <- c("MFAP5", "PI16", "SFRP2", "ELN", "FAP", "AXL", "LGR6", 
+                          "COL1A1", "COL1A2", "COL3A1", "DCN", "FN1", "HAS2", 
+                          "LUM", "MEG3", "SPARCL1", "CTHRC1")
+```
+
+### Import data
+
+```{r}
+data_dir <- "/tgen_labs/banovich/xenium_run_folders/ILDASE/20231102__213217__NB_ILDASE_A_B/"
+id_list <- c(
+  THD0026 = "output-XETG00048__0005070__THD0026__20231102__222410",
+  TILD001 = "output-XETG00048__0005070__TILD001__20231102__222410",
+  TILD062 = "output-XETG00048__0005070__TILD062__20231102__222410",
+  TILD093 = "output-XETG00048__0005070__TILD093__20231102__222410",
+  TILD103 = "output-XETG00048__0005070__TILD103__20231102__222410",
+  TILD123 = "output-XETG00048__0005070__TILD123__20231102__222410",
+  VUILD10 = "output-XETG00048__0005070__VUILD104__20231102__222410",
+  VUILD48 = "output-XETG00048__0005070__VUILD48__20231102__222410",
+  VUILD96 = "output-XETG00048__0005070__VUILD96__20231102__222410",
+  TILD006 = "output-XETG00048__0005122__TILD006__20231102__222410",
+  TILD030 = "output-XETG00048__0005122__TILD030__20231102__222410",
+  TILD037 = "output-XETG00048__0005122__TILD037__20231102__222410",
+  VUILD59 = "output-XETG00048__0005122__VUILD59__20231102__222410",
+  VUILD91 = "output-XETG00048__0005122__VUILD91__20231102__222410",
+  TILD010_VUHD115_TILD126 = "output-XETG00048__0005070__MERGED_TILD010_VUHD115_TILD126__20231102__222410",
+  TILD028_TILD074 = "output-XETG00048__0005070__MERGED_TILD028_TILD074__20231102__222410",
+  TILD041_TILD055 = "output-XETG00048__0005070__MERGED_TILD041_TILD055__20231102__222410",
+  TILD049_TILD111_TILD080_VUHD113 = "output-XETG00048__0005122__MERGED_TILD049_TILD111_TILD080_VUHD113__20231102__222411",
+  TILD059_TILD113__20231102 = "output-XETG00048__0005122__MERGED_TILD059_TILD113__20231102__222410",
+  TILD109_THD0016__20231102 = "output-XETG00048__0005122__MERGED_TILD109_THD0016__20231102__222410",
+  TILD136_VUILD102_TILD102_VUILD78 = "output-XETG00048__0005122__MERGED_TILD136_VUILD102_TILD102_VUILD78__20231102__222411")
+
+# Get subdirectory names for obtaining file paths
+subdirs <- unname(id_list)
+
+# Get transcript counts and metadata
+all_files <- list.files(file.path(data_dir, subdirs), full.names = TRUE)
+h5_files <- all_files[grep(".h5", all_files)]
+transcript_files <- all_files[grep("transcripts.csv.gz", all_files)]
+meta_files <- all_files[grep("cells.csv.gz", all_files)]
+
+# Get sample IDs
+sample_ids <- names(id_list)
+
+# Read in files
+counts <- lapply(h5_files, Read10X_h5)
+
+transcripts <- lapply(transcript_files, function(XX) {
+  read_csv(XX, col_types = c(transcript_id = "c", cell_id = "c")) })
+
+metadata <- lapply(meta_files, function(XX) {
+  tmp_meta <- read.delim(XX, sep = ",", colClasses = c(cell_id = "character"))
+  rownames(tmp_meta) <- tmp_meta$cell_id
+  tmp_meta })
+
+# Rename files in lists
+sample_ids <- unlist(lapply(str_split(meta_files, "__"), function(XX) { XX[5] }))
+names(counts) <- sample_ids
+names(transcripts) <- sample_ids
+names(metadata) <- sample_ids
+```
+
+### Get transcripts that only overlap the nucleus, create cell x gene matrix,
+and count the number of blanks per cell
+
+```{r}
+all_transcripts <- list()
+nuc_transcripts <- list()
+updated_metadata <- list()
+for (sm in sample_ids) {
+  message(paste("Getting nuclei counts for sample", sm))
+  
+  # Filter out low quality transcripts 
+  all_transcripts[[sm]] <- transcripts[[sm]][transcripts[[sm]]$qv > 20, ]
+  
+  # Find transcripts that overlap a nucleus
+  nuc_transcripts[[sm]] <- transcripts[[sm]][transcripts[[sm]]$overlaps_nucleus == "1", ]
+  
+  # Create cell x gene dataframe
+  nuc_transcripts[[sm]] <- as.data.frame(table(nuc_transcripts[[sm]]$cell_id, 
+                                               nuc_transcripts[[sm]]$feature_name))
+  names(nuc_transcripts[[sm]]) <- c("cell_id", "feature_name", "Count")
+  nuc_transcripts[[sm]] <- nuc_transcripts[[sm]] %>% 
+    pivot_wider(names_from = "feature_name", values_from = "Count")
+  
+  # Get blanks count per nucleus
+  blank_nuc_ids <- nuc_transcripts[[sm]]$cell_id
+  blank_nuc_mat <- nuc_transcripts[[sm]][, grep("BLANK", 
+                                                colnames(nuc_transcripts[[sm]]))]
+  blank_nuc_counts <- as.data.frame(rowSums(blank_nuc_mat))
+  blank_nuc_counts$cell_id <- blank_nuc_ids
+  
+  # Remove negative controls and convert to cell x gene matrix
+  nuc_transcripts[[sm]] <- nuc_transcripts[[sm]][, grep("NegControl", 
+                                                        colnames(nuc_transcripts[[sm]]), 
+                                                        invert = TRUE)]
+  nuc_transcripts[[sm]] <- nuc_transcripts[[sm]][, grep("BLANK", 
+                                                        colnames(nuc_transcripts[[sm]]), 
+                                                        invert = TRUE)]
+  keep_cells <- nuc_transcripts[[sm]]$cell_id
+  nuc_transcripts[[sm]] <- as.data.frame(nuc_transcripts[[sm]])
+  rownames(nuc_transcripts[[sm]]) <- keep_cells
+  nuc_transcripts[[sm]] <- nuc_transcripts[[sm]][, -1]
+  nuc_transcripts[[sm]] <- as.matrix(t(nuc_transcripts[[sm]]))
+  
+  # Subset nuclear metadata to "cells" with transcripts that overlap nuclei
+  updated_metadata[[sm]] <- metadata[[sm]][metadata[[sm]]$cell_id %in% keep_cells, ]
+  
+  # Add blank counts to metadata
+  updated_metadata[[sm]] <- full_join(updated_metadata[[sm]], blank_nuc_counts,
+                                      by = "cell_id")
+  updated_metadata[[sm]] <- updated_metadata[[sm]] %>%
+    rename(num.blank = `rowSums(blank_nuc_mat)`)
+  rownames(updated_metadata[[sm]]) <- updated_metadata[[sm]]$cell_id
+}
+```
+
+### Create Seurat objects
+
+```{r}
+obj_list <- list()
+obj_list <- sapply(sample_ids, function(XX) {
+  # Create a Seurat object containing the RNA adata
+  sobj <- CreateSeuratObject(counts = nuc_transcripts[[XX]], 
+                             assay = "RNA")
+  
+  # Add metadata
+  sobj <- AddMetaData(sobj, metadata = updated_metadata[[XX]])
+  sobj$sample <- XX
+  #sobj$tma <- tmas[[XX]]
+  #sobj$run <- run_ids[[XX]]
+  
+  # Calculate percent blank
+  sobj$percent.blank <- sobj$num.blank/(sobj$nCount_RNA + sobj$num.blank)*100
+  
+  # Remove cells with 0 nCount_RNA
+  sobj <- subset(sobj, subset = nCount_RNA != 0)
+  
+  # Rename cells to add sample ID as prefix
+  if (XX %in% c("MERGED_TILD010_VUHD115_TILD126",
+                "MERGED_TILD028_TILD074",
+                "MERGED_TILD041_TILD055",
+                "MERGED_TILD049_TILD111_TILD080_VUHD113",
+                "MERGED_TILD059_TILD113__20231102",
+                "MERGED_TILD109_THD0016__20231102",
+                "MERGED_TILD136_VUILD102_TILD102_VUILD78"))
+    {
+    
+    position_xy <- cbind(sobj$x_centroid, sobj$y_centroid)
+    row.names(position_xy) <- row.names(sobj@meta.data)
+    colnames(position_xy) <- c("SP_1", "SP_2")
+    sobj[["sp"]] <- CreateDimReducObject(embeddings = position_xy, key = "SP_",
+                                         assay = DefaultAssay(sobj))
+    obj_list[[XX]] <- sobj
+    
+  } else {
+    sobj <- RenameCells(sobj, add.cell.id = XX)
+    
+    # Add spatial coordinates as dimension reduction objects
+    #position_xy <- cbind(sobj$adj_x_centroid, sobj$adj_y_centroid)
+    position_xy <- cbind(sobj$x_centroid, sobj$y_centroid)
+    row.names(position_xy) <- row.names(sobj@meta.data)
+    colnames(position_xy) <- c("SP_1", "SP_2")
+    sobj[["sp"]] <- CreateDimReducObject(embeddings = position_xy, key = "SP_",
+                                         assay = DefaultAssay(sobj))
+    obj_list[[XX]] <- sobj
+  }
+
+})
+
+#saveRDS(obj_list, "/scratch/hnatri/ILD/ILD_spatial_ASE/obj_list.rds")
+
+# Get sample IDs
+sample_ids <- names(obj_list)
+```
+
+### Visualize
+
+```{r}
+# Merge objects (cannot do spatial DimPlots for this)
+merged_spatial_unfiltered <- merge(x = obj_list[[1]], y = obj_list[2:length(obj_list)])
+
+# Add spatial dimension reduction object separately
+position_xy <- cbind(merged_spatial_unfiltered$x_centroid,
+                     merged_spatial_unfiltered$y_centroid)
+row.names(position_xy) <- row.names(merged_spatial_unfiltered@meta.data)
+colnames(position_xy) <- c("SP_1", "SP_2")
+merged_spatial_unfiltered[["sp"]] <- CreateDimReducObject(
+  embeddings = position_xy, key = "SP_", assay = DefaultAssay(merged_spatial_unfiltered))
+
+DimPlot(merged_spatial_unfiltered, reduction = "sp", group.by = "sample", label = TRUE)
+
+#saveRDS(merged_spatial_unfiltered, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_unfiltered.rds")
+```
+
+### Add cell level count data
+
+```{r}
+# Get sample IDs
+sample_ids <- names(obj_list)
+
+cell_obj_list <- list()
+cell_obj_list <- sapply(sample_ids, function(XX) {
+  message(paste("Creating cell Seurat object for sample", XX))
+  
+  # Create a Seurat object containing the RNA cell information
+  sobj <- CreateSeuratObject(counts = counts[[XX]]$`Gene Expression`,
+                             assay = "RNA")
+  rownames(metadata[[XX]]) <- metadata[[XX]]$cell_id
+  sobj <- AddMetaData(sobj, metadata = metadata[[XX]])
+  
+  # Rename cells to add sample ID as prefix
+  if (XX %in% c("MERGED_TILD010_VUHD115_TILD126",
+                "MERGED_TILD028_TILD074",
+                "MERGED_TILD041_TILD055",
+                "MERGED_TILD049_TILD111_TILD080_VUHD113",
+                "MERGED_TILD059_TILD113__20231102",
+                "MERGED_TILD109_THD0016__20231102",
+                "MERGED_TILD136_VUILD102_TILD102_VUILD78"))
+  {
+    
+    cell_obj_list[[XX]] <- sobj
+    
+  } else {
+    sobj <- RenameCells(sobj, add.cell.id = XX)
+    cell_obj_list[[XX]] <- sobj
+  }
+})
+
+# Merge cell information
+cell_merged <- merge(cell_obj_list[[1]], y = cell_obj_list[2:length(cell_obj_list)])
+
+# Add cell information to nuclei object
+cell_count_matrix <- cell_merged@assays$RNA@counts
+keep_cells <- colnames(merged_spatial_unfiltered)
+cell_count_matrix <- cell_count_matrix[, keep_cells]
+merged_spatial_unfiltered[["cell_RNA"]] <- CreateAssayObject(counts = cell_count_matrix)
+
+#saveRDS(merged_spatial_unfiltered, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_unfiltered.rds")
+```
+
+### QC
+
+```{r}
+# Number of cells per sample before filtering
+summary(as.factor(merged_spatial_unfiltered$sample))
+merged_spatial_unfiltered@meta.data %>%
+  ggplot(aes(y = sample)) +
+  geom_bar()
+
+# Percent.blank
+merged_spatial_unfiltered@meta.data %>%
+  ggplot(aes(x = percent.blank, fill = sample)) +
+  geom_histogram(bins = 50, show.legend = FALSE, color = "black") +
+  theme_classic() +
+  theme(title = element_text(color = "black"), 
+        axis.text = element_text(color = "black")) +
+  facet_wrap(~sample, scales = "free")
+# nCount_RNA
+merged_spatial_unfiltered@meta.data %>%
+  ggplot(aes(x = nCount_RNA, fill = sample)) +
+  geom_histogram(bins = 50, show.legend = FALSE, color = "black") +
+  theme_classic() +
+  theme(title = element_text(color = "black"), 
+        axis.text = element_text(color = "black")) +
+  facet_wrap(~sample, scales = "free")
+# nucleus_area
+merged_spatial_unfiltered@meta.data %>%
+  ggplot(aes(x = nucleus_area, fill = sample)) +
+  geom_histogram(bins = 50, show.legend = FALSE, color = "black") +
+  theme_classic() +
+  theme(title = element_text(color = "black"), 
+        axis.text = element_text(color = "black")) +
+  facet_wrap(~sample, scales = "free")
+
+merged_spatial_unfiltered$sample <- factor(merged_spatial_unfiltered$sample,
+                                           levels = rev(sort(unique(merged_spatial_unfiltered$sample))))
+BetterVlnPlot(merged_spatial_unfiltered, features = "percent.blank")
+BetterVlnPlot(merged_spatial_unfiltered, features = "nCount_RNA")
+BetterVlnPlot(merged_spatial_unfiltered, features = "nFeature_RNA")
+BetterVlnPlot(merged_spatial_unfiltered, features = "nucleus_area")
+
+# nCount_RNA vs. percent.blank
+smoothScatter(merged_spatial_unfiltered@meta.data$percent.blank,
+              log(merged_spatial_unfiltered@meta.data$nCount_RNA),
+              cex = 0.5, pch = 16)
+abline(v = 4, h = log(12), lty = "dashed", col = "black")
+text(5, 5, col = "black", adj = c(0, -.1),
+     "nCount_RNA >= 12 & percent.blank <= 4")
+
+# nFeature_RNA vs. percent.blank
+smoothScatter(merged_spatial_unfiltered@meta.data$percent.blank,
+              log(merged_spatial_unfiltered@meta.data$nFeature_RNA),
+              cex = 0.5, pch = 16)
+abline(v = 4, h = log(10), lty = "dashed", col = "black")
+text(5, 4, col = "black", adj = c(0, -.1),
+     "nFeature_RNA >= 10 & percent.blank <= 4")
+
+# nCount_RNA vs. nFeature_RNA
+smoothScatter(log(merged_spatial_unfiltered$nCount_RNA),
+              log(merged_spatial_unfiltered$nFeature_RNA),
+              cex = 0.5, pch = 16)
+abline(v = log(10), h = log(10), lty = "dashed", col = "black")
+text(0.3, 4.6, col = "black", adj = c(0, -.1),
+     "nCount_RNA >= 10 & nFeature_RNA >= 10")
+
+# nCount RNA vs. nucleus_area
+smoothScatter(merged_spatial_unfiltered$nucleus_area,
+              log(merged_spatial_unfiltered$nCount_RNA),
+              cex = 0.5, pch = 16)
+abline(v = c(6, 80), h = log(10), lty = "dashed", col = "black")
+text(120, 0.7, col = "black", adj = c(0, -.1),
+     "nCount_RNA >= 10 & nucleus_area between 6-80")
+
+# nFeature RNA vs. nucleus_area
+smoothScatter(merged_spatial_unfiltered$nucleus_area,
+              log(merged_spatial_unfiltered$nFeature_RNA),
+              cex = 0.5, pch = 16)
+abline(v = c(6, 80), h = log(10), lty = "dashed", col = "black")
+text(120, 0.4, col = "black", adj = c(0, -.1),
+     "nFeature_RNA >= 10 & & nucleus_area between 6-80")
+
+min(merged_spatial_unfiltered$nucleus_area)
+max(merged_spatial_unfiltered$nucleus_area)
+
+```
+
+### Filter
+
+```{r}
+# Filter merged and individual data
+merged_spatial <- subset(merged_spatial_unfiltered,
+                          subset = nCount_RNA >= 10 & nFeature_RNA >= 10 &
+                            percent.blank <= 5 & 
+                            nucleus_area >= 6 & nucleus_area <= 80)
+
+# Number of nuclei before and after filtering
+bf_cells <- table(merged_spatial_unfiltered$sample)
+aft_cells <- table(merged_spatial$sample)
+diff_cells <- bf_cells - aft_cells
+prop_kept_cells <- round(aft_cells/bf_cells*100, 2)
+prop_kept_cells
+
+# DimPlots of before and after for each sample
+#DimPlotCompare <- function(sm){
+#  bf_cells <- ncol(subset(merged_spatial_unfiltered, subset = sample == sm))
+#  a <- DimPlot(subset(merged_spatial_unfiltered, subset = sample == sm),
+#               reduction = "sp") + NoLegend() +
+#    labs(title = paste0(sm, ", Unfiltered, ", bf_cells, " nuclei"))
+#  
+#  aft_cells <- ncol(subset(merged_spatial, subset = sample == sm))
+#  b <- DimPlot(subset(merged_spatial, subset = sample == sm),
+#               reduction = "sp") + NoLegend() +
+#    labs(title = paste0(sm, ", Filtered, ", aft_cells, " nuclei"))
+#  ggarrange(a,b)
+#}
+
+#saveRDS(merged_spatial, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered.rds")
+
+# To build on command line, run Rscript -e "rmarkdown::render('inputfile.Rmd')"
+```
