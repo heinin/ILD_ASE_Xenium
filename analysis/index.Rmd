@@ -8,4 +8,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+## Analyzing Xenium spatial transcriptomics data for allelelic bias
+
+[Information on eQTL and tag-SNPs](https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing)
+
+Processing and analysis:
+[Xenium pre-processing](Xenium_preprocessing.html).
