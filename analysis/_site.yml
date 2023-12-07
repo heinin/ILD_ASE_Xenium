@@ -1,0 +1,17 @@
+name: "ILD_ASE_Xenium"
+output_dir: ../docs
+navbar:
+  title: "ILD_ASE_Xenium"
+  left:
+  - text: Home
+    href: index.html
+  - text: About
+    href: about.html
+  - text: License
+    href: license.html
+output:
+  workflowr::wflow_html:
+    toc: yes
+    toc_float: yes
+    theme: cosmo
+    highlight: textmate
