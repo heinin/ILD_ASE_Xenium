@@ -1,5 +1,5 @@
 ---
-title: "Checking the Seurat object post-clustering"
+title: "Post-clustering visualization"
 author: "heinin"
 date: "2023-12-12"
 output: workflowr::wflow_html
@@ -72,7 +72,649 @@ mesenchymal_features <- c("MFAP5", "PI16", "SFRP2", "ELN", "FAP", "AXL", "LGR6",
 ```{r}
 
 seurat_object <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_2.rds")
-head(seurat_object@meta.data)
+DefaultAssay(seurat_object)
+
+```
+
+### Adding spatial coordinates as a dimensionality reduction to the Seurat object
+
+```{r}
+position_xy <- cbind(seurat_object$x_centroid,
+                     seurat_object$y_centroid)
+row.names(position_xy) <- row.names(seurat_object@meta.data)
+colnames(position_xy) <- c("SP_1", "SP_2")
+seurat_object[["sp"]] <- CreateDimReducObject(embeddings = position_xy,
+                                              key = "SP_",
+                                              assay = DefaultAssay(seurat_object))
+
+DimPlot(seurat_object,
+        reduction = "sp",
+        group.by = "sample",
+        split.by = "sample",
+        ncol = 5,
+        #label = TRUE,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend()
+
+```
+
+### Splitting the merged samples
+
+MERGED_TILD010_VUHD115_TILD126
+
+```{r}
+unique(seurat_object$sample)[grep("MERGED", unique(seurat_object$sample))]
+
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD010_VUHD115_TILD126")
+
+MERGED_TILD010_VUHD115_TILD126 <- DimPlot(sample_subset,
+                                          reduction = "sp",
+                                          group.by = "sample",
+                                          raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD010_VUHD115_TILD126")
+
+# Finding coordinates to split the samples
+MERGED_TILD010_VUHD115_TILD126 +
+  # First sample
+  geom_segment(aes(x = 400, y = 150, xend = 4300, yend = 150), linetype = "dashed") +
+  geom_segment(aes(x = 400, y = 150, xend = 400, yend = 4300), linetype = "dashed") +
+  geom_segment(aes(x = 400, y = 4300, xend = 4300, yend = 4300), linetype = "dashed") +
+  geom_segment(aes(x = 4300, y = 4300, xend = 4300, yend = 150), linetype = "dashed") +
+  # Second sample
+  geom_segment(aes(x = 4900, y = 4100, xend = 4900, yend = 7900), linetype = "dashed", color = "forestgreen") +
+  geom_segment(aes(x = 4900, y = 7900, xend = 8000, yend = 7900), linetype = "dashed", color = "forestgreen") +
+  geom_segment(aes(x = 8000, y = 7900, xend = 8000, yend = 4100), linetype = "dashed", color = "forestgreen") +
+  geom_segment(aes(x = 8000, y = 4100, xend = 4900, yend = 4100), linetype = "dashed", color = "forestgreen") +
+  # Third sample
+  geom_segment(aes(x = 4500, y = 180, xend = 4500, yend = 4000), linetype = "dashed", color = "tomato") +
+  geom_segment(aes(x = 4500, y = 4000, xend = 8000, yend = 4000), linetype = "dashed", color = "tomato") +
+  geom_segment(aes(x = 8000, y = 4000, xend = 8000, yend = 180), linetype = "dashed", color = "tomato") +
+  geom_segment(aes(x = 8000, y = 180, xend = 4500, yend = 180), linetype = "dashed", color = "tomato")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: TILD126
+lim.xleft <- 400
+lim.xright <- 4300
+lim.ybottom <- 150
+lim.ytop <- 4300
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TIL010
+lim.xleft <- 4900
+lim.xright <- 8000
+lim.ybottom <- 4100
+lim.ytop <- 7900
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Sample 3: VUHD115
+lim.xleft <- 4500
+lim.xright <- 8000
+lim.ybottom <- 180
+lim.ytop <- 4000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample3 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample3 <- sample3
+
+sample3_cells <- coord.pairs %>% filter(sample3 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "TILD126",
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, "TILD010",
+                                               ifelse(colnames(sample_subset) %in% sample3_cells, "VUHD115",
+                                                      "drop")))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("MERGED_TILD010_VUHD115_TILD126")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD010_VUHD115_TILD126 <- ifelse(colnames(seurat_object) %in% sample1_cells, "TILD126",
+                                                ifelse(colnames(seurat_object) %in% sample2_cells, "TILD010",
+                                                ifelse(colnames(seurat_object) %in% sample3_cells, "VUHD115",
+                                                ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                                NA))))
+
+```
+
+MERGED_TILD028_TILD074
+
+```{r}
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD028_TILD074")
+
+MERGED_TILD028_TILD074 <- DimPlot(sample_subset,
+                                   reduction = "sp",
+                                   group.by = "sample",
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD028_TILD074")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: TILD074
+lim.xleft <- 0
+lim.xright <- 3500
+lim.ybottom <- 0
+lim.ytop <- 3000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TILD028
+lim.xleft <- 0
+lim.xright <- 4000
+lim.ybottom <- 3300
+lim.ytop <- 8000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "TILD074",
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, "TILD028",
+                                                      "drop"))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("MERGED_TILD028_TILD074")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD028_TILD074 <- ifelse(colnames(seurat_object) %in% sample1_cells, "TILD074",
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, "TILD028",
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                        NA)))
+
+```
+
+MERGED_TILD041_TILD055
+
+```{r}
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD041_TILD055")
+
+MERGED_TILD041_TILD055 <- DimPlot(sample_subset,
+                                   reduction = "sp",
+                                   group.by = "sample",
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD041_TILD055")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: TILD005
+lim.xleft <- 0
+lim.xright <- 4200
+lim.ybottom <- 0
+lim.ytop <- 4500
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TILD041
+lim.xleft <- 4500
+lim.xright <- 8000
+lim.ybottom <- 0
+lim.ytop <- 4500
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "TILD055",
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, "TILD041",
+                                                      "drop"))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("MERGED_TILD041_TILD055")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD041_TILD055 <- ifelse(colnames(seurat_object) %in% sample1_cells, "TILD055",
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, "TILD041",
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                        NA)))
+
+```
+
+MERGED_TILD049_TILD111_TILD080_VUHD113
+
+```{r}
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD049_TILD111_TILD080_VUHD113")
+
+MERGED_TILD049_TILD111_TILD080_VUHD113 <- DimPlot(sample_subset,
+                                                  reduction = "sp",
+                                                  group.by = "sample",
+                                                  raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD049_TILD111_TILD080_VUHD113")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: VUHD113
+lim.xleft <- 0
+lim.xright <- 3000
+lim.ybottom <- 0
+lim.ytop <- 600
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TILD080
+lim.xleft <- 1000
+lim.xright <- 5000
+lim.ybottom <- 1200
+lim.ytop <- 2800
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Sample 3: TILD111
+lim.xleft <- 0
+lim.xright <- 5000
+lim.ybottom <- 3500
+lim.ytop <- 5300
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample3 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample3 <- sample3
+
+sample3_cells <- coord.pairs %>% filter(sample3 == "in") %>% rownames()
+
+# Sample 4: TILD049
+lim.xleft <- 0
+lim.xright <- 5000
+lim.ybottom <- 5800
+lim.ytop <- 10100
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample4 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample4 <- sample4
+
+sample4_cells <- coord.pairs %>% filter(sample4 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "VUHD113",
+                                 ifelse(colnames(sample_subset) %in% sample2_cells, "TILD080",
+                                 ifelse(colnames(sample_subset) %in% sample3_cells, "TILD111",
+                                 ifelse(colnames(sample_subset) %in% sample4_cells, "TILD049",
+                                 "drop"))))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("MERGED_TILD049_TILD111_TILD080_VUHD113")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD049_TILD111_TILD080_VUHD113<- ifelse(colnames(seurat_object) %in% sample1_cells, "VUHD113",
+                                                              ifelse(colnames(seurat_object) %in% sample2_cells, "TILD080",
+                                                              ifelse(colnames(seurat_object) %in% sample3_cells, "TILD111",
+                                                              ifelse(colnames(seurat_object) %in% sample4_cells, "TILD049",
+                                                              ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                                              NA)))))
+
+```
+
+MERGED_TILD059_TILD113
+
+```{r}
+
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD059_TILD113")
+
+MERGED_TILD059_TILD113 <- DimPlot(sample_subset,
+                                   reduction = "sp",
+                                   group.by = "sample",
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD059_TILD113")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: TILD059
+lim.xleft <- 0
+lim.xright <- 5000
+lim.ybottom <- 3200
+lim.ytop <- 5000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TILD113
+lim.xleft <- 0
+lim.xright <- 3300
+lim.ybottom <- 0
+lim.ytop <- 2300
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "TILD059",
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, "TILD113",
+                                               "drop"))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("MERGED_TILD059_TILD113")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD059_TILD113 <- ifelse(colnames(seurat_object) %in% sample1_cells, "TILD059",
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, "TILD113",
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                        NA)))
+
+```
+
+MERGED_TILD109_THD0016
+
+```{r}
+
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD109_THD0016")
+
+MERGED_TILD109_THD0016 <- DimPlot(sample_subset,
+                                   reduction = "sp",
+                                   group.by = "sample",
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD109_THD0016")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: THD0016
+lim.xleft <- 0
+lim.xright <- 5000
+lim.ybottom <- 0
+lim.ytop <- 2600
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TILD109
+lim.xleft <- 0
+lim.xright <- 5000
+lim.ybottom <- 3300
+lim.ytop <- 6500
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "THD0016",
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, "TILD109",
+                                               "drop"))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("x")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD109_THD0016 <- ifelse(colnames(seurat_object) %in% sample1_cells, "THD0016",
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, "TILD109",
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                        NA)))
+```
+
+MERGED_TILD136_VUILD102_TILD102_VUILD78
+
+```{r}
+
+sample_subset <- subset(seurat_object, subset = sample == "MERGED_TILD136_VUILD102_TILD102_VUILD78")
+
+MERGED_TILD049_TILD111_TILD080_VUHD113 <- DimPlot(sample_subset,
+                                                  reduction = "sp",
+                                                  group.by = "sample",
+                                                  raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("MERGED_TILD136_VUILD102_TILD102_VUILD78")
+
+# Adding sample names to match coordinates
+coord.pairs <- sample_subset@meta.data[,c("x_centroid", "y_centroid")]
+tolerance <- 0
+
+# Sample 1: VUILD78
+lim.xleft <- 0
+lim.xright <- 3200
+lim.ybottom <- 0
+lim.ytop <- 3000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample1 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 <- sample1
+
+sample1_cells <- coord.pairs %>% filter(sample1 == "in") %>% rownames()
+
+# Sample 2: TILD102
+lim.xleft <- 0
+lim.xright <- 3200
+lim.ybottom <- 3200
+lim.ytop <- 4000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample2 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 <- sample2
+
+sample2_cells <- coord.pairs %>% filter(sample2 == "in") %>% rownames()
+
+# Sample 3: VUILD102
+lim.xleft <- 0
+lim.xright <- 3200
+lim.ybottom <- 5500
+lim.ytop <- 8000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample3 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample3 <- sample3
+
+sample3_cells <- coord.pairs %>% filter(sample3 == "in") %>% rownames()
+
+# Sample 4: TILD136
+lim.xleft <- 0
+lim.xright <- 3200
+lim.ybottom <- 8500
+lim.ytop <- 11000
+
+exclude.xleft <- lim.xleft + tolerance
+exclude.xright <- lim.xright - tolerance
+exclude.ybottom <- lim.ybottom + tolerance
+exclude.ytop <- lim.ytop - tolerance
+sample4 <- c("out", "in")[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample4 <- sample4
+
+sample4_cells <- coord.pairs %>% filter(sample4 == "in") %>% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample <- ifelse(colnames(sample_subset) %in% sample1_cells, "VUILD78",
+                                 ifelse(colnames(sample_subset) %in% sample2_cells, "TILD102",
+                                 ifelse(colnames(sample_subset) %in% sample3_cells, "VUILD102",
+                                 ifelse(colnames(sample_subset) %in% sample4_cells, "TILD136",
+                                 "drop"))))
+
+DimPlot(sample_subset,
+        reduction = "sp",
+        group.by = "unmerged_sample",
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle("MERGED_TILD136_VUILD102_TILD102_VUILD78")
+
+# Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 <- ifelse(colnames(seurat_object) %in% sample1_cells, "VUILD78",
+                                                                ifelse(colnames(seurat_object) %in% sample2_cells, "TILD102",
+                                                                ifelse(colnames(seurat_object) %in% sample3_cells, "VUILD102",
+                                                                ifelse(colnames(seurat_object) %in% sample4_cells, "TILD136",
+                                                                ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
+                                                                NA)))))
 
 ```
 

@@ -1,0 +1,47 @@
+---
+title: "eQTL_linked_SNPs"
+author: "heinin"
+date: "2023-12-13"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+Finding eQTL-tag-SNPs overlapping transcript.
+
+```{r}
+suppressMessages({#library(lifecycle)
+                  #library(readJDX)
+                  #library(VariantAnnotation)
+                  library(vcfR)
+                  library(data.table)
+                  #library(snpStats)
+                  library(tidyverse)
+                  #library(LDheatmap)
+                  library(plyr)
+                  library(pheatmap)
+                  library(RColorBrewer)
+                  library(googlesheets4)
+                  library(AnnotationDbi)
+                  library(org.Hs.eg.db)
+                  library(BSgenome.Hsapiens.NCBI.GRCh38)
+                  library(GenomicFeatures)})
+```
+
+### Environment variables
+
+```{r}
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+
+```
+
+### Importing data
+
+```{r}
+
+```
+

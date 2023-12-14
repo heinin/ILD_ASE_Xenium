@@ -391,7 +391,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-12-13
+<strong>Last updated:</strong> 2023-12-14
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -429,10 +429,10 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
 </div>
@@ -551,15 +551,15 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreed4aa602b5f48409f35d70b5c8632b994a05ec82btargetblankd4aa602a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree44601fd540d1f00307d8df8c0f13d4c08e3ea5b6targetblank44601fda">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/d4aa602b5f48409f35d70b5c8632b994a05ec82b" target="_blank">d4aa602</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6" target="_blank">44601fd</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreed4aa602b5f48409f35d70b5c8632b994a05ec82btargetblankd4aa602a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree44601fd540d1f00307d8df8c0f13d4c08e3ea5b6targetblank44601fda"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -569,7 +569,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/d4aa602b5f48409f35d70b5c8632b994a05ec82b" target="_blank">d4aa602</a>.
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6" target="_blank">44601fd</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -584,7 +584,11 @@ were generated:
 </p>
 <pre><code>
 Untracked files:
-    Untracked:  analysis/post_clustering.Rmd
+    Untracked:  analysis/eQTL_linked_SNPs.Rmd
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/post_clustering.Rmd
 
 </code></pre>
 <p>
@@ -599,10 +603,74 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/post_clustering.Rmd</code>) and
+HTML (<code>docs/post_clustering.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/analysis/post_clustering.Rmd" target="_blank">44601fd</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+<td>
+Added post-clustering visualization
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/docs/post_clustering.html" target="_blank">44601fd</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+<td>
+Added post-clustering visualization
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -665,61 +733,715 @@ mesenchymal_features &lt;- c(&quot;MFAP5&quot;, &quot;PI16&quot;, &quot;SFRP2&qu
 <div id="import-data" class="section level3">
 <h3>Import data</h3>
 <pre class="r"><code>seurat_object &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_2.rds&quot;)
-head(seurat_object@meta.data)</code></pre>
-<pre><code>                orig.ident nCount_RNA nFeature_RNA    cell_id x_centroid
-aaaaekme-1_1 SeuratProject        137           33 aaaaekme-1   2241.219
-aaaagdbn-1_1 SeuratProject        113           51 aaaagdbn-1   2241.184
-aaaahjlm-1_1 SeuratProject         44           29 aaaahjlm-1   2250.971
-aaaamflm-1_1 SeuratProject         77           25 aaaamflm-1   2249.726
-aaabffeb-1_1 SeuratProject         67           39 aaabffeb-1   2252.457
-aaaccnpe-1_1 SeuratProject        302           41 aaaccnpe-1   2269.213
-             y_centroid transcript_counts control_probe_counts
-aaaaekme-1_1   851.5584               276                    0
-aaaagdbn-1_1   874.9390               286                    0
-aaaahjlm-1_1   871.1757               110                    0
-aaaamflm-1_1   842.3406               136                    0
-aaabffeb-1_1   857.8595               258                    0
-aaaccnpe-1_1   848.8223               414                    0
-             control_codeword_counts unassigned_codeword_counts
-aaaaekme-1_1                       0                          0
-aaaagdbn-1_1                       0                          0
-aaaahjlm-1_1                       0                          0
-aaaamflm-1_1                       0                          0
-aaabffeb-1_1                       0                          0
-aaaccnpe-1_1                       0                          0
-             deprecated_codeword_counts total_counts cell_area nucleus_area
-aaaaekme-1_1                          0          276 173.80641     36.44110
-aaaagdbn-1_1                          0          286 200.58407     35.44766
-aaaahjlm-1_1                          0          110  74.05625     13.86297
-aaaamflm-1_1                          0          136 153.44094     31.65453
-aaabffeb-1_1                          0          258 146.17079     34.00266
-aaaccnpe-1_1                          0          414 245.37907     66.19906
-             num.blank                         sample percent.blank
-aaaaekme-1_1         0 MERGED_TILD010_VUHD115_TILD126             0
-aaaagdbn-1_1         0 MERGED_TILD010_VUHD115_TILD126             0
-aaaahjlm-1_1         0 MERGED_TILD010_VUHD115_TILD126             0
-aaaamflm-1_1         0 MERGED_TILD010_VUHD115_TILD126             0
-aaabffeb-1_1         0 MERGED_TILD010_VUHD115_TILD126             0
-aaaccnpe-1_1         0 MERGED_TILD010_VUHD115_TILD126             0
-             nCount_cell_RNA nFeature_cell_RNA         ident leiden_res0.5
-aaaaekme-1_1             276                53 SeuratProject             0
-aaaagdbn-1_1             286                64 SeuratProject             7
-aaaahjlm-1_1             110                49 SeuratProject             2
-aaaamflm-1_1             136                29 SeuratProject             1
-aaabffeb-1_1             258                66 SeuratProject             6
-aaaccnpe-1_1             414                54 SeuratProject             0
-             leiden_res1.0 leiden_res1.5 leiden_res2.0
-aaaaekme-1_1             7             8             9
-aaaagdbn-1_1            15            46            58
-aaaahjlm-1_1            12            36            55
-aaaamflm-1_1             1             9            10
-aaabffeb-1_1            15            46            58
-aaaccnpe-1_1            13            42            53</code></pre>
+DefaultAssay(seurat_object)</code></pre>
+<pre><code>[1] &quot;RNA&quot;</code></pre>
+</div>
+<div
+id="adding-spatial-coordinates-as-a-dimensionality-reduction-to-the-seurat-object"
+class="section level3">
+<h3>Adding spatial coordinates as a dimensionality reduction to the
+Seurat object</h3>
+<pre class="r"><code>position_xy &lt;- cbind(seurat_object$x_centroid,
+                     seurat_object$y_centroid)
+row.names(position_xy) &lt;- row.names(seurat_object@meta.data)
+colnames(position_xy) &lt;- c(&quot;SP_1&quot;, &quot;SP_2&quot;)
+seurat_object[[&quot;sp&quot;]] &lt;- CreateDimReducObject(embeddings = position_xy,
+                                              key = &quot;SP_&quot;,
+                                              assay = DefaultAssay(seurat_object))
+
+DimPlot(seurat_object,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;sample&quot;,
+        split.by = &quot;sample&quot;,
+        ncol = 5,
+        #label = TRUE,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend()</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/docs/figure/post_clustering.Rmd/unnamed-chunk-4-1.png" target="_blank">44601fd</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="splitting-the-merged-samples" class="section level3">
+<h3>Splitting the merged samples</h3>
+<p>MERGED_TILD010_VUHD115_TILD126</p>
+<pre class="r"><code>unique(seurat_object$sample)[grep(&quot;MERGED&quot;, unique(seurat_object$sample))]</code></pre>
+<pre><code>[1] MERGED_TILD010_VUHD115_TILD126         
+[2] MERGED_TILD028_TILD074                 
+[3] MERGED_TILD041_TILD055                 
+[4] MERGED_TILD049_TILD111_TILD080_VUHD113 
+[5] MERGED_TILD059_TILD113                 
+[6] MERGED_TILD109_THD0016                 
+[7] MERGED_TILD136_VUILD102_TILD102_VUILD78
+21 Levels: MERGED_TILD010_VUHD115_TILD126 ... VUILD104</code></pre>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD010_VUHD115_TILD126&quot;)
+
+MERGED_TILD010_VUHD115_TILD126 &lt;- DimPlot(sample_subset,
+                                          reduction = &quot;sp&quot;,
+                                          group.by = &quot;sample&quot;,
+                                          raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD010_VUHD115_TILD126&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<pre class="r"><code># Finding coordinates to split the samples
+MERGED_TILD010_VUHD115_TILD126 +
+  # First sample
+  geom_segment(aes(x = 400, y = 150, xend = 4300, yend = 150), linetype = &quot;dashed&quot;) +
+  geom_segment(aes(x = 400, y = 150, xend = 400, yend = 4300), linetype = &quot;dashed&quot;) +
+  geom_segment(aes(x = 400, y = 4300, xend = 4300, yend = 4300), linetype = &quot;dashed&quot;) +
+  geom_segment(aes(x = 4300, y = 4300, xend = 4300, yend = 150), linetype = &quot;dashed&quot;) +
+  # Second sample
+  geom_segment(aes(x = 4900, y = 4100, xend = 4900, yend = 7900), linetype = &quot;dashed&quot;, color = &quot;forestgreen&quot;) +
+  geom_segment(aes(x = 4900, y = 7900, xend = 8000, yend = 7900), linetype = &quot;dashed&quot;, color = &quot;forestgreen&quot;) +
+  geom_segment(aes(x = 8000, y = 7900, xend = 8000, yend = 4100), linetype = &quot;dashed&quot;, color = &quot;forestgreen&quot;) +
+  geom_segment(aes(x = 8000, y = 4100, xend = 4900, yend = 4100), linetype = &quot;dashed&quot;, color = &quot;forestgreen&quot;) +
+  # Third sample
+  geom_segment(aes(x = 4500, y = 180, xend = 4500, yend = 4000), linetype = &quot;dashed&quot;, color = &quot;tomato&quot;) +
+  geom_segment(aes(x = 4500, y = 4000, xend = 8000, yend = 4000), linetype = &quot;dashed&quot;, color = &quot;tomato&quot;) +
+  geom_segment(aes(x = 8000, y = 4000, xend = 8000, yend = 180), linetype = &quot;dashed&quot;, color = &quot;tomato&quot;) +
+  geom_segment(aes(x = 8000, y = 180, xend = 4500, yend = 180), linetype = &quot;dashed&quot;, color = &quot;tomato&quot;)</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/docs/figure/post_clustering.Rmd/unnamed-chunk-5-1.png" target="_blank">44601fd</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code># Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: TILD126
+lim.xleft &lt;- 400
+lim.xright &lt;- 4300
+lim.ybottom &lt;- 150
+lim.ytop &lt;- 4300
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TIL010
+lim.xleft &lt;- 4900
+lim.xright &lt;- 8000
+lim.ybottom &lt;- 4100
+lim.ytop &lt;- 7900
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 3: VUHD115
+lim.xleft &lt;- 4500
+lim.xright &lt;- 8000
+lim.ybottom &lt;- 180
+lim.ytop &lt;- 4000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample3 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample3 &lt;- sample3
+
+sample3_cells &lt;- coord.pairs %&gt;% filter(sample3 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;TILD126&quot;,
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD010&quot;,
+                                               ifelse(colnames(sample_subset) %in% sample3_cells, &quot;VUHD115&quot;,
+                                                      &quot;drop&quot;)))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;MERGED_TILD010_VUHD115_TILD126&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD010_VUHD115_TILD126 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD126&quot;,
+                                                ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD010&quot;,
+                                                ifelse(colnames(seurat_object) %in% sample3_cells, &quot;VUHD115&quot;,
+                                                ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                                NA))))</code></pre>
+<p>MERGED_TILD028_TILD074</p>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD028_TILD074&quot;)
+
+MERGED_TILD028_TILD074 &lt;- DimPlot(sample_subset,
+                                   reduction = &quot;sp&quot;,
+                                   group.by = &quot;sample&quot;,
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD028_TILD074&quot;)
+
+# Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: TILD074
+lim.xleft &lt;- 0
+lim.xright &lt;- 3500
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 3000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TILD028
+lim.xleft &lt;- 0
+lim.xright &lt;- 4000
+lim.ybottom &lt;- 3300
+lim.ytop &lt;- 8000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;TILD074&quot;,
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD028&quot;,
+                                                      &quot;drop&quot;))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;MERGED_TILD028_TILD074&quot;)</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD028_TILD074 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD074&quot;,
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD028&quot;,
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                        NA)))</code></pre>
+<p>MERGED_TILD041_TILD055</p>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD041_TILD055&quot;)
+
+MERGED_TILD041_TILD055 &lt;- DimPlot(sample_subset,
+                                   reduction = &quot;sp&quot;,
+                                   group.by = &quot;sample&quot;,
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD041_TILD055&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<pre class="r"><code># Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: TILD005
+lim.xleft &lt;- 0
+lim.xright &lt;- 4200
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 4500
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TILD041
+lim.xleft &lt;- 4500
+lim.xright &lt;- 8000
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 4500
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;TILD055&quot;,
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD041&quot;,
+                                                      &quot;drop&quot;))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;MERGED_TILD041_TILD055&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD041_TILD055 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD055&quot;,
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD041&quot;,
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                        NA)))</code></pre>
+<p>MERGED_TILD049_TILD111_TILD080_VUHD113</p>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD049_TILD111_TILD080_VUHD113&quot;)
+
+MERGED_TILD049_TILD111_TILD080_VUHD113 &lt;- DimPlot(sample_subset,
+                                                  reduction = &quot;sp&quot;,
+                                                  group.by = &quot;sample&quot;,
+                                                  raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD049_TILD111_TILD080_VUHD113&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<pre class="r"><code># Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: VUHD113
+lim.xleft &lt;- 0
+lim.xright &lt;- 3000
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 600
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TILD080
+lim.xleft &lt;- 1000
+lim.xright &lt;- 5000
+lim.ybottom &lt;- 1200
+lim.ytop &lt;- 2800
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 3: TILD111
+lim.xleft &lt;- 0
+lim.xright &lt;- 5000
+lim.ybottom &lt;- 3500
+lim.ytop &lt;- 5300
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample3 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample3 &lt;- sample3
+
+sample3_cells &lt;- coord.pairs %&gt;% filter(sample3 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 4: TILD049
+lim.xleft &lt;- 0
+lim.xright &lt;- 5000
+lim.ybottom &lt;- 5800
+lim.ytop &lt;- 10100
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample4 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample4 &lt;- sample4
+
+sample4_cells &lt;- coord.pairs %&gt;% filter(sample4 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;VUHD113&quot;,
+                                 ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD080&quot;,
+                                 ifelse(colnames(sample_subset) %in% sample3_cells, &quot;TILD111&quot;,
+                                 ifelse(colnames(sample_subset) %in% sample4_cells, &quot;TILD049&quot;,
+                                 &quot;drop&quot;))))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;MERGED_TILD049_TILD111_TILD080_VUHD113&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD049_TILD111_TILD080_VUHD113&lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;VUHD113&quot;,
+                                                              ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD080&quot;,
+                                                              ifelse(colnames(seurat_object) %in% sample3_cells, &quot;TILD111&quot;,
+                                                              ifelse(colnames(seurat_object) %in% sample4_cells, &quot;TILD049&quot;,
+                                                              ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                                              NA)))))</code></pre>
+<p>MERGED_TILD059_TILD113</p>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD059_TILD113&quot;)
+
+MERGED_TILD059_TILD113 &lt;- DimPlot(sample_subset,
+                                   reduction = &quot;sp&quot;,
+                                   group.by = &quot;sample&quot;,
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD059_TILD113&quot;)
+
+# Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: TILD059
+lim.xleft &lt;- 0
+lim.xright &lt;- 5000
+lim.ybottom &lt;- 3200
+lim.ytop &lt;- 5000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TILD113
+lim.xleft &lt;- 0
+lim.xright &lt;- 3300
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 2300
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;TILD059&quot;,
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD113&quot;,
+                                               &quot;drop&quot;))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;MERGED_TILD059_TILD113&quot;)</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD059_TILD113 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD059&quot;,
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD113&quot;,
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                        NA)))</code></pre>
+<p>MERGED_TILD109_THD0016</p>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD109_THD0016&quot;)
+
+MERGED_TILD109_THD0016 &lt;- DimPlot(sample_subset,
+                                   reduction = &quot;sp&quot;,
+                                   group.by = &quot;sample&quot;,
+                                   raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD109_THD0016&quot;)
+
+# Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: THD0016
+lim.xleft &lt;- 0
+lim.xright &lt;- 5000
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 2600
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TILD109
+lim.xleft &lt;- 0
+lim.xright &lt;- 5000
+lim.ybottom &lt;- 3300
+lim.ytop &lt;- 6500
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;THD0016&quot;,
+                                        ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD109&quot;,
+                                               &quot;drop&quot;))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;x&quot;)</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD109_THD0016 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;THD0016&quot;,
+                                        ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD109&quot;,
+                                        ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                        NA)))</code></pre>
+<p>MERGED_TILD136_VUILD102_TILD102_VUILD78</p>
+<pre class="r"><code>sample_subset &lt;- subset(seurat_object, subset = sample == &quot;MERGED_TILD136_VUILD102_TILD102_VUILD78&quot;)
+
+MERGED_TILD049_TILD111_TILD080_VUHD113 &lt;- DimPlot(sample_subset,
+                                                  reduction = &quot;sp&quot;,
+                                                  group.by = &quot;sample&quot;,
+                                                  raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle(&quot;MERGED_TILD136_VUILD102_TILD102_VUILD78&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<pre class="r"><code># Adding sample names to match coordinates
+coord.pairs &lt;- sample_subset@meta.data[,c(&quot;x_centroid&quot;, &quot;y_centroid&quot;)]
+tolerance &lt;- 0
+
+# Sample 1: VUILD78
+lim.xleft &lt;- 0
+lim.xright &lt;- 3200
+lim.ybottom &lt;- 0
+lim.ytop &lt;- 3000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample1 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample1 &lt;- sample1
+
+sample1_cells &lt;- coord.pairs %&gt;% filter(sample1 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 2: TILD102
+lim.xleft &lt;- 0
+lim.xright &lt;- 3200
+lim.ybottom &lt;- 3200
+lim.ytop &lt;- 4000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample2 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample2 &lt;- sample2
+
+sample2_cells &lt;- coord.pairs %&gt;% filter(sample2 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 3: VUILD102
+lim.xleft &lt;- 0
+lim.xright &lt;- 3200
+lim.ybottom &lt;- 5500
+lim.ytop &lt;- 8000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample3 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample3 &lt;- sample3
+
+sample3_cells &lt;- coord.pairs %&gt;% filter(sample3 == &quot;in&quot;) %&gt;% rownames()
+
+# Sample 4: TILD136
+lim.xleft &lt;- 0
+lim.xright &lt;- 3200
+lim.ybottom &lt;- 8500
+lim.ytop &lt;- 11000
+
+exclude.xleft &lt;- lim.xleft + tolerance
+exclude.xright &lt;- lim.xright - tolerance
+exclude.ybottom &lt;- lim.ybottom + tolerance
+exclude.ytop &lt;- lim.ytop - tolerance
+sample4 &lt;- c(&quot;out&quot;, &quot;in&quot;)[1+(findInterval(coord.pairs[ , 1], c(exclude.xleft, exclude.xright))==1 &amp;
+                           findInterval(coord.pairs[ , 2], c(exclude.ybottom, exclude.ytop))==1)]
+coord.pairs$sample4 &lt;- sample4
+
+sample4_cells &lt;- coord.pairs %&gt;% filter(sample4 == &quot;in&quot;) %&gt;% rownames()
+
+# Adding sample names to the Seurat object subset
+sample_subset$unmerged_sample &lt;- ifelse(colnames(sample_subset) %in% sample1_cells, &quot;VUILD78&quot;,
+                                 ifelse(colnames(sample_subset) %in% sample2_cells, &quot;TILD102&quot;,
+                                 ifelse(colnames(sample_subset) %in% sample3_cells, &quot;VUILD102&quot;,
+                                 ifelse(colnames(sample_subset) %in% sample4_cells, &quot;TILD136&quot;,
+                                 &quot;drop&quot;))))
+
+DimPlot(sample_subset,
+        reduction = &quot;sp&quot;,
+        group.by = &quot;unmerged_sample&quot;,
+        raster = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  #NoLegend() +
+  ggtitle(&quot;MERGED_TILD136_VUILD102_TILD102_VUILD78&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Adding sample names to the complete Seurat object
+seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;VUILD78&quot;,
+                                                                ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD102&quot;,
+                                                                ifelse(colnames(seurat_object) %in% sample3_cells, &quot;VUILD102&quot;,
+                                                                ifelse(colnames(seurat_object) %in% sample4_cells, &quot;TILD136&quot;,
+                                                                ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
+                                                                NA)))))</code></pre>
 </div>
 <div id="dimplots" class="section level3">
 <h3>DimPlots</h3>
 <pre class="r"><code>DimPlot(seurat_object,
-        group.by = &quot;leiden_res1.0&quot;,
+        group.by = &quot;leiden_res0.5&quot;,
         #split.by = &quot;sample&quot;,
         #ncol = 5,
         reduction = &quot;umap&quot;,
@@ -730,19 +1452,19 @@ aaaccnpe-1_1            13            42            53</code></pre>
   theme_minimal()</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/post_clustering.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(seurat_object,
-        group.by = &quot;leiden_res1.0&quot;,
+        group.by = &quot;leiden_res0.5&quot;,
         split.by = &quot;sample&quot;,
         ncol = 8,
         reduction = &quot;umap&quot;,
         raster = T,
-        label = T) +
+        label = F) +
   coord_fixed(ratio = 1) +
   theme_minimal()</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/post_clustering.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="feature-expression" class="section level3">
 <h3>Feature expression</h3>
@@ -751,13 +1473,13 @@ To disable this behavior set `raster=FALSE`</code></pre>
                             immune_features,
                             endothelial_features,
                             mesenchymal_features)),
-        group.by = &quot;leiden_res1.0&quot;,
+        group.by = &quot;leiden_res0.5&quot;,
         cols = c(&quot;azure&quot;, &quot;tomato3&quot;)) +
   coord_flip() +
   theme_minimal()</code></pre>
 <pre><code>Warning: The following requested variables were not found (10 out of 98 shown):
 NKX2-1, RTKN2, NAPSA, PGC, SFTPC, KRT14, KRT5, KRT6A, S100A2, KRT17</code></pre>
-<p><img src="figure/post_clustering.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

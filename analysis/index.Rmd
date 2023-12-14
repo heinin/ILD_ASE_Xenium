@@ -8,9 +8,17 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Analyzing Xenium spatial transcriptomics data for allelelic bias
+## Analyzing Xenium spatial transcriptomics data for allelic bias
+
+### SNP selection
+
+100bp probes were designed to tag exonic (or intronic) SNPs that are in high 
+LD (R^2 >0.8) with *cis*-eSNPs.
 
 [Information on eQTL and tag-SNPs](https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing)
 
-Processing and analysis:
-[Xenium pre-processing](Xenium_preprocessing.html).
+### Processing and analysis
+
+1. [Xenium pre-processing](Xenium_preprocessing.html)\
+2. [Post-clustering visualization and analysis](post_clustering.html)
+
