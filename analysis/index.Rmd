@@ -20,5 +20,6 @@ LD (R^2 >0.8) with *cis*-eSNPs.
 ### Processing and analysis
 
 1. [Xenium pre-processing](Xenium_preprocessing.html)\
-2. [Post-clustering visualization and analysis](post_clustering.html)
+2. [Post-clustering visualization and analysis](post_clustering.html)\
+3. [Cell type annotation](celltype_annotation.html)
 

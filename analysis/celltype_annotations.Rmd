@@ -1,23 +1,44 @@
-# ==============================================================================
-# Author(s) : Heini M. Natri, hnatri@tgen.org
-# Date: 12/14/2023
-# Description: Colors and themes for the lung spatial ASE plots
-# ==============================================================================
+---
+title: "celltype_annotations"
+author: "heinin"
+date: "2023-12-15"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
 
-# ======================================
-# Import libraries
-# ======================================
+## Introduction
 
-library(tidyverse)
-library(googlesheets4)
-library(ggthemes)
-library(ggplot2)
-library(ggrepel)
+Cell type annotations for spatial data.
 
-# ======================================
-# Cell type markers
-# ======================================
+### Packages and environment variables
 
+```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+
+```
+
+### Cell type markers
+
+```{r}
 epithelial_features <- c("EGFR", "DUOX1", "NKX2-1", "AGER", "RTKN2", "NAPSA",
                          "PGC", "SFTA2", "SFTPC", "SFTPD", "KRT14", "KRT15",
                          "KRT5", "KRT6A", "S100A2", "TP63", "KRT17", "AGR3",
@@ -49,28 +70,60 @@ immune_features <- c("PPARG", "BANK1", "CD19", "CD79A", "LTB", "MS4A1",
 mesenchymal_features <- c("MFAP5", "PI16", "SFRP2", "ELN", "FAP", "AXL", "LGR6", 
                           "COL1A1", "COL1A2", "COL3A1", "DCN", "FN1", "HAS2", 
                           "LUM", "MEG3", "SPARCL1", "CTHRC1")
-
-# ======================================
-# Colors
-# ======================================
-
-samples <- c("TILD126", "TILD010", "VUHD115", "TILD074", "TILD028", "TILD055",
-             "TILD041", "THD0026", "TILD001", "TILD062", "TILD093", "TILD103",
-             "TILD123", "VUILD104", "VUILD48", "VUILD96", "TILD049", "VUHD113",
-             "TILD080", "TILD111", "TILD113", "TILD059", "THD0016", "TILD109",
-             "VUILD102", "TILD102", "VUILD78", "TILD136", "TILD006", "TILD030",
-             "TILD037", "VUILD59", "VUILD91")
-sample_col <- colorRampPalette(tableau_color_pal(palette = "Tableau 20")(20))(length(samples))
-names(sample_col) <- samples
-
-clusters <- c(0, seq(1, 20))
-cluster_col <- colorRampPalette(gdocs_pal()(10))(length(clusters))
-names(cluster_col) <- clusters
-
-sample_type <- c("ILD", "HD")
-sample_type_col <- c("violetred", "cadetblue")
-names(sample_type_col) <- sample_type
+```
 
 
+### Import data
 
+```{r}
 
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed.rds")
+DefaultAssay(seurat_object)
+
+# Checking the number of PCs to include in the neighborhood/UMAP
+features <- rownames(seurat_object)
+features <- features[-grep("-", features)]
+VariableFeatures(seurat_object) <- features
+
+seurat_object <- ScaleData(seurat_object)
+seurat_object <- RunPCA(seurat_object,
+                        reduction.name = "pca",
+                        verbose = T)
+pcs <- get_pcs(seurat_object, reduction_name = "pca")
+pcs
+
+```
+
+### DimPlots
+
+```{r}
+
+DimPlot(seurat_object,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        #split.by = "sample",
+        #ncol = 5,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  NoLegend() +
+  theme_minimal()
+
+```
+
+### Feature expression
+
+```{r, fig.height=12}
+
+DotPlot(seurat_object,
+        features = unique(c(epithelial_features,
+                            immune_features,
+                            endothelial_features,
+                            mesenchymal_features)),
+        group.by = "leiden_res0.5",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+
+```

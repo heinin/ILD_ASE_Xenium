@@ -24,44 +24,12 @@ suppressPackageStartupMessages({library(cli)
 
 setwd("/home/hnatri/ILD_ASE_Xenium/")
 set.seed(9999)
-options(scipen = 99999)
 options(ggrepel.max.overlaps = Inf)
 
-# Colors
+# Colors, themes, cell type markers, and plot functions
 source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
 source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
 
-```
-
-### Cell type markers
-
-```{r}
-epithelial_features <- c("EGFR", "DUOX1", "NKX2-1", "AGER", "RTKN2", "NAPSA", "PGC", "SFTA2",
-                         "SFTPC", "SFTPD", "KRT14", "KRT15", "KRT5", "KRT6A", "S100A2",
-                         "TP63", "KRT17", "AGR3", "C20orf85", "FOXJ1", "GCLM", "DMBT1",
-                         "EPCAM", "KRT18", "MGST1", "MMP7", "FOXI1", "MUC5B", "SCGB1A1", 
-                         "SCGB3A2", "WFDC2", "ATF3", "KRT8", "SOX9", "SPINK1", "GKN2",
-                         "MMP10", "SOX2", "CDH26", "TP73", "CFTR", "HES1", "PKM", "SOX4",
-                         "NUCB2", "RNASE1", "SAA2", "AKR1C1", "AKR1C2", "BPIFA1", "CEACAM5",
-                         "ERN2", "FCGBP", "GSR", "LTF", "CCNA1", "ICAM1", "ITGB1")
-endothelial_features <- c("APLN", "CA4", "HEY1", "BMPR2", "CD34", "EPAS1", "FCN3", 
-                          "GNG11", "PECAM1", "APLNR", "COL15A1", "PLVAP", "ACKR1",
-                          "POSTN", "CLDN5", "RAMP2", "ZEB1", "HAS1", "KDR", "CDKN2A")
-immune_features <- c("PPARG", "BANK1", "CD19", "CD79A", "LTB", "MS4A1", "TNFRSF13C", 
-                     "CD86", "GZMB", "HLA-DRA", "CCR7", "CXCR4", "PTPRC", "TCL1A", 
-                     "CD69", "CD4", "CD8A", "CD8B", "CD2", "CD28", "CD3D", "CD3E", 
-                     "CD3G", "FOXP3", "GZMK", "TRAC", "ITM2C", "CD27", "CCL5", "LCK", 
-                     "FABP4", "MARCO", "MCEMP1", "SPP1", "FCN1", "S100A12", "S100A8", 
-                     "S100A9", "CCL22", "ITGAM", "NFKB1",  "IFIT2", "FGFBP2", "GNLY", 
-                     "KLRB1", "KLRC1", "NKG7", "LILRA4", "BCL2", "CD79B", "CXCR5", 
-                     "CXCL9", "GPR183", "HLA-DQA1", "KLRG1", "BCL2L11", "CD52", 
-                     "SLC1A3", "TNFRSF9", "CTLA4",  "IL2RA", "LAG3", "PDCD1", "PDIA6", 
-                     "PIM2", "IL7R", "LEF1", "FASLG", "HAVCR2", "ISG20", "CPA3", 
-                     "KIT", "TPSAB1", "C1QC", "CD68", "MS4A7", "AIF1", "CD14", 
-                     "FCGR3A", "FCER1G", "SLC25A37", "CD247", "GZMA", "IRF7")
-mesenchymal_features <- c("MFAP5", "PI16", "SFRP2", "ELN", "FAP", "AXL", "LGR6", 
-                          "COL1A1", "COL1A2", "COL3A1", "DCN", "FN1", "HAS2", 
-                          "LUM", "MEG3", "SPARCL1", "CTHRC1")
 ```
 
 
@@ -69,8 +37,72 @@ mesenchymal_features <- c("MFAP5", "PI16", "SFRP2", "ELN", "FAP", "AXL", "LGR6",
 
 ```{r}
 
-seurat_object <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_2.rds")
-DefaultAssay(seurat_object)
+# Original clustering, n_pcs = 20
+seurat_20 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_2.rds")
+DefaultAssay(seurat_20)
+
+# n_pcs = 40, 60, 80
+seurat_40 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-40.rds")
+seurat_60 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-60.rds")
+seurat_80 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-80.rds")
+
+```
+
+### Selecting the best clustering for downstream analysis
+
+```{r}
+
+p1 <- DimPlot(seurat_20,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("20 PCs")
+
+p2 <- DimPlot(seurat_40,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("40 PCs")
+
+p3 <- DimPlot(seurat_60,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("60 PCs")
+
+p4 <- DimPlot(seurat_80,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  theme_minimal() +
+  NoLegend() +
+  ggtitle("80 PCs")
+  
+
+(p1 + p2) / (p3 + p4)
+
+# Using the reduction with 20 PCs
+seurat_object <- seurat_20
+
+rm(seurat_20, seurat_40, seurat_60, seurat_80)
 
 ```
 
