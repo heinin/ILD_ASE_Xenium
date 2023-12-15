@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-12-12" />
 
-<title>Checking the Seurat object post-clustering</title>
+<title>Post-clustering visualization</title>
 
 <script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -359,8 +359,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Checking the Seurat object
-post-clustering</h1>
+<h1 class="title toc-ignore">Post-clustering visualization</h1>
 <h4 class="author">heinin</h4>
 <h4 class="date">2023-12-12</h4>
 
@@ -543,6 +542,22 @@ relative
 .
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R
+</td>
+<td style="text-align:left;">
+code/colors_themes.R
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R
+</td>
+<td style="text-align:left;">
+code/plot_functions.R
+</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -551,15 +566,15 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree44601fd540d1f00307d8df8c0f13d4c08e3ea5b6targetblank44601fda">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreeae3f716ad36e27e165fc6a6184a4e0cd410dcb00targetblankae3f716a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6" target="_blank">44601fd</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00" target="_blank">ae3f716</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree44601fd540d1f00307d8df8c0f13d4c08e3ea5b6targetblank44601fda"
+id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreeae3f716ad36e27e165fc6a6184a4e0cd410dcb00targetblankae3f716a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -569,7 +584,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6" target="_blank">44601fd</a>.
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00" target="_blank">ae3f716</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -584,10 +599,10 @@ were generated:
 </p>
 <pre><code>
 Untracked files:
-    Untracked:  analysis/eQTL_linked_SNPs.Rmd
+    Untracked:  code/colors_themes.R
+    Untracked:  code/plot_functions.R
 
 Unstaged changes:
-    Modified:   analysis/index.Rmd
     Modified:   analysis/post_clustering.Rmd
 
 </code></pre>
@@ -634,6 +649,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/analysis/post_clustering.Rmd" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+<td>
+Splitting merged samples
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/post_clustering.html" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+<td>
+Splitting merged samples
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -695,11 +744,29 @@ set.seed(9999)
 options(scipen = 99999)
 options(ggrepel.max.overlaps = Inf)
 
-# A function for better VlnPlot
-BetterVlnPlot &lt;- function(data, features, ylim = NA){
-  VlnPlot(data, pt.size = 0, features = features, 
-          group.by = &quot;sample&quot;, y.max = ylim) + labs(x = &quot;&quot;) + NoLegend()
-}</code></pre>
+# Colors
+source(&quot;/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R&quot;)
+source(&quot;/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R&quot;)</code></pre>
+<pre><code>Loading required package: viridisLite</code></pre>
+<pre><code>Loading required package: grid</code></pre>
+<pre><code>========================================
+ComplexHeatmap version 2.16.0
+Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
+Github page: https://github.com/jokergoo/ComplexHeatmap
+Documentation: http://jokergoo.github.io/ComplexHeatmap-reference
+
+If you use it in published research, please cite either one:
+- Gu, Z. Complex Heatmap Visualization. iMeta 2022.
+- Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional 
+    genomic data. Bioinformatics 2016.
+
+
+The new InteractiveComplexHeatmap package can directly export static 
+complex heatmaps into an interactive Shiny app with zero effort. Have a try!
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(ComplexHeatmap))
+========================================</code></pre>
 </div>
 <div id="cell-type-markers" class="section level3">
 <h3>Cell type markers</h3>
@@ -786,6 +853,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-4-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/heinin/ILD_ASE_Xenium/blob/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/docs/figure/post_clustering.Rmd/unnamed-chunk-4-1.png" target="_blank">44601fd</a>
 </td>
 <td>
@@ -864,6 +942,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-5-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/heinin/ILD_ASE_Xenium/blob/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/docs/figure/post_clustering.Rmd/unnamed-chunk-5-1.png" target="_blank">44601fd</a>
@@ -948,6 +1037,43 @@ DimPlot(sample_subset,
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-2">
+Past versions of unnamed-chunk-5-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-5-2.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD010_VUHD115_TILD126 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD126&quot;,
                                                 ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD010&quot;,
@@ -1016,6 +1142,43 @@ DimPlot(sample_subset,
   #NoLegend() +
   ggtitle(&quot;MERGED_TILD028_TILD074&quot;)</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-6-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD028_TILD074 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD074&quot;,
                                         ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD028&quot;,
@@ -1086,6 +1249,43 @@ DimPlot(sample_subset,
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-7-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD041_TILD055 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD055&quot;,
                                         ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD041&quot;,
@@ -1190,6 +1390,43 @@ DimPlot(sample_subset,
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-8-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD049_TILD111_TILD080_VUHD113&lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;VUHD113&quot;,
                                                               ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD080&quot;,
@@ -1259,6 +1496,43 @@ DimPlot(sample_subset,
   #NoLegend() +
   ggtitle(&quot;MERGED_TILD059_TILD113&quot;)</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-9-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD059_TILD113 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;TILD059&quot;,
                                         ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD113&quot;,
@@ -1326,6 +1600,43 @@ DimPlot(sample_subset,
   #NoLegend() +
   ggtitle(&quot;x&quot;)</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-10-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD109_THD0016 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;THD0016&quot;,
                                         ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD109&quot;,
@@ -1430,6 +1741,43 @@ DimPlot(sample_subset,
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-11-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code># Adding sample names to the complete Seurat object
 seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 &lt;- ifelse(colnames(seurat_object) %in% sample1_cells, &quot;VUILD78&quot;,
                                                                 ifelse(colnames(seurat_object) %in% sample2_cells, &quot;TILD102&quot;,
@@ -1437,11 +1785,135 @@ seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 &lt;- ifelse(colnames(seur
                                                                 ifelse(colnames(seurat_object) %in% sample4_cells, &quot;TILD136&quot;,
                                                                 ifelse(colnames(seurat_object) %in% colnames(sample_subset), &quot;drop&quot;,
                                                                 NA)))))</code></pre>
+<div id="combining-sample-name-columns" class="section level4">
+<h4>Combining sample name columns</h4>
+<pre class="r"><code>metadata &lt;- seurat_object@meta.data %&gt;%
+  mutate(merged_sample = coalesce(MERGED_TILD010_VUHD115_TILD126,
+                                  MERGED_TILD028_TILD074,
+                                  MERGED_TILD041_TILD055,
+                                  MERGED_TILD049_TILD111_TILD080_VUHD113,
+                                  MERGED_TILD059_TILD113,
+                                  MERGED_TILD109_THD0016,
+                                  MERGED_TILD136_VUILD102_TILD102_VUILD78))
+
+table(metadata$sample)</code></pre>
+<pre><code>
+         MERGED_TILD010_VUHD115_TILD126                  MERGED_TILD028_TILD074 
+                                 177083                                   37642 
+                 MERGED_TILD041_TILD055  MERGED_TILD049_TILD111_TILD080_VUHD113 
+                                 175797                                  117705 
+                 MERGED_TILD059_TILD113                  MERGED_TILD109_THD0016 
+                                  27035                                   45963 
+MERGED_TILD136_VUILD102_TILD102_VUILD78                                 THD0026 
+                                 101631                                   40242 
+                                TILD001                                 TILD006 
+                                  49657                                   57446 
+                                TILD030                                 TILD037 
+                                  43644                                   34957 
+                                TILD062                                 TILD093 
+                                  46551                                   17707 
+                                TILD103                                 TILD123 
+                                  69042                                    3495 
+                                VUILD48                                 VUILD59 
+                                  15609                                    5506 
+                                VUILD91                                 VUILD96 
+                                  10520                                   56888 
+                               VUILD104 
+                                  47484 </code></pre>
+<pre class="r"><code>table(metadata$merged_sample)</code></pre>
+<pre><code>
+    drop  THD0016  TILD010  TILD028  TILD041  TILD049  TILD055  TILD059 
+   41855    12874    61261    26343    49810    70464   124201     7268 
+ TILD074  TILD080  TILD102  TILD109  TILD111  TILD113  TILD126  TILD136 
+   10351    21357     2442    28116    13912    14381    90208    31260 
+ VUHD113  VUHD115 VUILD102  VUILD78 
+    2336    25136    28302    20979 </code></pre>
+<pre class="r"><code>metadata &lt;- metadata %&gt;% mutate(Sample_Name = coalesce(merged_sample, sample))
+table(metadata$Sample_Name)</code></pre>
+<pre><code>
+    drop  THD0016  THD0026  TILD001  TILD006  TILD010  TILD028  TILD030 
+   41855    12874    40242    49657    57446    61261    26343    43644 
+ TILD037  TILD041  TILD049  TILD055  TILD059  TILD062  TILD074  TILD080 
+   34957    49810    70464   124201     7268    46551    10351    21357 
+ TILD093  TILD102  TILD103  TILD109  TILD111  TILD113  TILD123  TILD126 
+   17707     2442    69042    28116    13912    14381     3495    90208 
+ TILD136  VUHD113  VUHD115 VUILD102 VUILD104  VUILD48  VUILD59  VUILD78 
+   31260     2336    25136    28302    47484    15609     5506    20979 
+ VUILD91  VUILD96 
+   10520    56888 </code></pre>
+<pre class="r"><code>seurat_object@meta.data &lt;- metadata
+
+# Dropping cells at the margins of the merged samples
+seurat_object &lt;- subset(seurat_object,
+                        subset = Sample_Name == &quot;drop&quot;,
+                        invert = T)
+
+# Adding sample type information
+seurat_object$Sample_Type &lt;- ifelse(grepl(&quot;ILD&quot;, seurat_object$Sample_Name), &quot;ILD&quot;, &quot;HD&quot;)
+table(seurat_object$Sample_Type)</code></pre>
+<pre><code>
+     HD     ILD 
+  80588 1059161 </code></pre>
+<pre class="r"><code>#saveRDS(seurat_object, &quot;/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed.rds&quot;)</code></pre>
+</div>
+</div>
+<div id="cell-numbers-per-sample" class="section level3">
+<h3>Cell numbers per sample</h3>
+<pre class="r"><code>table(seurat_object$Sample_Name) %&gt;% as.data.frame() %&gt;%
+  rename(Sample_Name = Var1,
+         n_cells = Freq) %&gt;%
+  ggplot(aes(x = reorder(Sample_Name, -n_cells), y = n_cells, fill = Sample_Name)) + 
+  geom_bar(position=&quot;stack&quot;, stat=&quot;identity&quot;) + 
+  scale_fill_manual(values = sample_col) +
+  theme_bw() + 
+  xlab(&quot;&quot;) + 
+  ylab(&quot;# cells&quot;) + 
+  NoLegend() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.9, hjust=0.9))</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/figure/post_clustering.Rmd/unnamed-chunk-13-1.png" target="_blank">ae3f716</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-14
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="dimplots" class="section level3">
 <h3>DimPlots</h3>
 <pre class="r"><code>DimPlot(seurat_object,
         group.by = &quot;leiden_res0.5&quot;,
+        cols = cluster_col,
         #split.by = &quot;sample&quot;,
         #ncol = 5,
         reduction = &quot;umap&quot;,
@@ -1452,9 +1924,10 @@ seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 &lt;- ifelse(colnames(seur
   theme_minimal()</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/post_clustering.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>DimPlot(seurat_object,
         group.by = &quot;leiden_res0.5&quot;,
+        cols = cluster_col,
         split.by = &quot;sample&quot;,
         ncol = 8,
         reduction = &quot;umap&quot;,
@@ -1464,7 +1937,20 @@ To disable this behavior set `raster=FALSE`</code></pre>
   theme_minimal()</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/post_clustering.Rmd/unnamed-chunk-12-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-14-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>DimPlot(seurat_object,
+        group.by = &quot;leiden_res0.5&quot;,
+        cols = cluster_col,
+        split.by = &quot;Sample_Name&quot;,
+        ncol = 8,
+        reduction = &quot;umap&quot;,
+        raster = T,
+        label = F) +
+  coord_fixed(ratio = 1) +
+  theme_minimal()</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-14-3.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="feature-expression" class="section level3">
 <h3>Feature expression</h3>
@@ -1479,7 +1965,66 @@ To disable this behavior set `raster=FALSE`</code></pre>
   theme_minimal()</code></pre>
 <pre><code>Warning: The following requested variables were not found (10 out of 98 shown):
 NKX2-1, RTKN2, NAPSA, PGC, SFTPC, KRT14, KRT5, KRT6A, S100A2, KRT17</code></pre>
-<p><img src="figure/post_clustering.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cell-type-proportions-by-sample-and-sample-type"
+class="section level3">
+<h3>Cell type proportions by sample and sample type</h3>
+<pre class="r"><code># Scatter plot of cell type proportions by sample type
+
+# seurat_object = Seurat object
+# group_var = e.g. CD3_status
+# group1 = e.g. High
+# group2 = e.g. Low
+# plot_var = e.g. celltype
+# plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cell type colors)
+# var_names = Used as axis titles
+# legend_title = Legend title, (&quot;&quot; for no title)
+create_clusterpropplot(seurat_object = seurat_object,
+                       group_var = &quot;Sample_Type&quot;,
+                       group1 = &quot;HD&quot;,
+                       group2 = &quot;ILD&quot;,
+                       plot_var = &quot;leiden_res0.5&quot;,
+                       plot_colors = cluster_col,
+                       var_names = c(&quot;HD&quot;, &quot;ILD&quot;),
+                       legend_title = &quot;&quot;)</code></pre>
+<pre><code>Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+ℹ Please use tidy evaluation idioms with `aes()`.
+ℹ See also `vignette(&quot;ggplot2-in-packages&quot;)` for more information.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+generated.</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Barplot
+
+# seurat_object = Seurat object
+# plot_var = e.g. cluster
+# group_var = e.g. response (cell proportions are plotted for each group)
+# group_levels = a vector for ordering the grouping variable levels
+# plot_levels = a vector for ordering the plot variable levels
+# plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cluster colors)
+# var_names = Used as axis titles, c(&quot;plot_var_name&quot;, &quot;group_var_name&quot;)
+# legend_title = Legend title, (&quot;&quot; for no title)
+create_barplot(seurat_object = seurat_object,
+               group_var = &quot;Sample_Type&quot;,
+               plot_var = &quot;leiden_res0.5&quot;,
+               group_levels = c(&quot;ILD&quot;, &quot;HD&quot;),
+               plot_levels = names(cluster_col),
+               plot_colors = cluster_col,
+               var_names = c(&quot;Cluster&quot;, &quot;Sample Type&quot;),
+               legend_title = &quot;&quot;)</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Stacked barplot of cell type proportions across samples
+create_barplot(seurat_object = seurat_object,
+               group_var = &quot;Sample_Name&quot;,
+               plot_var = &quot;leiden_res0.5&quot;,
+               group_levels = sort(names(sample_col)),
+               plot_levels = names(cluster_col),
+               plot_colors = cluster_col,
+               var_names = c(&quot;Cluster&quot;, &quot;Sample&quot;),
+               legend_title = &quot;&quot;) +
+  coord_flip()</code></pre>
+<p><img src="figure/post_clustering.Rmd/unnamed-chunk-16-3.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1509,61 +2054,68 @@ time zone: Etc/UTC
 tzcode source: system (glibc)
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
- [1] workflowr_1.7.1         ggrepel_0.9.3           ggpubr_0.6.0           
- [4] lubridate_1.9.2         forcats_1.0.0           stringr_1.5.0          
- [7] dplyr_1.1.2             purrr_1.0.1             readr_2.1.4            
-[10] tidyr_1.3.0             tibble_3.2.1            ggplot2_3.4.2          
-[13] tidyverse_2.0.0         SeuratDisk_0.0.0.9021   Seurat_4.9.9.9048      
-[16] SeuratObject_4.9.9.9084 sp_1.6-1                cli_3.6.1              
+ [1] ComplexHeatmap_2.16.0   viridis_0.6.3           viridisLite_0.4.2      
+ [4] RColorBrewer_1.1-3      ggthemes_5.0.0          googlesheets4_1.1.0    
+ [7] workflowr_1.7.1         ggrepel_0.9.3           ggpubr_0.6.0           
+[10] lubridate_1.9.2         forcats_1.0.0           stringr_1.5.0          
+[13] dplyr_1.1.2             purrr_1.0.1             readr_2.1.4            
+[16] tidyr_1.3.0             tibble_3.2.1            ggplot2_3.4.2          
+[19] tidyverse_2.0.0         SeuratDisk_0.0.0.9021   Seurat_4.9.9.9048      
+[22] SeuratObject_4.9.9.9084 sp_1.6-1                cli_3.6.1              
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3     rstudioapi_0.14        jsonlite_1.8.5        
-  [4] magrittr_2.0.3         spatstat.utils_3.0-3   farver_2.1.1          
-  [7] rmarkdown_2.22         fs_1.6.2               vctrs_0.6.2           
- [10] ROCR_1.0-11            spatstat.explore_3.2-1 rstatix_0.7.2         
- [13] htmltools_0.5.5        broom_1.0.4            sass_0.4.6            
- [16] sctransform_0.3.5      parallelly_1.36.0      KernSmooth_2.23-21    
- [19] bslib_0.4.2            htmlwidgets_1.6.2      ica_1.0-3             
- [22] plyr_1.8.8             plotly_4.10.2          zoo_1.8-12            
- [25] cachem_1.0.8           whisker_0.4.1          igraph_1.4.3          
- [28] mime_0.12              lifecycle_1.0.3        pkgconfig_2.0.3       
- [31] Matrix_1.5-4.1         R6_2.5.1               fastmap_1.1.1         
- [34] fitdistrplus_1.1-11    future_1.32.0          shiny_1.7.4           
- [37] digest_0.6.31          colorspace_2.1-0       ps_1.7.5              
- [40] patchwork_1.1.2        rprojroot_2.0.3        tensor_1.5            
- [43] RSpectra_0.16-1        irlba_2.3.5.1          labeling_0.4.2        
- [46] progressr_0.13.0       timechange_0.2.0       fansi_1.0.4           
- [49] spatstat.sparse_3.0-1  httr_1.4.6             polyclip_1.10-4       
- [52] abind_1.4-5            compiler_4.3.0         withr_2.5.0           
- [55] bit64_4.0.5            backports_1.4.1        carData_3.0-5         
- [58] fastDummies_1.6.3      highr_0.10             ggsignif_0.6.4        
- [61] MASS_7.3-60            tools_4.3.0            lmtest_0.9-40         
- [64] httpuv_1.6.11          future.apply_1.11.0    goftest_1.2-3         
- [67] glue_1.6.2             callr_3.7.3            nlme_3.1-162          
- [70] promises_1.2.0.1       grid_4.3.0             getPass_0.2-2         
- [73] Rtsne_0.16             cluster_2.1.4          reshape2_1.4.4        
- [76] generics_0.1.3         hdf5r_1.3.8            gtable_0.3.3          
- [79] spatstat.data_3.0-1    tzdb_0.4.0             hms_1.1.3             
- [82] data.table_1.14.8      car_3.1-2              utf8_1.2.3            
- [85] spatstat.geom_3.2-1    RcppAnnoy_0.0.20       RANN_2.6.1            
- [88] pillar_1.9.0           spam_2.9-1             RcppHNSW_0.4.1        
- [91] later_1.3.1            splines_4.3.0          lattice_0.21-8        
- [94] survival_3.5-5         bit_4.0.5              deldir_1.0-9          
- [97] tidyselect_1.2.0       miniUI_0.1.1.1         pbapply_1.7-0         
-[100] knitr_1.43             git2r_0.32.0           gridExtra_2.3         
-[103] scattermore_1.1        xfun_0.39              matrixStats_1.0.0     
-[106] stringi_1.7.12         lazyeval_0.2.2         yaml_2.3.7            
-[109] evaluate_0.21          codetools_0.2-19       uwot_0.1.14           
-[112] xtable_1.8-4           reticulate_1.34.0      processx_3.8.1        
-[115] munsell_0.5.0          jquerylib_0.1.4        Rcpp_1.0.10           
-[118] globals_0.16.2         spatstat.random_3.1-5  png_0.1-8             
-[121] parallel_4.3.0         ellipsis_0.3.2         dotCall64_1.0-2       
-[124] listenv_0.9.0          viridisLite_0.4.2      scales_1.2.1          
-[127] ggridges_0.5.4         leiden_0.4.3           crayon_1.5.2          
-[130] rlang_1.1.1            cowplot_1.1.1         </code></pre>
+  [1] RcppAnnoy_0.0.20       splines_4.3.0          later_1.3.1           
+  [4] cellranger_1.1.0       polyclip_1.10-4        fastDummies_1.6.3     
+  [7] lifecycle_1.0.3        rstatix_0.7.2          doParallel_1.0.17     
+ [10] rprojroot_2.0.3        globals_0.16.2         processx_3.8.1        
+ [13] lattice_0.21-8         hdf5r_1.3.8            MASS_7.3-60           
+ [16] backports_1.4.1        magrittr_2.0.3         plotly_4.10.2         
+ [19] sass_0.4.6             rmarkdown_2.22         jquerylib_0.1.4       
+ [22] yaml_2.3.7             httpuv_1.6.11          sctransform_0.3.5     
+ [25] spam_2.9-1             spatstat.sparse_3.0-1  reticulate_1.34.0     
+ [28] cowplot_1.1.1          pbapply_1.7-0          abind_1.4-5           
+ [31] Rtsne_0.16             BiocGenerics_0.46.0    git2r_0.32.0          
+ [34] circlize_0.4.15        S4Vectors_0.38.1       IRanges_2.34.0        
+ [37] irlba_2.3.5.1          listenv_0.9.0          spatstat.utils_3.0-3  
+ [40] goftest_1.2-3          RSpectra_0.16-1        spatstat.random_3.1-5 
+ [43] fitdistrplus_1.1-11    parallelly_1.36.0      leiden_0.4.3          
+ [46] codetools_0.2-19       shape_1.4.6            tidyselect_1.2.0      
+ [49] farver_2.1.1           stats4_4.3.0           matrixStats_1.0.0     
+ [52] spatstat.explore_3.2-1 googledrive_2.1.0      jsonlite_1.8.5        
+ [55] GetoptLong_1.0.5       ellipsis_0.3.2         progressr_0.13.0      
+ [58] ggridges_0.5.4         survival_3.5-5         iterators_1.0.14      
+ [61] foreach_1.5.2          tools_4.3.0            ica_1.0-3             
+ [64] Rcpp_1.0.10            glue_1.6.2             gridExtra_2.3         
+ [67] xfun_0.39              withr_2.5.0            fastmap_1.1.1         
+ [70] fansi_1.0.4            callr_3.7.3            digest_0.6.31         
+ [73] timechange_0.2.0       R6_2.5.1               mime_0.12             
+ [76] colorspace_2.1-0       scattermore_1.1        tensor_1.5            
+ [79] spatstat.data_3.0-1    utf8_1.2.3             generics_0.1.3        
+ [82] data.table_1.14.8      httr_1.4.6             htmlwidgets_1.6.2     
+ [85] whisker_0.4.1          uwot_0.1.14            pkgconfig_2.0.3       
+ [88] gtable_0.3.3           lmtest_0.9-40          htmltools_0.5.5       
+ [91] carData_3.0-5          dotCall64_1.0-2        clue_0.3-64           
+ [94] scales_1.2.1           png_0.1-8              knitr_1.43            
+ [97] rstudioapi_0.14        rjson_0.2.21           tzdb_0.4.0            
+[100] reshape2_1.4.4         nlme_3.1-162           GlobalOptions_0.1.2   
+[103] cachem_1.0.8           zoo_1.8-12             KernSmooth_2.23-21    
+[106] parallel_4.3.0         miniUI_0.1.1.1         pillar_1.9.0          
+[109] vctrs_0.6.2            RANN_2.6.1             promises_1.2.0.1      
+[112] car_3.1-2              xtable_1.8-4           cluster_2.1.4         
+[115] evaluate_0.21          compiler_4.3.0         rlang_1.1.1           
+[118] crayon_1.5.2           future.apply_1.11.0    ggsignif_0.6.4        
+[121] labeling_0.4.2         ps_1.7.5               getPass_0.2-2         
+[124] plyr_1.8.8             fs_1.6.2               stringi_1.7.12        
+[127] deldir_1.0-9           munsell_0.5.0          lazyeval_0.2.2        
+[130] spatstat.geom_3.2-1    Matrix_1.5-4.1         RcppHNSW_0.4.1        
+[133] hms_1.1.3              patchwork_1.1.2        bit64_4.0.5           
+[136] future_1.32.0          shiny_1.7.4            highr_0.10            
+[139] ROCR_1.0-11            gargle_1.4.0           igraph_1.4.3          
+[142] broom_1.0.4            bslib_0.4.2            bit_4.0.5             </code></pre>
 </div>
 </div>
 

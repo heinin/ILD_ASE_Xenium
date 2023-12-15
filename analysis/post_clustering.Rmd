@@ -27,11 +27,9 @@ set.seed(9999)
 options(scipen = 99999)
 options(ggrepel.max.overlaps = Inf)
 
-# A function for better VlnPlot
-BetterVlnPlot <- function(data, features, ylim = NA){
-  VlnPlot(data, pt.size = 0, features = features, 
-          group.by = "sample", y.max = ylim) + labs(x = "") + NoLegend()
-}
+# Colors
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
 
 ```
 
@@ -715,6 +713,54 @@ seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 <- ifelse(colnames(seurat_
                                                                 ifelse(colnames(seurat_object) %in% sample4_cells, "TILD136",
                                                                 ifelse(colnames(seurat_object) %in% colnames(sample_subset), "drop",
                                                                 NA)))))
+```
+
+#### Combining sample name columns
+
+```{r}
+metadata <- seurat_object@meta.data %>%
+  mutate(merged_sample = coalesce(MERGED_TILD010_VUHD115_TILD126,
+                                  MERGED_TILD028_TILD074,
+                                  MERGED_TILD041_TILD055,
+                                  MERGED_TILD049_TILD111_TILD080_VUHD113,
+                                  MERGED_TILD059_TILD113,
+                                  MERGED_TILD109_THD0016,
+                                  MERGED_TILD136_VUILD102_TILD102_VUILD78))
+
+table(metadata$sample)
+table(metadata$merged_sample)
+
+metadata <- metadata %>% mutate(Sample_Name = coalesce(merged_sample, sample))
+table(metadata$Sample_Name)
+seurat_object@meta.data <- metadata
+
+# Dropping cells at the margins of the merged samples
+seurat_object <- subset(seurat_object,
+                        subset = Sample_Name == "drop",
+                        invert = T)
+
+# Adding sample type information
+seurat_object$Sample_Type <- ifelse(grepl("ILD", seurat_object$Sample_Name), "ILD", "HD")
+table(seurat_object$Sample_Type)
+
+#saveRDS(seurat_object, "/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed.rds")
+```
+
+### Cell numbers per sample
+
+```{r}
+
+table(seurat_object$Sample_Name) %>% as.data.frame() %>%
+  rename(Sample_Name = Var1,
+         n_cells = Freq) %>%
+  ggplot(aes(x = reorder(Sample_Name, -n_cells), y = n_cells, fill = Sample_Name)) + 
+  geom_bar(position="stack", stat="identity") + 
+  scale_fill_manual(values = sample_col) +
+  theme_bw() + 
+  xlab("") + 
+  ylab("# cells") + 
+  NoLegend() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.9, hjust=0.9))
 
 ```
 
@@ -724,6 +770,7 @@ seurat_object$MERGED_TILD136_VUILD102_TILD102_VUILD78 <- ifelse(colnames(seurat_
 
 DimPlot(seurat_object,
         group.by = "leiden_res0.5",
+        cols = cluster_col,
         #split.by = "sample",
         #ncol = 5,
         reduction = "umap",
@@ -735,7 +782,19 @@ DimPlot(seurat_object,
 
 DimPlot(seurat_object,
         group.by = "leiden_res0.5",
+        cols = cluster_col,
         split.by = "sample",
+        ncol = 8,
+        reduction = "umap",
+        raster = T,
+        label = F) +
+  coord_fixed(ratio = 1) +
+  theme_minimal()
+
+DimPlot(seurat_object,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        split.by = "Sample_Name",
         ncol = 8,
         reduction = "umap",
         raster = T,
@@ -761,8 +820,59 @@ DotPlot(seurat_object,
 
 ```
 
+### Cell type proportions by sample and sample type
 
+```{r}
+# Scatter plot of cell type proportions by sample type
 
+# seurat_object = Seurat object
+# group_var = e.g. CD3_status
+# group1 = e.g. High
+# group2 = e.g. Low
+# plot_var = e.g. celltype
+# plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cell type colors)
+# var_names = Used as axis titles
+# legend_title = Legend title, ("" for no title)
+create_clusterpropplot(seurat_object = seurat_object,
+                       group_var = "Sample_Type",
+                       group1 = "HD",
+                       group2 = "ILD",
+                       plot_var = "leiden_res0.5",
+                       plot_colors = cluster_col,
+                       var_names = c("HD", "ILD"),
+                       legend_title = "")
+
+# Barplot
+
+# seurat_object = Seurat object
+# plot_var = e.g. cluster
+# group_var = e.g. response (cell proportions are plotted for each group)
+# group_levels = a vector for ordering the grouping variable levels
+# plot_levels = a vector for ordering the plot variable levels
+# plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cluster colors)
+# var_names = Used as axis titles, c("plot_var_name", "group_var_name")
+# legend_title = Legend title, ("" for no title)
+create_barplot(seurat_object = seurat_object,
+               group_var = "Sample_Type",
+               plot_var = "leiden_res0.5",
+               group_levels = c("ILD", "HD"),
+               plot_levels = names(cluster_col),
+               plot_colors = cluster_col,
+               var_names = c("Cluster", "Sample Type"),
+               legend_title = "")
+
+# Stacked barplot of cell type proportions across samples
+create_barplot(seurat_object = seurat_object,
+               group_var = "Sample_Name",
+               plot_var = "leiden_res0.5",
+               group_levels = sort(names(sample_col)),
+               plot_levels = names(cluster_col),
+               plot_colors = cluster_col,
+               var_names = c("Cluster", "Sample"),
+               legend_title = "") +
+  coord_flip()
+
+```
 
 
 
