@@ -1,0 +1,188 @@
+---
+title: "Annotating epithelial cell types"
+author: "heinin"
+date: "2023-12-18"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### First pass annotations on the epithelial lineage
+
+### Packages and environment variables
+
+```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(presto)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+```
+
+### Import data
+
+```{r}
+
+epithelial_merged <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_merged.rds")
+DefaultAssay(epithelial_merged)
+
+```
+
+### Redonstructing the dimensionality reduction and neighbor graph
+
+```{r}
+
+epithelial_reclustered <- recluster(epithelial_merged)
+
+DimPlot(epithelial_reclustered,
+        group.by = "snn_res.0.3",
+        reduction = "umap",
+        raster = T,
+        cols = cluster_col,
+        label = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+# Numbers of cells per cluster
+table(epithelial_reclustered$snn_res.0.3) %>% as.data.frame() %>%
+  ggplot(aes(x = Var1, y = Freq)) +
+  geom_bar(stat="identity", fill = "gray89") +
+  xlab("snn_res.0.3") +
+  ylab("# cells") +
+  theme_minimal()
+
+```
+
+### Marker expression
+
+```{r}
+
+# All epithelial markers
+FeaturePlot(epithelial_reclustered,
+            features = epithelial_features,
+            ncol = 3,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+DotPlot(epithelial_reclustered,
+        features = epithelial_features,
+        group.by = "snn_res.0.3",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+
+# Airway
+# Alveolar
+
+```
+
+### Top markers for each cluster
+
+```{r, fig.height=12}
+# Only looking at base panel features
+features <- rownames(epithelial_reclustered)
+features <- features[-grep("-", features)]
+base_counts <- LayerData(epithelial_reclustered,
+                         assay = "RNA",
+                         layer = "counts")
+base_counts <- base_counts[features, ]
+
+# Creating a new assay
+epithelial_reclustered[["base_RNA"]] <- CreateAssay5Object(counts = base_counts)
+DefaultAssay(epithelial_reclustered) <- "base_RNA"
+epithelial_reclustered <- NormalizeData(epithelial_reclustered,
+                                        assay = "base_RNA",
+                                        normalization.method = "LogNormalize",
+                                        verbose = F)
+
+# Comparing Seurat and presto
+Idents(epithelial_reclustered) <- epithelial_reclustered$snn_res.0.3
+cluster_markers <- FindAllMarkers(epithelial_reclustered,
+                                  assay = "base_RNA",
+                                  logfc.threshold = 0.25,
+                                  test.use = "wilcox",
+                                  slot = "data",
+                                  min.pct = 0.1,
+                                  verbose = F)
+cluster_markers_presto <- presto::wilcoxauc(epithelial_reclustered,
+                                            group_by = "snn_res.0.3",
+                                            assay = "data",
+                                            seurat_assay = "base_RNA")
+
+# Overlap of top markers for cluster 0
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  filter(cluster==0) %>%
+  select(gene) %>% unlist() %>% as.character()
+  
+cluster_markers_presto_sig <- cluster_markers_presto %>%
+  filter(padj<0.01, abs(logFC)>0.5) %>%
+  filter(group==0) %>%
+  select(feature) %>% unlist() %>% as.character()
+
+length(cluster_markers_sig)
+length(cluster_markers_presto_sig)
+length(intersect(cluster_markers_sig, cluster_markers_presto_sig))
+setdiff(cluster_markers_sig, cluster_markers_presto_sig)
+setdiff(cluster_markers_presto_sig, cluster_markers_sig)
+
+# Selecting top 8 markers for each cluster
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  group_by(cluster) %>%
+  slice_max(order_by = abs(avg_log2FC), n = 8) %>%
+  ungroup %>% select(gene) %>% unlist() %>% as.character() %>% unique()
+
+# Heatmap of top markers
+# seurat_object = Seurat object with all features normalized and scaled
+# plot_features = a vector a features to plot
+# group_var = e.g. cluster
+# group_colors = named vector of colors
+# column_title = plot title
+hm <- create_dotplot_heatmap(seurat_object = epithelial_reclustered,
+                             plot_features = cluster_markers_sig,
+                             group_var = "snn_res.0.3",
+                             group_colors = cluster_col,
+                             column_title = "Epithelial")
+
+```
+
+### Read cluster annotations from a Google Sheet
+
+```{r}
+
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+ct_annot <- read_sheet(ct_annot, sheet = "Epithelial")
+
+```
+
+### Adding annotations to the Seurat object
+
+
+### Visualizing
+

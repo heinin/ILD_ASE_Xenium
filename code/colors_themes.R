@@ -8,11 +8,11 @@
 # Import libraries
 # ======================================
 
-library(tidyverse)
-library(googlesheets4)
-library(ggthemes)
-library(ggplot2)
-library(ggrepel)
+suppressPackageStartupMessages({library(tidyverse)
+                                library(googlesheets4)
+                                library(ggthemes)
+                                library(ggplot2)
+                                library(ggrepel)})
 
 # ======================================
 # Cell type markers

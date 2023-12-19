@@ -1,5 +1,5 @@
 ---
-title: "celltype_annotations"
+title: "Lineage level annotations"
 author: "heinin"
 date: "2023-12-15"
 output: workflowr::wflow_html
@@ -24,7 +24,8 @@ suppressPackageStartupMessages({library(cli)
                                 library(ggplot2)
                                 library(ggpubr)
                                 library(ggrepel)
-                                library(workflowr)})
+                                library(workflowr)
+                                library(googlesheets4)})
 
 setwd("/home/hnatri/ILD_ASE_Xenium/")
 set.seed(9999)
@@ -33,82 +34,16 @@ options(ggrepel.max.overlaps = Inf)
 # Colors, themes, cell type markers, and plot functions
 source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
 source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
 
 ```
-
-### Cell type markers
-
-```{r}
-epithelial_features <- c("EGFR", "DUOX1", "NKX2-1", "AGER", "RTKN2", "NAPSA",
-                         "PGC", "SFTA2", "SFTPC", "SFTPD", "KRT14", "KRT15",
-                         "KRT5", "KRT6A", "S100A2", "TP63", "KRT17", "AGR3",
-                         "C20orf85", "FOXJ1", "GCLM", "DMBT1", "EPCAM", "KRT18",
-                         "MGST1", "MMP7", "FOXI1", "MUC5B", "SCGB1A1",
-                         "SCGB3A2", "WFDC2", "ATF3", "KRT8", "SOX9", "SPINK1",
-                         "GKN2", "MMP10", "SOX2", "CDH26", "TP73", "CFTR",
-                         "HES1", "PKM", "SOX4", "NUCB2", "RNASE1", "SAA2",
-                         "AKR1C1", "AKR1C2", "BPIFA1", "CEACAM5", "ERN2",
-                         "FCGBP", "GSR", "LTF", "CCNA1", "ICAM1", "ITGB1")
-endothelial_features <- c("APLN", "CA4", "HEY1", "BMPR2", "CD34", "EPAS1",
-                          "FCN3", "GNG11", "PECAM1", "APLNR", "COL15A1",
-                          "PLVAP", "ACKR1", "POSTN", "CLDN5", "RAMP2", "ZEB1",
-                          "HAS1", "KDR", "CDKN2A")
-immune_features <- c("PPARG", "BANK1", "CD19", "CD79A", "LTB", "MS4A1",
-                     "TNFRSF13C", "CD86", "GZMB", "HLA-DRA", "CCR7", "CXCR4",
-                     "PTPRC", "TCL1A", "CD69", "CD4", "CD8A", "CD8B", "CD2",
-                     "CD28", "CD3D", "CD3E", "CD3G", "FOXP3", "GZMK", "TRAC",
-                     "ITM2C", "CD27", "CCL5", "LCK", "FABP4", "MARCO", "MCEMP1",
-                     "SPP1", "FCN1", "S100A12", "S100A8","S100A9", "CCL22",
-                     "ITGAM", "NFKB1",  "IFIT2", "FGFBP2", "GNLY", "KLRB1",
-                     "KLRC1", "NKG7", "LILRA4", "BCL2", "CD79B", "CXCR5", 
-                     "CXCL9", "GPR183", "HLA-DQA1", "KLRG1", "BCL2L11", "CD52", 
-                     "SLC1A3", "TNFRSF9", "CTLA4",  "IL2RA", "LAG3", "PDCD1",
-                     "PDIA6", "PIM2", "IL7R", "LEF1", "FASLG", "HAVCR2",
-                     "ISG20", "CPA3","KIT", "TPSAB1", "C1QC", "CD68", "MS4A7",
-                     "AIF1", "CD14", "FCGR3A", "FCER1G", "SLC25A37", "CD247",
-                     "GZMA", "IRF7")
-mesenchymal_features <- c("MFAP5", "PI16", "SFRP2", "ELN", "FAP", "AXL", "LGR6", 
-                          "COL1A1", "COL1A2", "COL3A1", "DCN", "FN1", "HAS2", 
-                          "LUM", "MEG3", "SPARCL1", "CTHRC1")
-```
-
 
 ### Import data
 
 ```{r}
 
-seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed.rds")
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed_npcs20.rds")
 DefaultAssay(seurat_object)
-
-# Checking the number of PCs to include in the neighborhood/UMAP
-features <- rownames(seurat_object)
-features <- features[-grep("-", features)]
-VariableFeatures(seurat_object) <- features
-
-seurat_object <- ScaleData(seurat_object)
-seurat_object <- RunPCA(seurat_object,
-                        reduction.name = "pca",
-                        verbose = T)
-pcs <- get_pcs(seurat_object, reduction_name = "pca")
-pcs
-
-```
-
-### DimPlots
-
-```{r}
-
-DimPlot(seurat_object,
-        group.by = "leiden_res0.5",
-        cols = cluster_col,
-        #split.by = "sample",
-        #ncol = 5,
-        reduction = "umap",
-        raster = T,
-        label = T) +
-  coord_fixed(ratio = 1) +
-  NoLegend() +
-  theme_minimal()
 
 ```
 
@@ -116,6 +51,18 @@ DimPlot(seurat_object,
 
 ```{r, fig.height=12}
 
+# Dimplot of clusters
+DimPlot(seurat_object,
+        group.by = "leiden_res0.5",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  NoLegend() +
+  theme_minimal()
+
+# Cell type markers
 DotPlot(seurat_object,
         features = unique(c(epithelial_features,
                             immune_features,
@@ -127,3 +74,349 @@ DotPlot(seurat_object,
   theme_minimal()
 
 ```
+
+### Lineage annotations
+
+```{r}
+epi_clusters <- c(9, 7, 8, 9)
+imm_clusters <- c(3, 5, 6, 10)
+endo_mesen_clusters <- c(1, 2, 4)
+```
+
+## Epithelial
+### Subsetting clusters with any *EPCAM* expression and reclustering
+
+```{r}
+
+epithelial <- subset(seurat_object, subset = leiden_res0.5 %in% epi_clusters)
+
+# Saving the object for clustering with scanpy
+#saveRDS(epithelial, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial.rds")
+#epithelial <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_clustered.rds")
+
+# Reclustering using Seurat. The function is sourced from /code/utilities.R
+epithelial_reclustered <- recluster(epithelial)
+saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
+
+```
+
+### Marker expression
+
+```{r}
+#epithelial_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
+
+# Dimplot of clusters
+DimPlot(epithelial_reclustered,
+        group.by = "snn_res.0.3",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  NoLegend() +
+  theme_minimal()
+
+# Cell type markers
+DotPlot(epithelial_reclustered,
+        features = unique(c(epithelial_features,
+                            immune_features,
+                            endothelial_features,
+                            mesenchymal_features)),
+        group.by = "snn_res.0.3",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+
+FeaturePlot(epithelial_reclustered,
+            features = epithelial_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(epithelial_reclustered,
+            features = immune_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(epithelial_reclustered,
+            features = endothelial_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(epithelial_reclustered,
+            features = mesenchymal_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+
+```
+
+Some clusters are not epithelial:
+* Cluster 3: endothelial
+* Clusters 0, 4, 5, 6, 8, 9, 10: immune
+
+### Adding lineage to the metadata
+
+```{r}
+epithelial_reclustered$lineage <- ifelse(epithelial_reclustered$snn_res.0.3 %in% c(1, 2), "Epithelial",
+                                  ifelse(epithelial_reclustered$snn_res.0.3 %in% c(3), "Endothelial",
+                                  ifelse(epithelial_reclustered$snn_res.0.3 %in% c(0, 4, 5, 6, 7, 8, 9, 10), "Immune", NA)))
+
+saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
+```
+
+## Immune
+### Subsetting clusters with immune marker expression and reclustering
+
+```{r}
+
+immune <- subset(seurat_object, subset = leiden_res0.5 %in% imm_clusters)
+
+# Saving the object for clustering with scanpy
+#saveRDS(epithelial, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial.rds")
+#epithelial <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_clustered.rds")
+
+# Reclustering using Seurat. The function is sourced from /code/utilities.R
+immune_reclustered <- recluster(immune)
+saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
+
+```
+
+### Marker expression
+
+```{r}
+#immune_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
+
+# Dimplot of clusters
+DimPlot(immune_reclustered,
+        group.by = "snn_res.0.3",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  NoLegend() +
+  theme_minimal()
+
+# Cell type markers
+DotPlot(immune_reclustered,
+        features = unique(c(epithelial_features,
+                            immune_features,
+                            endothelial_features,
+                            mesenchymal_features)),
+        group.by = "snn_res.0.3",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+
+FeaturePlot(immune_reclustered,
+            features = epithelial_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(immune_reclustered,
+            features = immune_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(immune_reclustered,
+            features = endothelial_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(immune_reclustered,
+            features = mesenchymal_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+
+```
+
+Some clusters are not immune:
+* Cluster 5: epithelial
+* Clusters 3, 4: endothelial
+* Clusters
+
+### Adding lineage to the metadata
+
+```{r}
+immune_reclustered$lineage <- ifelse(immune_reclustered$snn_res.0.3 %in% c(5), "Epithelial",
+                              ifelse(immune_reclustered$snn_res.0.3 %in% c(3, 4), "Endothelial",
+                              ifelse(immune_reclustered$snn_res.0.3 %in% c(0, 1, 2, 6, 7, 8), "Immune", NA)))
+
+saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
+```
+
+## Endothelial and mesenchymal
+### Subsetting and reclustering
+
+```{r}
+
+endo_mesen <- subset(seurat_object, subset = leiden_res0.5 %in% endo_mesen_clusters)
+
+# Saving the object for clustering with scanpy
+#saveRDS(epithelial, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial.rds")
+#epithelial <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_clustered.rds")
+
+# Reclustering using Seurat. The function is sourced from /code/utilities.R
+endo_mesen_reclustered <- recluster(endo_mesen)
+saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
+
+```
+
+### Marker expression
+
+```{r}
+#endo_mesen_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
+
+# Dimplot of clusters
+DimPlot(endo_mesen_reclustered,
+        group.by = "snn_res.0.3",
+        cols = cluster_col,
+        reduction = "umap",
+        raster = T,
+        label = T) +
+  coord_fixed(ratio = 1) +
+  NoLegend() +
+  theme_minimal()
+
+# Cell type markers
+DotPlot(endo_mesen_reclustered,
+        features = unique(c(epithelial_features,
+                            immune_features,
+                            endothelial_features,
+                            mesenchymal_features)),
+        group.by = "snn_res.0.3",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+
+FeaturePlot(endo_mesen_reclustered,
+            features = epithelial_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(endo_mesen_reclustered,
+            features = immune_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(endo_mesen_reclustered,
+            features = endothelial_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+FeaturePlot(endo_mesen_reclustered,
+            features = mesenchymal_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) +
+  coord_fixed(ratio = 1) &
+  NoLegend() &
+  theme_minimal()
+
+
+```
+
+Some clusters are not endothelial/mesenchymal:
+* Cluster 0: epithelial
+* Cluster 2, 4, 6, 7: immune
+
+### Adding lineage to the metadata
+
+```{r}
+endo_mesen_reclustered$lineage <- ifelse(endo_mesen_reclustered$snn_res.0.3 %in% c(0), "Epithelial",
+                                  ifelse(endo_mesen_reclustered$snn_res.0.3 %in% c(2, 4, 6, 7), "Immune", "Endo_Mesen"))
+
+saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
+```
+
+## Subsetting and merging at the lineage level
+
+```{r}
+unique(epithelial_reclustered$lineage)
+unique(immune_reclustered$lineage)
+unique(endo_mesen_reclustered$lineage)
+
+epithelial_subsets <- list("epi1" = subset(epithelial_reclustered, subset = lineage == "Epithelial"),
+                           "epi2" = subset(immune_reclustered, subset = lineage == "Epithelial"),
+                           "epi3" = subset(endo_mesen_reclustered, subset = lineage == "Epithelial"))
+
+immune_subsets <- list("imm1" = subset(epithelial_reclustered, subset = lineage == "Immune"),
+                       "imm2" = subset(immune_reclustered, subset = lineage == "Immune"),
+                       "imm3" = subset(endo_mesen_reclustered, subset = lineage == "Immune"))
+
+endo_mesen_subsets <- list("em1" = subset(epithelial_reclustered, subset = lineage %in% c("Endo_Mesen", "Endothelial")),
+                           "em2" = subset(immune_reclustered, subset = lineage %in% c("Endo_Mesen", "Endothelial")),
+                           "em3" = subset(endo_mesen_reclustered, subset = lineage %in% c("Endo_Mesen", "Endothelial")))
+
+epithelial_merged <- merge(x = epithelial_subsets[[1]],
+                           y = epithelial_subsets[2:length(epithelial_subsets)])
+immune_merged <- merge(x = immune_subsets[[1]],
+                       y = immune_subsets[2:length(epithelial_subsets)])
+endo_mesen_merged <- merge(x = endo_mesen_subsets[[1]],
+                           y = endo_mesen_subsets[2:length(epithelial_subsets)])
+
+# Saving
+saveRDS(epithelial_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_merged.rds")
+saveRDS(immune_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_merged.rds")
+saveRDS(endo_mesen_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_merged.rds")
+
+```
+
+

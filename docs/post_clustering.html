@@ -390,7 +390,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-12-15
+<strong>Last updated:</strong> 2023-12-18
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -566,15 +566,15 @@ code/plot_functions.R
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreecccc2f3285b245e39b6f2e83e96b25fc32fc6f1dtargetblankcccc2f3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreeacc35d50eea8f2f8c99e375ff33242d417130867targetblankacc35d5a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/cccc2f3285b245e39b6f2e83e96b25fc32fc6f1d" target="_blank">cccc2f3</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/acc35d50eea8f2f8c99e375ff33242d417130867" target="_blank">acc35d5</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreecccc2f3285b245e39b6f2e83e96b25fc32fc6f1dtargetblankcccc2f3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtreeacc35d50eea8f2f8c99e375ff33242d417130867targetblankacc35d5a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -584,7 +584,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/cccc2f3285b245e39b6f2e83e96b25fc32fc6f1d" target="_blank">cccc2f3</a>.
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/acc35d50eea8f2f8c99e375ff33242d417130867" target="_blank">acc35d5</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -599,13 +599,13 @@ were generated:
 </p>
 <pre><code>
 Untracked files:
-    Untracked:  analysis/celltype_annotations.Rmd
-    Untracked:  code/utilities.R
+    Untracked:  analysis/epithelial_annotations.Rmd
 
 Unstaged changes:
     Modified:   analysis/Xenium_preprocessing.Rmd
+    Modified:   analysis/celltype_annotations.Rmd
+    Modified:   analysis/index.Rmd
     Modified:   analysis/post_clustering.Rmd
-    Modified:   code/colors_themes.R
 
 </code></pre>
 <p>
@@ -651,6 +651,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/b1f446f89d63003e748cd8ec629dea8f8c4caec7/analysis/post_clustering.Rmd" target="_blank">b1f446f</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-15
+</td>
+<td>
+Selecting PCs. Added utilities.
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/b1f446f89d63003e748cd8ec629dea8f8c4caec7/docs/post_clustering.html" target="_blank">b1f446f</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-15
+</td>
+<td>
+Selecting PCs. Added utilities.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -809,10 +843,8 @@ This message can be suppressed by:
 seurat_20 &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_2.rds&quot;)
 DefaultAssay(seurat_20)</code></pre>
 <pre><code>[1] &quot;RNA&quot;</code></pre>
-<pre class="r"><code># n_pcs = 40, 60, 80
-seurat_40 &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-40.rds&quot;)
-seurat_60 &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-60.rds&quot;)
-seurat_80 &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-80.rds&quot;)</code></pre>
+<pre class="r"><code># n_pcs = 30
+seurat_30 &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_PC-30_NCOMP-80.rds&quot;)</code></pre>
 </div>
 <div id="selecting-the-best-clustering-for-downstream-analysis"
 class="section level3">
@@ -823,13 +855,13 @@ class="section level3">
         reduction = &quot;umap&quot;,
         raster = T,
         label = T) +
-  coord_fixed(ratio = 1) +
+  coord_fixed(ratio = 0.5) +
   theme_minimal() +
   NoLegend() +
   ggtitle(&quot;20 PCs&quot;)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<pre class="r"><code>p2 &lt;- DimPlot(seurat_40,
+<pre class="r"><code>p2 &lt;- DimPlot(seurat_30,
         group.by = &quot;leiden_res0.5&quot;,
         cols = cluster_col,
         reduction = &quot;umap&quot;,
@@ -838,34 +870,10 @@ To disable this behavior set `raster=FALSE`</code></pre>
   coord_fixed(ratio = 1) +
   theme_minimal() +
   NoLegend() +
-  ggtitle(&quot;40 PCs&quot;)</code></pre>
+  ggtitle(&quot;30 PCs&quot;)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<pre class="r"><code>p3 &lt;- DimPlot(seurat_60,
-        group.by = &quot;leiden_res0.5&quot;,
-        cols = cluster_col,
-        reduction = &quot;umap&quot;,
-        raster = T,
-        label = T) +
-  coord_fixed(ratio = 1) +
-  theme_minimal() +
-  NoLegend() +
-  ggtitle(&quot;60 PCs&quot;)</code></pre>
-<pre><code>Rasterizing points since number of points exceeds 100,000.
-To disable this behavior set `raster=FALSE`</code></pre>
-<pre class="r"><code>p4 &lt;- DimPlot(seurat_80,
-        group.by = &quot;leiden_res0.5&quot;,
-        cols = cluster_col,
-        reduction = &quot;umap&quot;,
-        raster = T,
-        label = T) +
-  coord_fixed(ratio = 1) +
-  theme_minimal() +
-  NoLegend() +
-  ggtitle(&quot;80 PCs&quot;)</code></pre>
-<pre><code>Rasterizing points since number of points exceeds 100,000.
-To disable this behavior set `raster=FALSE`</code></pre>
-<pre class="r"><code>(p1 + p2) / (p3 + p4)</code></pre>
+<pre class="r"><code>(p1 + p2)</code></pre>
 <p><img src="figure/post_clustering.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
@@ -891,6 +899,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/b1f446f89d63003e748cd8ec629dea8f8c4caec7/docs/figure/post_clustering.Rmd/unnamed-chunk-3-1.png" target="_blank">b1f446f</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-15
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/heinin/ILD_ASE_Xenium/blob/44601fd540d1f00307d8df8c0f13d4c08e3ea5b6/docs/figure/post_clustering.Rmd/unnamed-chunk-3-1.png" target="_blank">44601fd</a>
 </td>
 <td>
@@ -907,7 +926,7 @@ heinin
 <pre class="r"><code># Using the reduction with 20 PCs
 seurat_object &lt;- seurat_20
 
-rm(seurat_20, seurat_40, seurat_60, seurat_80)</code></pre>
+rm(seurat_30)</code></pre>
 </div>
 <div
 id="adding-spatial-coordinates-as-a-dimensionality-reduction-to-the-seurat-object"
@@ -1960,7 +1979,7 @@ table(seurat_object$Sample_Type)</code></pre>
 <pre><code>
      HD     ILD 
   80588 1059161 </code></pre>
-<pre class="r"><code>#saveRDS(seurat_object, &quot;/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed.rds&quot;)</code></pre>
+<pre class="r"><code>#saveRDS(seurat_object, &quot;/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed_npcs20.rds&quot;)</code></pre>
 </div>
 </div>
 <div id="cell-numbers-per-sample" class="section level3">

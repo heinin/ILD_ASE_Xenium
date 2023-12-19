@@ -41,10 +41,8 @@ source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
 seurat_20 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_2.rds")
 DefaultAssay(seurat_20)
 
-# n_pcs = 40, 60, 80
-seurat_40 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-40.rds")
-seurat_60 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-60.rds")
-seurat_80 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_base_PC-80.rds")
+# n_pcs = 30
+seurat_30 <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILDASE_seurat_PC-30_NCOMP-80.rds")
 
 ```
 
@@ -58,51 +56,29 @@ p1 <- DimPlot(seurat_20,
         reduction = "umap",
         raster = T,
         label = T) +
-  coord_fixed(ratio = 1) +
+  coord_fixed(ratio = 0.5) +
   theme_minimal() +
   NoLegend() +
   ggtitle("20 PCs")
 
-p2 <- DimPlot(seurat_40,
+p2 <- DimPlot(seurat_30,
         group.by = "leiden_res0.5",
         cols = cluster_col,
         reduction = "umap",
         raster = T,
         label = T) +
-  coord_fixed(ratio = 1) +
+  coord_fixed(ratio = 0.5) +
   theme_minimal() +
   NoLegend() +
-  ggtitle("40 PCs")
-
-p3 <- DimPlot(seurat_60,
-        group.by = "leiden_res0.5",
-        cols = cluster_col,
-        reduction = "umap",
-        raster = T,
-        label = T) +
-  coord_fixed(ratio = 1) +
-  theme_minimal() +
-  NoLegend() +
-  ggtitle("60 PCs")
-
-p4 <- DimPlot(seurat_80,
-        group.by = "leiden_res0.5",
-        cols = cluster_col,
-        reduction = "umap",
-        raster = T,
-        label = T) +
-  coord_fixed(ratio = 1) +
-  theme_minimal() +
-  NoLegend() +
-  ggtitle("80 PCs")
+  ggtitle("30 PCs")
   
 
-(p1 + p2) / (p3 + p4)
+(p1 + p2)
 
 # Using the reduction with 20 PCs
 seurat_object <- seurat_20
 
-rm(seurat_20, seurat_40, seurat_60, seurat_80)
+rm(seurat_30)
 
 ```
 
@@ -775,7 +751,8 @@ seurat_object <- subset(seurat_object,
 seurat_object$Sample_Type <- ifelse(grepl("ILD", seurat_object$Sample_Name), "ILD", "HD")
 table(seurat_object$Sample_Type)
 
-#saveRDS(seurat_object, "/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed.rds")
+# Saving the object to lab storage
+#saveRDS(seurat_object, "/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_processed_npcs20.rds")
 ```
 
 ### Cell numbers per sample

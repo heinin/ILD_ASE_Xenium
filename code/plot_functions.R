@@ -4,12 +4,12 @@
 # Description: Plot functions for scRNAseq data
 #==============================================================================#
 
-library(Seurat)
-library(ggplot2)
-library(RColorBrewer)
-library(viridis)
-library(ComplexHeatmap)
-library(tidyr)
+suppressPackageStartupMessages({library(Seurat)
+                                library(ggplot2)
+                                library(RColorBrewer)
+                                library(viridis)
+                                library(ComplexHeatmap)
+                                library(tidyr)})
 
 #==============================================================================
 # Barplot

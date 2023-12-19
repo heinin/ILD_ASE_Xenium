@@ -1,5 +1,5 @@
 ---
-title: "Xenium_preprocessing"
+title: "Xenium data processing"
 author: "heinin"
 date: "2023-12-06"
 output: workflowr::wflow_html
@@ -399,30 +399,8 @@ DimPlotCompare <- function(sm){
   ggarrange(a,b)
 }
 
-#saveRDS(merged_spatial, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered.rds")
-#merged_spatial <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered.rds")
-#merged_spatial[["base_RNA"]] <- NULL
-
-# Adding an assay with only base panel, no allele specific probes. This assay
-# will be used for dimensionality reduction and clustering.
-features <- rownames(merged_spatial)
-features <- features[-grep("-", features)]
-
-merged_spatial_base <- subset(merged_spatial, features = features)
-
-tmp1 <- LayerData(merged_spatial_base, assay = "RNA")
-tmp2 <- LayerData(merged_spatial, assay = "RNA")
-
-range(tmp1)
-range(tmp2)
-tmp1[1:10, 1:10]
-tmp2[1:10, 1:10]
-
-merged_spatial_base[["RNA"]]
-merged_spatial_base[["cell_RNA"]] <- NULL
-
 # Saving the object for clustering with ScanPy
-#saveRDS(merged_spatial_base, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered_base.rds")
+#saveRDS(merged_spatial, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered.rds")
 
 # To build on command line, run Rscript -e "rmarkdown::render('Xenium_preprocessing.Rmd')"
 

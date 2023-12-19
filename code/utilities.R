@@ -8,8 +8,8 @@
 # Import libraries
 # ======================================
 
-library(tidyverse)
-library(googlesheets4)
+suppressPackageStartupMessages({library(tidyverse)
+                                library(googlesheets4)})
 
 # ======================================
 # Helper functions
@@ -38,4 +38,39 @@ get_pcs <- function(seurat_object, reduction_name="pca") {
   
   c(co1, co2)
   
+}
+
+recluster <- function(seurat_object){
+  # Normalize and scale data and run PCA
+  DefaultAssay(seurat_object) <- "RNA"
+  seurat_object <- NormalizeData(seurat_object,
+                                 normalization.method = "LogNormalize",
+                                 verbose = F)
+  seurat_object <- ScaleData(seurat_object,
+                             features = rownames(seurat_object),
+                             verbose = F)
+  seurat_object <- RunPCA(seurat_object,
+                          reduction.name = "pca",
+                          features = rownames(seurat_object),
+                          verbose = F)
+  # Get PCs for UMAP
+  npcs <- get_pcs(seurat_object)[2]
+  message(paste0("# PCs for UMAP: ", npcs))
+  # Find neighbors, cluster and UMAP
+  seurat_object <- RunUMAP(seurat_object,
+                           reduction = "pca",
+                           reduction.name = "umap",
+                           dims = 1:npcs,
+                           return.model = TRUE)
+  seurat_object <- FindNeighbors(seurat_object,
+                                 reduction = "pca",
+                                 dims = 1:npcs,
+                                 graph.name = c("nn",
+                                                "snn"))
+  seurat_object <- FindClusters(seurat_object,
+                                resolution = c(0.1,0.2,0.3,0.5,0.8,1),
+                                graph.name = "snn")
+  
+  
+  seurat_object
 }

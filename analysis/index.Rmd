@@ -8,18 +8,23 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Analyzing Xenium spatial transcriptomics data for allelic bias
+## Analyzing Xenium data for allelic bias
 
 ### SNP selection
 
 100bp probes were designed to tag exonic (or intronic) SNPs that are in high 
-LD (R^2 >0.8) with *cis*-eSNPs.
+LD (R^2^ >0.8) with *cis*-eSNPs from [Natri & Azodi et al. 2023](https://pubmed.ncbi.nlm.nih.gov/36993211/).
 
-[Information on eQTL and tag-SNPs](https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing)
+Information on eQTL and tag-SNPs can be found in this [spreadsheet](https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing).
 
 ### Processing and analysis
 
-1. [Xenium pre-processing](Xenium_preprocessing.html)\
-2. [Post-clustering visualization and analysis](post_clustering.html)\
-3. [Cell type annotation](celltype_annotation.html)
+1. [Xenium data pre-processing](Xenium_preprocessing.html)\
+2. [Dimensionality reduction and neighborhood graph construction](/code/clustering.py)\
+3. [Post-clustering visualization and analysis](post_clustering.html)\
+4. [Lineage level annotation](celltype_annotations.html)
+5. [Epithelial cell type annotation](epithelial_annotations.html)
 
+### Contact
+
+Heini Natri, hnatri@tgen.org
