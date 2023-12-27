@@ -1,0 +1,301 @@
+---
+title: "Quantifying allelic bias"
+author: "heinin"
+date: "2023-12-20"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Packages and environment variables
+
+```{r, results='hide', warning=F, message=F}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(VariantAnnotation)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, merged")
+
+```
+
+### Importing data
+
+```{r}
+
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+```
+
+### Importing eQTL and tag-SNP info
+
+```{r}
+
+gs4_deauth()
+gtables  <- gs4_get("https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing")
+sheet_names(gtables)
+ld_snp_info <- read_sheet(gtables, sheet = "More candidates, SNP info with exon number")
+ld_snp_info <- as.data.frame(ld_snp_info)
+
+# Adding probe names
+ld_snp_info$probe <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$alt, sep = "-")
+ld_snp_info$probe1 <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$ref, sep = "-")
+ld_snp_info$probe2 <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$alt, sep = "-")
+
+```
+
+### Importing genotype data and creating SNPs matrices
+
+```{r}
+
+vcf <- readVcf("/tgen_labs/banovich/IPF/eQTL/qtl_mapping_vcf/filtered_MAF-HWE-INDPW.vcf", verbose = FALSE)
+var_ranges <- rowRanges(vcf)
+gt <- geno(vcf)
+gt <- gt@listData$GT
+snp_matrix <- genotypeToSnpMatrix(vcf)
+
+rm(vcf)
+
+# VCF metadata as a dataframe
+gt_metadata <- cbind(as.data.frame(var_ranges@ranges),
+                     data.frame("REF" = as.character(var_ranges@elementMetadata$REF),
+                                "ALT" = as.character(unlist(var_ranges@elementMetadata$ALT))))
+colnames(gt_metadata) <- c("var_start", "var_end", "var_width", "rsid", "REF", "ALT")
+
+# Sanity check
+ase_probes <- rownames(seurat_object)[grep("-", rownames(seurat_object))]
+
+length(ase_probes)
+length(ld_snp_info$probe1)
+length(ld_snp_info$probe2)
+length(intersect(c(ld_snp_info$probe1, ld_snp_info$probe2), ase_probes))
+length(intersect(ld_snp_info$probe, ase_probes))
+length(intersect(ld_snp_info$probe1, ase_probes))
+length(intersect(ld_snp_info$probe2, ase_probes))
+
+# Only keeping SNPs we need
+gt_ase_snps <- gt[which(rownames(gt) %in% c(ld_snp_info$gene_body_snp, ld_snp_info$esnp)),]
+rm(gt)
+#write.csv(gt_ase_snps, "/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv")
+#gt_ase_snps <- as.matrix(read.csv("/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv", row.names = "X"))
+
+# Converting genotypes to dosage
+gt_ase_snps <- gsub("0\\/0", 0, gt_ase_snps)
+gt_ase_snps <- gsub("0\\/1", 1, gt_ase_snps)
+gt_ase_snps <- gsub("1\\/1", 2, gt_ase_snps)
+class(gt_ase_snps) <- "numeric"
+gt_ase_snps <- as.data.frame(gt_ase_snps)
+
+gt_eqtl_snps <- gt_ase_snps[which(rownames(gt_ase_snps) %in% ld_snp_info$esnp),]
+gt_linked_snps <- gt_ase_snps[which(rownames(gt_ase_snps) %in% ld_snp_info$gene_body_snp),]
+
+```
+
+### Creating a dataframe with eSNP and tag-SNP genotype and allele info
+
+```{r, results='hide', warning=F, message=F}
+# Adding the probe name
+gt_linked_snps$probe <- mapvalues(x = rownames(gt_linked_snps),
+                                  from = ld_snp_info$gene_body_snp,
+                                  to = ld_snp_info$probe)
+
+# Pivot longer
+gt_linked_snps <- gt_linked_snps %>% as.data.frame() %>%
+  tidyr::pivot_longer(cols = setdiff(colnames(gt_linked_snps), c("probe")),
+                      names_to = "Sample_Name",
+                      values_to = "linked_SNP_GT") %>%
+  mutate(gene = str_split(probe, "-", simplify = TRUE)[, 1],
+         chr = str_split(probe, "-", simplify = TRUE)[, 2],
+         pos = str_split(probe, "-", simplify = TRUE)[, 3],
+         probe_var = str_split(probe, "-", simplify = TRUE)[, 4])
+
+# Adding SNP info
+gt_linked_snps$gene_body_snp <- mapvalues(x = gt_linked_snps$probe,
+                                          from = ld_snp_info$probe,
+                                          to = ld_snp_info$gene_body_snp)
+gt_linked_snps$esnp <- mapvalues(x = gt_linked_snps$probe,
+                                 from = ld_snp_info$probe,
+                                 to = ld_snp_info$esnp)
+
+# Adding eQTL genotypes
+gt_eqtl_snps <- gt_eqtl_snps %>% as.data.frame() %>%
+  rownames_to_column(var = "esnp") %>%
+  tidyr::pivot_longer(cols = setdiff(colnames(gt_eqtl_snps), c("esnp")),
+                      names_to = "Sample_Name",
+                      values_to = "eSNP_GT")
+
+# Merging eSNP and tag-SNP genotype and SNP info
+gt_data <- merge(gt_linked_snps, gt_eqtl_snps, by = c("Sample_Name", "esnp"))
+
+# Adding REF and ALT alleles
+gt_data$tag_REF <- plyr::mapvalues(x = gt_data$gene_body_snp,
+                                   from = gt_metadata$rsid,
+                                   to = gt_metadata$REF)
+gt_data$tag_ALT <- plyr::mapvalues(x = gt_data$gene_body_snp,
+                                   from = gt_metadata$rsid,
+                                   to = gt_metadata$ALT)
+gt_data$eSNP_REF <- plyr::mapvalues(x = gt_data$esnp,
+                                    from = gt_metadata$rsid,
+                                    to = gt_metadata$REF)
+gt_data$eSNP_ALT <- plyr::mapvalues(x = gt_data$esnp,
+                                    from = gt_metadata$rsid,
+                                    to = gt_metadata$ALT)
+
+# A vector of all gene_tag_SNP -pairs
+gene_tagSNPs <- unique(paste0(gt_linked_snps$gene, "_", gt_linked_snps$gene_body_snp))
+
+```
+
+### Obtaining pseudo-bulk expression values
+
+```{r}
+
+pseudobulk <- lapply(unique(seurat_object$annotation_3), function(ct){
+  seurat_subset <- subset(seurat_object, subset = annotation_3 == ct)
+  exp <- AverageExpression(seurat_object,
+                           group.by = "Sample_Name",
+                           assay = "RNA")
+  
+  as.data.frame(exp$RNA)
+})
+
+names(pseudobulk) <- unique(seurat_object$annotation_3)
+
+```
+
+### Looping through each cell type and gene-tag-SNP -pair and finding the 
+allelic ratio
+
+ASE is shown as the ALT/REF ratio of read counts.
+
+```{r}
+
+ld_snp_info$gene_tagSNP <- paste0(ld_snp_info$gene, "_", ld_snp_info$gene_body_snp)
+
+ase_res <- lapply(names(pseudobulk), function(ct){
+  # Expression data
+  exp_data <- pseudobulk[[ct]]
+  
+  # Creating a dataframe for the results
+  corr_res <- data.frame(matrix(NA, ncol = ncol(exp_data),
+                                nrow = length(gene_tagSNPs)))
+  rownames(corr_res) <- gene_tagSNPs
+  colnames(corr_res) <- colnames(exp_data)
+  
+  # Looping through every locus, calculating the allelic ratio
+  for(i in rownames(corr_res)){
+    # Finding the probe names for REF and ALT
+    locus_info <- ld_snp_info %>%
+      filter(gene_tagSNP == i) %>%
+      dplyr::select(-c("esnp", "gene_snp", "R2", "esnp_loc", "type")) %>%
+      distinct()
+    # Calculating the ratio
+    ref_exp <- exp_data[locus_info$probe1,]
+    alt_exp <- exp_data[locus_info$probe2,]
+    corr_res[i,] <- alt_exp/ref_exp
+  }
+  
+  corr_res$celltype <- ct
+  
+  corr_res
+})
+
+names(ase_res) <- names(pseudobulk)
+
+```
+
+### Applyin a Wilcoxon rank-sum test to calculate the statistical significance 
+of the differential ASE between genotypes
+
+```{r}
+
+ase_sigtest <- lapply(names(ase_res), function(ct){
+  # Allelic bias values
+  ct_ase <- ase_res[[ct]]
+  
+  # Creating a dataframe for the results
+  wilcox_res <- data.frame(matrix(NA, ncol = 4,
+                                  nrow = length(gene_tagSNPs)))
+  rownames(wilcox_res) <- gene_tagSNPs
+  colnames(wilcox_res) <- c("p_2vs0", "p_1_2vs0", "p_adj_2vs0", "p_adj_1_2vs0")
+  
+  # Looping through every locus, calculating the allelic ratio
+  for(i in rownames(wilcox_res)){
+    tagSNP <- strsplit(i, split = "_")[[1]][2]
+    
+    # ASE values
+    ct_ase_vals <- ct_ase %>% filter(row.names(ct_ase) == i) %>%
+      dplyr::select(-c("celltype")) %>%
+      t() %>% as.data.frame() %>%
+      rownames_to_column(var = "Sample_Name")
+    # Adding genotype information
+    gt_vals <- gt_data %>% filter(gene_body_snp == tagSNP)
+    # gt_vals[which(gt_vals$linked_SNP_GT==0), "Sample_Name"]
+    ase_00 <- ct_ase_vals %>% filter(Sample_Name %in% gt_vals[which(gt_vals$linked_SNP_GT==0), "Sample_Name"])
+    ase_01 <- ct_ase_vals %>% filter(Sample_Name %in% gt_vals[which(gt_vals$linked_SNP_GT==1), "Sample_Name"])
+    ase_11 <- ct_ase_vals %>% filter(Sample_Name %in% gt_vals[which(gt_vals$linked_SNP_GT==2), "Sample_Name"])
+    
+    if(nrow(ase_11)==0 | nrow(ase_00)==0){
+      next
+    }
+    if(length(unique(c(ase_00[,i], ase_01[,i], ase_11[,i])))==1){
+      next
+    }
+    
+    wres1 <- wilcox.test(c(ase_11[,i], ase_01[,i]), ase_00[,i], alternative = "two.sided")
+    wres2 <- wilcox.test(ase_11[,i], ase_00[,i], alternative = "two.sided")
+    
+    wilcox_res[i, c("p_1_2vs0")] <- wres1[["p.value"]]
+    wilcox_res[i, c("p_2vs0")] <- wres2[["p.value"]]
+  }
+  
+  wilcox_res$celltype <- ct
+  # Adjusting for multiple comparisons
+  wilcox_res["p_adj_1_2vs0"] <- p.adjust(wilcox_res[,"p_1_2vs0"],
+                                         n = length(wilcox_res[,"p_1_2vs0"]))
+  wilcox_res["p_adj_2vs0"] <- p.adjust(wilcox_res[,"p_2vs0"],
+                                   n = length(wilcox_res[,"p_2vs0"]))
+  
+  wilcox_res
+})
+
+names(ase_sigtest) <- names(ase_res)
+
+# Saving the results for later
+saveRDS(ase_sigtest, "/scratch/hnatri/ILD/ILD_spatial_ASE/ase_sigtest.rds")
+
+```
+
+### Testing between all groups using Kruskal–Wallis rank-sum test
+
+```{r}
+
+```
+
+
+
+

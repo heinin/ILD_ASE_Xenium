@@ -402,6 +402,6 @@ DimPlotCompare <- function(sm){
 # Saving the object for clustering with ScanPy
 #saveRDS(merged_spatial, "/scratch/hnatri/ILD/ILD_spatial_ASE/merged_spatial_filtered.rds")
 
-# To build on command line, run Rscript -e "rmarkdown::render('Xenium_preprocessing.Rmd')"
+# To build on command line, run Rscript -e "rmarkdown::render('/home/hnatri/ILD_ASE_Xenium/analysis/Xenium_preprocessing.Rmd')"
 
 ```

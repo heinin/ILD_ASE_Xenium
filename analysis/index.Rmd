@@ -23,7 +23,12 @@ Information on eQTL and tag-SNPs can be found in this [spreadsheet](https://docs
 2. [Dimensionality reduction and neighborhood graph construction](/code/clustering.py)\
 3. [Post-clustering visualization and analysis](post_clustering.html)\
 4. [Lineage level annotation](celltype_annotations.html)
-5. [Epithelial cell type annotation](epithelial_annotations.html)
+5. [Immune cell type annotation](immune_annotations.html)
+6. [Epithelial cell type annotation](epithelial_annotations.html)
+7. [Endothelial and mesenchymal cell type annotation](endo_mesen_annotations.html)
+8. [Post-annotation visualization and comparative analysis](post_annotation_visualization.html)
+9. [Quantifying allelic imbalance](ASE.html)
+10. [Visualizing the ASE analysis results](visualize_ASE.html)
 
 ### Contact
 

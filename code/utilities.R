@@ -61,15 +61,18 @@ recluster <- function(seurat_object){
                            reduction = "pca",
                            reduction.name = "umap",
                            dims = 1:npcs,
-                           return.model = TRUE)
+                           return.model = TRUE,
+                           verbose = F)
   seurat_object <- FindNeighbors(seurat_object,
                                  reduction = "pca",
                                  dims = 1:npcs,
                                  graph.name = c("nn",
-                                                "snn"))
+                                                "snn"),
+                                 verbose = F)
   seurat_object <- FindClusters(seurat_object,
                                 resolution = c(0.1,0.2,0.3,0.5,0.8,1),
-                                graph.name = "snn")
+                                graph.name = "snn",
+                                verbose = F)
   
   
   seurat_object

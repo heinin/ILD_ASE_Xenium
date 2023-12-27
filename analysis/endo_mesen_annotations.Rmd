@@ -1,0 +1,465 @@
+---
+title: "Annotating endothelial and mesenchymal cell types"
+author: "heinin"
+date: "2023-12-19"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### First pass annotations on the epithelial lineage
+
+### Packages and environment variables
+
+```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(presto)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+
+```
+
+### Import data
+
+```{r}
+
+endo_mesen_merged <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_merged.rds")
+DefaultAssay(endo_mesen_merged)
+
+unique(endo_mesen_merged@meta.data$Sample_Name)
+
+# Adding one more cluster from the annotated immune object
+immune_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated_orig.rds")
+
+endo_mesen_merged <- merge(endo_mesen_merged,
+                           subset(immune_reclustered,
+                                  subset = annotation_1 %in% c("Endothelial", "Endo_Mesen", "Fibroblast")))
+
+```
+
+### Redonstructing the dimensionality reduction and neighborhood graph
+
+```{r}
+
+# Already ran this previously, using the same object
+#endo_mesen_reclustered <- recluster(endo_mesen_merged)
+endo_mesen_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered_annotated.rds")
+
+DimPlot(endo_mesen_reclustered,
+        group.by = "snn_res.0.8",
+        reduction = "umap",
+        raster = T,
+        cols = cluster_col,
+        label = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+DimPlot(endo_mesen_reclustered,
+        group.by = "snn_res.0.8",
+        split.by = "snn_res.0.8",
+        reduction = "umap",
+        ncol = 4,
+        raster = T,
+        cols = cluster_col,
+        label = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+# Numbers of cells per cluster
+table(endo_mesen_reclustered$snn_res.0.8) %>% as.data.frame() %>%
+  ggplot(aes(x = Var1, y = Freq)) +
+  geom_bar(stat="identity", fill = "gray89") +
+  xlab("snn_res.0.8") +
+  ylab("# cells") +
+  theme_minimal()
+
+```
+
+### Marker expression
+
+```{r}
+# Checking some lineage markers
+FeaturePlot(endo_mesen_reclustered,
+            features = c("EPCAM", "AGER", "CD3E", "CD19", "CD34", "SFRP2"),
+            ncol = 3,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+```
+
+```{r, fig.height=12}
+# All endothelial and mesenchymal markers
+FeaturePlot(endo_mesen_reclustered,
+            features = unique(c(endothelial_features, mesenchymal_features)),
+            ncol = 4,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+```
+
+```{r, fig.height=10}
+DotPlot(endo_mesen_reclustered,
+        features = unique(c(endothelial_features, mesenchymal_features)),
+        group.by = "snn_res.0.8",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+```
+
+### Top markers for each cluster
+
+```{r}
+# Only looking at base panel features
+features <- rownames(endo_mesen_reclustered)
+features <- features[-grep("-", features)]
+base_counts <- LayerData(endo_mesen_reclustered,
+                         assay = "RNA",
+                         layer = "counts")
+base_counts <- base_counts[features, ]
+
+# Creating a new assay
+# Ran this already, skipping
+#endo_mesen_reclustered[["base_RNA"]] <- CreateAssay5Object(counts = base_counts)
+#DefaultAssay(endo_mesen_reclustered) <- "base_RNA"
+#endo_mesen_reclustered <- NormalizeData(endo_mesen_reclustered,
+#                                        assay = "base_RNA",
+#                                        normalization.method = "LogNormalize",
+#                                        verbose = F)
+
+# Comparing Seurat and presto
+Idents(endo_mesen_reclustered) <- endo_mesen_reclustered$snn_res.0.8
+cluster_markers <- FindAllMarkers(endo_mesen_reclustered,
+                                  assay = "base_RNA",
+                                  logfc.threshold = 0.25,
+                                  test.use = "wilcox",
+                                  slot = "data",
+                                  min.pct = 0.1,
+                                  verbose = F)
+cluster_markers_presto <- presto::wilcoxauc(endo_mesen_reclustered,
+                                            group_by = "snn_res.0.8",
+                                            assay = "data",
+                                            seurat_assay = "base_RNA")
+
+# Overlap of top markers for cluster 0
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  filter(cluster==0) %>%
+  select(gene) %>% unlist() %>% as.character()
+  
+cluster_markers_presto_sig <- cluster_markers_presto %>%
+  filter(padj<0.01, abs(logFC)>0.5) %>%
+  filter(group==0) %>%
+  select(feature) %>% unlist() %>% as.character()
+
+length(cluster_markers_sig)
+length(cluster_markers_presto_sig)
+length(intersect(cluster_markers_sig, cluster_markers_presto_sig))
+setdiff(cluster_markers_sig, cluster_markers_presto_sig)
+setdiff(cluster_markers_presto_sig, cluster_markers_sig)
+
+# Selecting top 8 markers for each cluster
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  group_by(cluster) %>%
+  slice_max(order_by = abs(avg_log2FC), n = 8) %>%
+  ungroup %>% select(gene) %>% unlist() %>% as.character() %>% unique()
+
+```
+
+```{r, fig.height=8}
+# Heatmap of top markers
+# seurat_object = Seurat object with all features normalized and scaled
+# plot_features = a vector a features to plot
+# group_var = e.g. cluster
+# group_colors = named vector of colors
+# column_title = plot title
+hm <- create_dotplot_heatmap(seurat_object = endo_mesen_reclustered,
+                             plot_features = cluster_markers_sig,
+                             group_var = "snn_res.0.8",
+                             group_colors = cluster_col,
+                             column_title = "Endothelial/Mesenchymal")
+
+```
+
+### Read cluster annotations from a Google Sheet
+
+```{r}
+
+endo_mesen_annot <- read_sheet(ct_annot, sheet = "Endo_Mesen")
+
+```
+
+### Adding annotations to the Seurat object and saving
+
+```{r}
+
+endo_mesen_reclustered$lineage <- mapvalues(x = endo_mesen_reclustered$snn_res.0.8,
+                                            from = endo_mesen_annot$snn_res.0.8,
+                                            to = endo_mesen_annot$lineage)
+
+#saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered_annotated.rds")
+endo_mesen_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered_annotated.rds")
+
+```
+
+### Visualizing
+
+```{r}
+
+DimPlot(endo_mesen_reclustered,
+        group.by = "lineage",
+        reduction = "umap",
+        raster = T,
+        cols = lineage_col,
+        label = T,
+        label.box = T,
+        label.size = 3,
+        repel = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+```
+
+### Subsetting endothelial and mesenchymal cells and reclustering
+
+```{r}
+
+mesenchymal <- subset(endo_mesen_reclustered, subset = lineage == "Mesenchymal")
+mesenchymal_reclustered <- recluster(mesenchymal)
+
+endothelial <- subset(endo_mesen_reclustered, subset = lineage == "Endothelial")
+endothelial_reclustered <- recluster(endothelial)
+
+```
+
+### Annotating mesenchymal cells
+
+```{r}
+DimPlot(mesenchymal_reclustered,
+        group.by = "snn_res.0.3",
+        reduction = "umap",
+        raster = T,
+        cols = cluster_col,
+        label = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+```
+
+```{r, fig.height=10}
+# All mesenchymal markers
+FeaturePlot(mesenchymal_reclustered,
+            features = mesenchymal_features,
+            ncol = 3,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+```
+
+```{r, fig.height=8}
+DotPlot(mesenchymal_reclustered,
+        features = mesenchymal_features,
+        group.by = "snn_res.0.3",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+```
+
+### Cluster markers
+
+```{r}
+Idents(mesenchymal_reclustered) <- mesenchymal_reclustered$snn_res.0.3
+cluster_markers <- FindAllMarkers(mesenchymal_reclustered,
+                                  assay = "base_RNA",
+                                  logfc.threshold = 0.25,
+                                  test.use = "wilcox",
+                                  slot = "data",
+                                  min.pct = 0.1,
+                                  verbose = F)
+
+# Selecting top 8 markers for each cluster
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  group_by(cluster) %>%
+  slice_max(order_by = abs(avg_log2FC), n = 8) %>%
+  ungroup %>% select(gene) %>% unlist() %>% as.character() %>% unique()
+
+```
+
+### Heatmap of top markers for mesenchymal clusters
+
+```{r, fig.height=8}
+hm <- create_dotplot_heatmap(seurat_object = mesenchymal_reclustered,
+                             plot_features = cluster_markers_sig,
+                             group_var = "snn_res.0.3",
+                             group_colors = cluster_col,
+                             column_title = "Mesenchymal")
+
+```
+
+### Adding annotations
+
+```{r}
+
+mesen_annot <- read_sheet(ct_annot, sheet = "Mesenchymal")
+
+mesenchymal_reclustered$annotation_1 <- mapvalues(x = mesenchymal_reclustered$snn_res.0.3,
+                                                  from = mesen_annot$snn_res.0.3,
+                                                  to = mesen_annot$annotation_1)
+
+DimPlot(mesenchymal_reclustered,
+        group.by = "annotation_1",
+        reduction = "umap",
+        raster = T,
+        cols = mesen_celltype_col,
+        label = T,
+        label.box = T,
+        label.size = 3,
+        repel = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+```
+
+### Annotating endothelial cells
+
+```{r}
+
+DimPlot(endothelial_reclustered,
+        group.by = "snn_res.0.3",
+        reduction = "umap",
+        raster = T,
+        cols = cluster_col,
+        label = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+```
+
+```{r, fig.height=10}
+# All endothelial markers
+FeaturePlot(endothelial_reclustered,
+            features = endothelial_features,
+            ncol = 4,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+```
+
+```{r, fig.height=8}
+
+DotPlot(endothelial_reclustered,
+        features = endothelial_features,
+        group.by = "snn_res.0.3",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+
+```
+
+### Cluster markers
+
+```{r}
+Idents(endothelial_reclustered) <- endothelial_reclustered$snn_res.0.3
+cluster_markers <- FindAllMarkers(endothelial_reclustered,
+                                  assay = "base_RNA",
+                                  logfc.threshold = 0.25,
+                                  test.use = "wilcox",
+                                  slot = "data",
+                                  min.pct = 0.1,
+                                  verbose = F)
+
+# Selecting top 8 markers for each cluster
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  group_by(cluster) %>%
+  slice_max(order_by = abs(avg_log2FC), n = 8) %>%
+  ungroup %>% select(gene) %>% unlist() %>% as.character() %>% unique()
+
+```
+
+### Heatmap of top markers for endothelial clusters
+
+```{r, fig.height=8}
+hm <- create_dotplot_heatmap(seurat_object = endothelial_reclustered,
+                             plot_features = cluster_markers_sig,
+                             group_var = "snn_res.0.3",
+                             group_colors = cluster_col,
+                             column_title = "Mesenchymal")
+
+```
+
+### Adding annotations
+
+```{r}
+
+endo_annot <- read_sheet(ct_annot, sheet = "Endothelial")
+
+endothelial_reclustered$annotation_1 <- mapvalues(x = endothelial_reclustered$snn_res.0.3,
+                                                  from = endo_annot$snn_res.0.3,
+                                                  to = endo_annot$annotation_1)
+
+DimPlot(endothelial_reclustered,
+        group.by = "annotation_1",
+        reduction = "umap",
+        raster = T,
+        cols = endo_celltype_col,
+        label = T,
+        label.box = T,
+        label.size = 3,
+        repel = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+```
+
+### Saving object
+
+```{r}
+
+#saveRDS(mesenchymal_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/mesenchymal_reclustered_annotated.rds")
+#saveRDS(endothelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endothelial_reclustered_annotated.rds")
+
+```

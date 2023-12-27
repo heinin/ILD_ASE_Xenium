@@ -1,0 +1,248 @@
+---
+title: "Visualization after assigning cell type annotations"
+author: "heinin"
+date: "2023-12-19"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Packages and environment variables
+
+```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(ggh4x)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, merged")
+
+```
+
+### Merging all data
+
+```{r}
+
+epithelial <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered_annotated.rds")
+immune <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated.rds")
+endothelial <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/endothelial_reclustered_annotated.rds")
+mesenchymal <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/mesenchymal_reclustered_annotated.rds")
+#endo_mesen <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered_annotated.rds")
+
+seurat_list <- c("epi" = epithelial,
+                 "imm" = immune,
+                 "endo" = endothelial,
+                 "mesen" = mesenchymal)
+
+seurat_object <- merge(x = seurat_list[[1]],  seurat_list[2:length(seurat_list)])
+DefaultAssay(seurat_object) <- "RNA"
+
+table(seurat_object$lineage)
+table(seurat_object$annotation_1)
+unique(seurat_object$annotation_1)
+
+# Reformatting some cell type names
+seurat_object$annotation_2 <- mapvalues(x = seurat_object$annotation_1,
+                                        from = all_celltypes_annot$annotation_1,
+                                        to = all_celltypes_annot$annotation_2)
+seurat_object$annotation_3 <- mapvalues(x = seurat_object$annotation_1,
+                                        from = all_celltypes_annot$annotation_1,
+                                        to = all_celltypes_annot$annotation_3)
+seurat_object$lineage <- mapvalues(x = seurat_object$annotation_1,
+                                   from = all_celltypes_annot$annotation_1,
+                                   to = all_celltypes_annot$lineage)
+
+# Location of the cell centroid in µm
+position_xy <- cbind(seurat_object$x_centroid,
+                     seurat_object$y_centroid)
+row.names(position_xy) <- row.names(seurat_object@meta.data)
+colnames(position_xy) <- c("SP_1", "SP_2")
+seurat_object[["sp"]] <- CreateDimReducObject(embeddings = position_xy,
+                                              key = "SP_",
+                                              assay = DefaultAssay(seurat_object))
+
+# Saving the object for reclustering with Scanpy
+#saveRDS(seurat_object, "/scratch/hnatri/ILD/ILD_spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+```
+
+### Spatial plots with cell type annotations
+
+```{r, results="hide"}
+#DimPlot(seurat_object,
+#        reduction = "sp",
+#        group.by = "annotation_3",
+#        split.by = "Sample_Name",
+#        cols = annotation_3_col,
+#        ncol = 5,
+#        #label = TRUE,
+#        raster = T) +
+#    coord_fixed(ratio = 1) +
+#    theme_minimal() +
+#    NoLegend()
+
+# Looping through each sample, plotting
+plot_list <- lapply(unique(seurat_object$Sample_Name), function(sample){
+  DimPlot(subset(seurat_object, subset = Sample_Name %in% c(sample)),
+          reduction = "sp",
+          group.by = "annotation_3",
+          cols = annotation_3_col,
+          #label = TRUE,
+          raster = T,
+          pt.size = 2) +
+    coord_fixed(ratio = 1) +
+    theme_bw() +
+    ggtitle(sample) +
+    NoLegend() +
+    my_theme
+})
+
+#patchwork::wrap_plots(plot_list, ncol = 3)
+plot_list
+
+```
+
+### Barplots of numbers of nuclei by cell type
+
+```{r}
+# Numbers of nuclei per cell type
+table(seurat_object$annotation_3) %>% as.data.frame() %>%
+  ggplot(aes(x = reorder(Var1, -Freq), y = Freq, fill = Var1)) +
+  geom_bar(stat="identity") +
+  scale_fill_manual(values = annotation_3_col) +
+  xlab("") +
+  ylab("# nuclei") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  NoLegend()
+
+# Plotting by lineage
+seurat_object@meta.data %>% select(lineage, annotation_3) %>%
+  group_by(lineage, annotation_3) %>%
+  dplyr::summarise(n_cells = n()) %>%
+  ungroup() %>%
+  ggplot(aes(x = reorder(annotation_3, -n_cells), y = n_cells, fill = annotation_3)) +
+  geom_bar(stat="identity") +
+  scale_fill_manual(values = annotation_3_col) +
+  xlab("") +
+  ylab("# nuclei") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  NoLegend() +
+  facet_wrap(~lineage, scales = "free")
+
+```
+
+### Cell type proportions by sample
+
+```{r}
+
+# seurat_object = Seurat object
+# plot_var = e.g. cluster
+# group_var = e.g. response (cell proportions are plotted for each group)
+# group_levels = a vector for ordering the grouping variable levels
+# plot_levels = a vector for ordering the plot variable levels
+# plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cluster colors)
+# var_names = Used as axis titles, c("plot_var_name", "group_var_name")
+# legend_title = Legend title, ("" for no title)
+
+# Getting the order for cell types
+plot_order <- seurat_object@meta.data %>% as.data.frame %>% 
+  select("lineage", "annotation_3") %>%
+  distinct() %>%
+  arrange(lineage, annotation_3) %>%
+  select(annotation_3) %>% unlist() %>% as.character()
+
+create_barplot(seurat_object = seurat_object,
+               plot_var = "annotation_3",
+               group_var = "Sample_Name",
+               group_levels = unique(seurat_object$Sample_Name)[order(unique(seurat_object$Sample_Name))],
+               plot_levels = plot_order,
+               plot_colors = annotation_3_col,
+               var_names = c("Cell type prop. (%)", "Sample"),
+               legend_title = "") + NoLegend()
+
+```
+
+### Cell type proportions by disease status
+
+```{r}
+# seurat_object = Seurat object
+# group_var = e.g. CD3_status
+# group1 = e.g. High
+# group2 = e.g. Low
+# plot_var = e.g. celltype
+# plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cell type colors)
+# var_names = Used as axis titles, c("group1", "group2")
+# legend_title = Legend title, ("" for no title)
+create_clusterpropplot(seurat_object = seurat_object,
+                       group_var = "Sample_Type",
+                       group1 = "ILD",
+                       group2 = "HD",
+                       plot_var = "annotation_3",
+                       plot_colors = annotation_3_col,
+                       var_names = c("ILD", "HD"),
+                       legend_title)
+
+```
+
+
+```{r, fig.height=11, fig.width=8}
+
+# Violin plots of cell type proportions
+
+# Setting plot order
+seurat_object$annotation_3 <- factor(seurat_object$annotation_3,
+                                     levels = plot_order)
+
+# Setting colors for the facet_wrap2 strip
+strip <- strip_themed(background_x = elem_list_rect(fill = annotation_3_col[plot_order]))
+
+plot_data <- table(seurat_object$Sample_Name,
+                   seurat_object$annotation_3) %>%
+  as.data.frame() %>%
+  dplyr::rename("Sample_Name" = Var1,
+                "annotation_3" = Var2) %>%
+  dplyr::group_by(Sample_Name) %>%
+  dplyr::mutate(Prop = 100*(Freq / sum(Freq))) %>%
+  ungroup()
+
+plot_data$Sample_Type <- ifelse(grepl("HD", plot_data$Sample_Name), "HD", "ILD")
+
+ggplot(plot_data, aes(x = Sample_Type, y = Prop, color = Sample_Type)) +
+  geom_boxplot() +
+  scale_color_manual(values = c("lightgray", "gray60")) +
+  geom_jitter(position = position_jitter(width = 0.3), size = 1, alpha = 0.7) + 
+  facet_wrap2(~annotation_3, scales = "free_y", strip = strip, ncol = 4) +
+  theme_bw() +
+  my_theme +
+  xlab("Disease status") +
+  ylab("Cell type prop. (%)")
+
+```
+

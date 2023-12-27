@@ -1,5 +1,5 @@
 ---
-title: "immune_annotations"
+title: "Annotating immune cell types"
 author: "heinin"
 date: "2023-12-18"
 output: workflowr::wflow_html
@@ -7,9 +7,241 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Introduction
+### First pass annotations on the immune lineage
+
+### Packages and environment variables
 
 ```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(presto)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+```
+
+### Import data
+
+```{r}
+
+immune_merged <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_merged.rds")
+DefaultAssay(immune_merged)
+
+```
+
+### Redonstructing the dimensionality reduction and neighbor graph
+
+```{r}
+
+# Ran this already
+#immune_reclustered <- recluster(immune_merged)
+immune_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated_orig.rds")
+
+DimPlot(immune_reclustered,
+        group.by = "snn_res.0.5",
+        reduction = "umap",
+        raster = T,
+        cols = cluster_col,
+        label = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+# Numbers of cells per cluster
+table(immune_reclustered$snn_res.0.5) %>% as.data.frame() %>%
+  ggplot(aes(x = Var1, y = Freq)) +
+  geom_bar(stat="identity", fill = "gray89") +
+  xlab("snn_res.0.5") +
+  ylab("# cells") +
+  theme_minimal()
+
+```
+
+### Marker expression
+
+```{r}
+
+# Checking some lineage markers
+FeaturePlot(immune_reclustered,
+            features = c("EPCAM", "AGER", "CD3E", "CD19", "CD34", "SFRP2"),
+            ncol = 3,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+```
+
+```{r, fig.height=12}
+# All immune markers
+FeaturePlot(immune_reclustered,
+            features = immune_features,
+            ncol = 6,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+```
+
+```{r, fig.height=8}
+DotPlot(immune_reclustered,
+        features = immune_features,
+        group.by = "snn_res.0.5",
+        cols = c("azure", "tomato3")) +
+  coord_flip() +
+  theme_minimal()
+```
+
+### Top markers for each cluster
+
+```{r}
+# Only looking at base panel features
+features <- rownames(immune_reclustered)
+features <- features[-grep("-", features)]
+base_counts <- LayerData(immune_reclustered,
+                         assay = "RNA",
+                         layer = "counts")
+base_counts <- base_counts[features, ]
+
+# Creating a new assay
+#immune_reclustered[["base_RNA"]] <- CreateAssay5Object(counts = base_counts)
+#DefaultAssay(immune_reclustered) <- "base_RNA"
+#immune_reclustered <- NormalizeData(immune_reclustered,
+#                                        assay = "base_RNA",
+#                                        normalization.method = "LogNormalize",
+#                                        verbose = F)
+
+# Comparing Seurat and presto
+Idents(immune_reclustered) <- immune_reclustered$snn_res.0.5
+cluster_markers <- FindAllMarkers(immune_reclustered,
+                                  assay = "base_RNA",
+                                  logfc.threshold = 0.25,
+                                  test.use = "wilcox",
+                                  slot = "data",
+                                  min.pct = 0.1,
+                                  verbose = F)
+cluster_markers_presto <- presto::wilcoxauc(immune_reclustered,
+                                            group_by = "snn_res.0.5",
+                                            assay = "data",
+                                            seurat_assay = "base_RNA")
+
+# Overlap of top markers for cluster 0
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  filter(cluster==0) %>%
+  select(gene) %>% unlist() %>% as.character()
+  
+cluster_markers_presto_sig <- cluster_markers_presto %>%
+  filter(padj<0.01, abs(logFC)>0.5) %>%
+  filter(group==0) %>%
+  select(feature) %>% unlist() %>% as.character()
+
+length(cluster_markers_sig)
+length(cluster_markers_presto_sig)
+length(intersect(cluster_markers_sig, cluster_markers_presto_sig))
+setdiff(cluster_markers_sig, cluster_markers_presto_sig)
+setdiff(cluster_markers_presto_sig, cluster_markers_sig)
+
+# Selecting top 8 markers for each cluster
+cluster_markers_sig <- cluster_markers %>%
+  filter(p_val_adj<0.01, abs(avg_log2FC)>0.5) %>%
+  group_by(cluster) %>%
+  slice_max(order_by = abs(avg_log2FC), n = 8) %>%
+  ungroup %>% select(gene) %>% unlist() %>% as.character() %>% unique()
+
+```
+
+```{r, fig.height=8}
+# Heatmap of top markers
+# seurat_object = Seurat object with all features normalized and scaled
+# plot_features = a vector a features to plot
+# group_var = e.g. cluster
+# group_colors = named vector of colors
+# column_title = plot title
+hm <- create_dotplot_heatmap(seurat_object = immune_reclustered,
+                             plot_features = cluster_markers_sig,
+                             group_var = "snn_res.0.5",
+                             group_colors = cluster_col,
+                             column_title = "Immune")
+
+```
+
+### Read cluster annotations from a Google Sheet
+
+```{r}
+
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+immune_annot <- read_sheet(ct_annot, sheet = "Immune")
+
+```
+
+### Adding annotations to the Seurat object
+
+```{r}
+
+immune_reclustered$annotation_1 <- mapvalues(x = immune_reclustered$snn_res.0.5,
+                                             from = immune_annot$snn_res.0.5,
+                                             to = immune_annot$annotation_1)
+
+# Saving the object before removing the non-immune clusters
+#saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated_orig.rds")
+immune_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated_orig.rds")
+
+```
+
+### Removing non-immune clusters and reclustering
+
+```{r}
+
+immune_reclustered <- subset(immune_reclustered,
+                             subset = snn_res.0.5 %in% c(4, 5, 6, 8),
+                             invert = T)
+immune_reclustered <- recluster(immune_reclustered)
+
+#saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated.rds")
+
+```
+
+### Visualizing
+
+```{r}
+
+DimPlot(immune_reclustered,
+        group.by = "annotation_1",
+        reduction = "umap",
+        raster = T,
+        cols = immune_celltype_col,
+        label = T,
+        label.box = T,
+        label.size = 3,
+        repel = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
 
 ```
 

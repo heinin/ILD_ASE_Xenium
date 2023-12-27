@@ -1,0 +1,79 @@
+---
+title: "Plotting ASE results"
+author: "heinin"
+date: "2023-12-26"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Packages and environment variables
+
+```{r, results='hide', warning=F, message=F}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(VariantAnnotation)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, merged")
+
+```
+
+### Importing data
+
+```{r}
+
+ase_res <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ase_sigtest.rds")
+
+```
+
+### For each cell type, plotting the *p*-value distribution
+
+```{r, fig.height=11, fig.width=8}
+
+hist_list_1_2vs0 <- lapply(names(ase_res), function(ct){
+  ggplot(ase_res[[ct]], aes(x = p_1_2vs0)) +
+    geom_histogram(binwidth = 1) +
+    xlab("0/1 & 1/1 vs. 0/0") +
+    ggtitle(ct) +
+    theme_bw()
+})
+
+hist_list_2vs0 <- lapply(names(ase_res), function(ct){
+  ggplot(ase_res[[ct]], aes(x = p_2vs0)) +
+    geom_histogram(binwidth = 1) +
+    xlab("1/1 vs. 0/0") +
+    ggtitle(ct) +
+    theme_bw()
+})
+
+patchwork::wrap_plots(hist_list_1_2vs0, ncol = 4)
+
+patchwork::wrap_plots(hist_list_2vs0, ncol = 4)
+
+```
+

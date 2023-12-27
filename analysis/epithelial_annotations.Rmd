@@ -19,6 +19,7 @@ suppressPackageStartupMessages({library(cli)
                                 library(SeuratDisk)
                                 library(tidyverse)
                                 library(tibble)
+                                library(plyr)
                                 library(ggplot2)
                                 library(ggpubr)
                                 library(ggrepel)
@@ -44,6 +45,13 @@ source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
 epithelial_merged <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_merged.rds")
 DefaultAssay(epithelial_merged)
 
+# Adding one more cluster from the annotated immune object
+immune_reclustered <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered_annotated_orig.rds")
+
+epithelial_merged <- merge(epithelial_merged,
+                           subset(immune_reclustered,
+                                  subset = annotation_1 == "Epithelial"))
+
 ```
 
 ### Redonstructing the dimensionality reduction and neighbor graph
@@ -53,7 +61,7 @@ DefaultAssay(epithelial_merged)
 epithelial_reclustered <- recluster(epithelial_merged)
 
 DimPlot(epithelial_reclustered,
-        group.by = "snn_res.0.3",
+        group.by = "snn_res.0.8",
         reduction = "umap",
         raster = T,
         cols = cluster_col,
@@ -62,11 +70,22 @@ DimPlot(epithelial_reclustered,
   theme_minimal() &
   NoLegend()
 
+DimPlot(epithelial_reclustered,
+        group.by = "snn_res.0.8",
+        split.by = "snn_res.0.8",
+        ncol = 4,
+        reduction = "umap",
+        raster = T,
+        cols = cluster_col) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
 # Numbers of cells per cluster
-table(epithelial_reclustered$snn_res.0.3) %>% as.data.frame() %>%
+table(epithelial_reclustered$snn_res.0.8) %>% as.data.frame() %>%
   ggplot(aes(x = Var1, y = Freq)) +
   geom_bar(stat="identity", fill = "gray89") +
-  xlab("snn_res.0.3") +
+  xlab("snn_res.0.5") +
   ylab("# cells") +
   theme_minimal()
 
@@ -76,10 +95,40 @@ table(epithelial_reclustered$snn_res.0.3) %>% as.data.frame() %>%
 
 ```{r}
 
+# Checking some lineage markers
+FeaturePlot(epithelial_reclustered,
+            features = c("EPCAM", "AGER", "CD3E", "CD19", "CD34", "SFRP2"),
+            ncol = 3,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+# AT1 and AT2 markers
+# AT1: Hopx, Pdpn, and Ager
+# AT2: Sftpb, Sftpc, and Sftpd
+# Transitional AT2: SFTPC, AGER
+# Proliferating: MKI67, CDK1
+# Basal: FOXI1
+# Ciliated: SFTPB, FOXJ1
+
+FeaturePlot(epithelial_reclustered,
+            features = c("HOPX", "PDPN", "AGER", "SFTPB", "SFTPC", "SFTPD",
+                         "FOXJ1", "FOXI1", "MKI67", "CDK1"),
+            ncol = 3,
+            reduction = "umap",
+            raster = T,
+            cols = c("gray89", "tomato3")) &
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
 # All epithelial markers
 FeaturePlot(epithelial_reclustered,
             features = epithelial_features,
-            ncol = 3,
+            ncol = 6,
             reduction = "umap",
             raster = T,
             cols = c("gray89", "tomato3")) &
@@ -89,19 +138,16 @@ FeaturePlot(epithelial_reclustered,
 
 DotPlot(epithelial_reclustered,
         features = epithelial_features,
-        group.by = "snn_res.0.3",
+        group.by = "snn_res.0.5",
         cols = c("azure", "tomato3")) +
   coord_flip() +
   theme_minimal()
-
-# Airway
-# Alveolar
 
 ```
 
 ### Top markers for each cluster
 
-```{r, fig.height=12}
+```{r}
 # Only looking at base panel features
 features <- rownames(epithelial_reclustered)
 features <- features[-grep("-", features)]
@@ -119,7 +165,7 @@ epithelial_reclustered <- NormalizeData(epithelial_reclustered,
                                         verbose = F)
 
 # Comparing Seurat and presto
-Idents(epithelial_reclustered) <- epithelial_reclustered$snn_res.0.3
+Idents(epithelial_reclustered) <- epithelial_reclustered$snn_res.0.8
 cluster_markers <- FindAllMarkers(epithelial_reclustered,
                                   assay = "base_RNA",
                                   logfc.threshold = 0.25,
@@ -128,7 +174,7 @@ cluster_markers <- FindAllMarkers(epithelial_reclustered,
                                   min.pct = 0.1,
                                   verbose = F)
 cluster_markers_presto <- presto::wilcoxauc(epithelial_reclustered,
-                                            group_by = "snn_res.0.3",
+                                            group_by = "snn_res.0.8",
                                             assay = "data",
                                             seurat_assay = "base_RNA")
 
@@ -156,6 +202,9 @@ cluster_markers_sig <- cluster_markers %>%
   slice_max(order_by = abs(avg_log2FC), n = 8) %>%
   ungroup %>% select(gene) %>% unlist() %>% as.character() %>% unique()
 
+```
+
+```{r, fig.height=10}
 # Heatmap of top markers
 # seurat_object = Seurat object with all features normalized and scaled
 # plot_features = a vector a features to plot
@@ -164,7 +213,7 @@ cluster_markers_sig <- cluster_markers %>%
 # column_title = plot title
 hm <- create_dotplot_heatmap(seurat_object = epithelial_reclustered,
                              plot_features = cluster_markers_sig,
-                             group_var = "snn_res.0.3",
+                             group_var = "snn_res.0.8",
                              group_colors = cluster_col,
                              column_title = "Epithelial")
 
@@ -177,12 +226,38 @@ hm <- create_dotplot_heatmap(seurat_object = epithelial_reclustered,
 gs4_deauth()
 ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
 sheet_names(ct_annot)
-ct_annot <- read_sheet(ct_annot, sheet = "Epithelial")
+epi_annot <- read_sheet(ct_annot, sheet = "Epithelial")
 
 ```
 
-### Adding annotations to the Seurat object
+### Adding annotations to the Seurat object and saving
 
+```{r}
+
+epithelial_reclustered$annotation_1 <- mapvalues(x = epithelial_reclustered$snn_res.0.8,
+                                                 from = epi_annot$snn_res.0.8,
+                                                 to = epi_annot$annotation_1)
+
+#saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered_annotated.rds")
+
+```
 
 ### Visualizing
+
+```{r}
+
+DimPlot(epithelial_reclustered,
+        group.by = "annotation_1",
+        reduction = "umap",
+        raster = T,
+        cols = epi_celltype_col,
+        label = T,
+        label.box = T,
+        label.size = 3,
+        repel = T) +
+  coord_fixed(ratio = 1) &
+  theme_minimal() &
+  NoLegend()
+
+```
 

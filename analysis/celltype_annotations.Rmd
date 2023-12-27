@@ -49,7 +49,7 @@ DefaultAssay(seurat_object)
 
 ### Feature expression
 
-```{r, fig.height=12}
+```{r}
 
 # Dimplot of clusters
 DimPlot(seurat_object,
@@ -61,6 +61,10 @@ DimPlot(seurat_object,
   coord_fixed(ratio = 1) +
   NoLegend() +
   theme_minimal()
+
+```
+
+```{r, fig.height=12}
 
 # Cell type markers
 DotPlot(seurat_object,
@@ -96,7 +100,7 @@ epithelial <- subset(seurat_object, subset = leiden_res0.5 %in% epi_clusters)
 
 # Reclustering using Seurat. The function is sourced from /code/utilities.R
 epithelial_reclustered <- recluster(epithelial)
-saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
+#saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
 
 ```
 
@@ -115,7 +119,9 @@ DimPlot(epithelial_reclustered,
   coord_fixed(ratio = 1) +
   NoLegend() +
   theme_minimal()
+```
 
+```{r, fig.height=12}
 # Cell type markers
 DotPlot(epithelial_reclustered,
         features = unique(c(epithelial_features,
@@ -126,53 +132,54 @@ DotPlot(epithelial_reclustered,
         cols = c("azure", "tomato3")) +
   coord_flip() +
   theme_minimal()
+```
 
+```{r, fig.height=8}
 FeaturePlot(epithelial_reclustered,
             features = epithelial_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(epithelial_reclustered,
             features = immune_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(epithelial_reclustered,
             features = endothelial_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(epithelial_reclustered,
             features = mesenchymal_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
-
 ```
 
-Some clusters are not epithelial:
-* Cluster 3: endothelial
-* Clusters 0, 4, 5, 6, 8, 9, 10: immune
+Some clusters are not epithelial:\
+* Cluster 3: endothelial\
+* Clusters 0, 4, 5, 6, 8, 9, 10: immune\
 
 ### Adding lineage to the metadata
 
@@ -181,7 +188,7 @@ epithelial_reclustered$lineage <- ifelse(epithelial_reclustered$snn_res.0.3 %in%
                                   ifelse(epithelial_reclustered$snn_res.0.3 %in% c(3), "Endothelial",
                                   ifelse(epithelial_reclustered$snn_res.0.3 %in% c(0, 4, 5, 6, 7, 8, 9, 10), "Immune", NA)))
 
-saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
+#saveRDS(epithelial_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_reclustered.rds")
 ```
 
 ## Immune
@@ -197,7 +204,7 @@ immune <- subset(seurat_object, subset = leiden_res0.5 %in% imm_clusters)
 
 # Reclustering using Seurat. The function is sourced from /code/utilities.R
 immune_reclustered <- recluster(immune)
-saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
+#saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
 
 ```
 
@@ -216,7 +223,9 @@ DimPlot(immune_reclustered,
   coord_fixed(ratio = 1) +
   NoLegend() +
   theme_minimal()
+```
 
+```{r, fig.height=12}
 # Cell type markers
 DotPlot(immune_reclustered,
         features = unique(c(epithelial_features,
@@ -227,47 +236,48 @@ DotPlot(immune_reclustered,
         cols = c("azure", "tomato3")) +
   coord_flip() +
   theme_minimal()
+```
 
+```{r, fig.height=8}
 FeaturePlot(immune_reclustered,
             features = epithelial_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(immune_reclustered,
             features = immune_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(immune_reclustered,
             features = endothelial_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(immune_reclustered,
             features = mesenchymal_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
-
 
 ```
 
@@ -283,7 +293,7 @@ immune_reclustered$lineage <- ifelse(immune_reclustered$snn_res.0.3 %in% c(5), "
                               ifelse(immune_reclustered$snn_res.0.3 %in% c(3, 4), "Endothelial",
                               ifelse(immune_reclustered$snn_res.0.3 %in% c(0, 1, 2, 6, 7, 8), "Immune", NA)))
 
-saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
+#saveRDS(immune_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_reclustered.rds")
 ```
 
 ## Endothelial and mesenchymal
@@ -299,7 +309,7 @@ endo_mesen <- subset(seurat_object, subset = leiden_res0.5 %in% endo_mesen_clust
 
 # Reclustering using Seurat. The function is sourced from /code/utilities.R
 endo_mesen_reclustered <- recluster(endo_mesen)
-saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
+#saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
 
 ```
 
@@ -318,7 +328,9 @@ DimPlot(endo_mesen_reclustered,
   coord_fixed(ratio = 1) +
   NoLegend() +
   theme_minimal()
+```
 
+```{r, fig.height=12}
 # Cell type markers
 DotPlot(endo_mesen_reclustered,
         features = unique(c(epithelial_features,
@@ -329,43 +341,45 @@ DotPlot(endo_mesen_reclustered,
         cols = c("azure", "tomato3")) +
   coord_flip() +
   theme_minimal()
+```
 
+```{r, fig.height=8}
 FeaturePlot(endo_mesen_reclustered,
             features = epithelial_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(endo_mesen_reclustered,
             features = immune_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(endo_mesen_reclustered,
             features = endothelial_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
 
 FeaturePlot(endo_mesen_reclustered,
             features = mesenchymal_features,
-            ncol = 6,
+            ncol = 5,
             reduction = "umap",
             raster = T,
-            cols = c("gray89", "tomato3")) +
+            cols = c("gray89", "tomato3")) &
   coord_fixed(ratio = 1) &
   NoLegend() &
   theme_minimal()
@@ -373,9 +387,9 @@ FeaturePlot(endo_mesen_reclustered,
 
 ```
 
-Some clusters are not endothelial/mesenchymal:
-* Cluster 0: epithelial
-* Cluster 2, 4, 6, 7: immune
+Some clusters are not endothelial/mesenchymal:\
+* Cluster 0: epithelial\
+* Cluster 2, 4, 6, 7: immune\
 
 ### Adding lineage to the metadata
 
@@ -383,7 +397,7 @@ Some clusters are not endothelial/mesenchymal:
 endo_mesen_reclustered$lineage <- ifelse(endo_mesen_reclustered$snn_res.0.3 %in% c(0), "Epithelial",
                                   ifelse(endo_mesen_reclustered$snn_res.0.3 %in% c(2, 4, 6, 7), "Immune", "Endo_Mesen"))
 
-saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
+#saveRDS(endo_mesen_reclustered, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_reclustered.rds")
 ```
 
 ## Subsetting and merging at the lineage level
@@ -408,14 +422,14 @@ endo_mesen_subsets <- list("em1" = subset(epithelial_reclustered, subset = linea
 epithelial_merged <- merge(x = epithelial_subsets[[1]],
                            y = epithelial_subsets[2:length(epithelial_subsets)])
 immune_merged <- merge(x = immune_subsets[[1]],
-                       y = immune_subsets[2:length(epithelial_subsets)])
+                       y = immune_subsets[2:length(immune_subsets)])
 endo_mesen_merged <- merge(x = endo_mesen_subsets[[1]],
-                           y = endo_mesen_subsets[2:length(epithelial_subsets)])
+                           y = endo_mesen_subsets[2:length(endo_mesen_subsets)])
 
 # Saving
-saveRDS(epithelial_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_merged.rds")
-saveRDS(immune_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_merged.rds")
-saveRDS(endo_mesen_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_merged.rds")
+#saveRDS(epithelial_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/epithelial_merged.rds")
+#saveRDS(immune_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/immune_merged.rds")
+#saveRDS(endo_mesen_merged, "/scratch/hnatri/ILD/ILD_spatial_ASE/endo_mesen_merged.rds")
 
 ```
 

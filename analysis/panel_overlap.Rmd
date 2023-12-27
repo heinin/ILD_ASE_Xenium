@@ -1,0 +1,73 @@
+---
+title: "Panel feature overlap with the pre-commercial panel"
+author: "heinin"
+date: "2023-12-20"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Packages and environment variables
+
+```{r}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+```
+
+### Features in the new base panel
+
+```{r}
+
+seurat_object <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+# All features
+all_features <- rownames(seurat_object)
+# ASE probes
+all_features[grep("-", all_features)]
+# Base panel
+new_panel <- all_features[-grep("-", all_features)]
+
+```
+
+### Features in the pre-commercial base panel and the custom panel
+
+```{r}
+
+old_panel <- read.csv("/home/hnatri/ILD_ASE_Xenium/data/hLung_XeniumV1.csv")
+old_panel <- old_panel$gene_name
+
+```
+
+### Overlap
+
+```{r}
+
+intersect(new_panel, old_panel)
+setdiff(new_panel, old_panel)
+setdiff(old_panel, new_panel)
+
+"SCGB1A1" %in% old_panel
+
+```
