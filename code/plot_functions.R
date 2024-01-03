@@ -22,7 +22,7 @@ suppressPackageStartupMessages({library(Seurat)
 # group2 = e.g. Low
 # plot_var = e.g. celltype
 # plot_colors = A named vector of colors to use in the plot, corresponding to plot_var (e.g. cell type colors)
-# var_names = Used as axis titles, c("group2", "group1")
+# var_names = Used as axis titles, c("group1", "group2")
 # legend_title = Legend title, ("" for no title)
 create_clusterpropplot <- function(seurat_object,
                                    group_var,
@@ -39,7 +39,7 @@ create_clusterpropplot <- function(seurat_object,
   prop_table[,2:length(prop_table)] <- (prop_table[,2:length(prop_table)]/rowSums(prop_table[,2:length(prop_table)]))*100
   prop_table <- gather(prop_table, plot_var, Freq, names(prop_table)[2:length(names(prop_table))], factor_key=TRUE)
   prop_table <- spread(prop_table, group_var, Freq)
-  colnames(prop_table) <-gsub("plot_var", plot_var, colnames(prop_table))
+  colnames(prop_table) <- gsub("plot_var", plot_var, colnames(prop_table))
   
   celltype_prop_scatter_1 <- ggplot(prop_table, aes_string(x = group1, y = group2, color = plot_var, label = plot_var)) +
     geom_point() + 
