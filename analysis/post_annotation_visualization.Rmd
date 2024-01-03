@@ -206,7 +206,7 @@ create_clusterpropplot(seurat_object = seurat_object,
                        plot_var = "annotation_3",
                        plot_colors = annotation_3_col,
                        var_names = c("ILD", "HD"),
-                       legend_title)
+                       legend_title = "")
 
 ```
 
