@@ -390,7 +390,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-12-26
+<strong>Last updated:</strong> 2023-12-27
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -428,10 +428,10 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
 </div>
@@ -574,15 +574,15 @@ code/utilities.R
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree83e2df31fef55150a70df224afa7133617171e7btargetblank83e2df3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7ctargetblank6b9ca2aa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/83e2df31fef55150a70df224afa7133617171e7b" target="_blank">83e2df3</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c" target="_blank">6b9ca2a</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree83e2df31fef55150a70df224afa7133617171e7btargetblank83e2df3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7ctargetblank6b9ca2aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -592,7 +592,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/83e2df31fef55150a70df224afa7133617171e7b" target="_blank">83e2df3</a>.
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c" target="_blank">6b9ca2a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -606,23 +606,11 @@ depends on. Below is the status of the Git repository when the results
 were generated:
 </p>
 <pre><code>
-Untracked files:
-    Untracked:  analysis/ASE.Rmd
-    Untracked:  analysis/endo_mesen_annotations.Rmd
-    Untracked:  analysis/panel_overlap.Rmd
-    Untracked:  analysis/post_annotation_visualization.Rmd
-    Untracked:  analysis/visualize_ASE.Rmd
-    Untracked:  data/hLung_XeniumV1.csv
-
 Unstaged changes:
-    Modified:   README.md
-    Modified:   analysis/Xenium_preprocessing.Rmd
-    Modified:   analysis/celltype_annotations.Rmd
-    Modified:   analysis/epithelial_annotations.Rmd
-    Modified:   analysis/immune_annotations.Rmd
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/ASE.Rmd
+    Modified:   analysis/post_annotation_visualization.Rmd
+    Modified:   analysis/visualize_ASE.Rmd
     Modified:   code/colors_themes.R
-    Modified:   code/utilities.R
 
 </code></pre>
 <p>
@@ -637,10 +625,73 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/ASE.Rmd</code>) and HTML
+(<code>docs/ASE.html</code>) files. If you’ve configured a remote Git
+repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
+in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/analysis/ASE.Rmd" target="_blank">6b9ca2a</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-27
+</td>
+<td>
+Added scripts for quantifying allelic bias
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/docs/ASE.html" target="_blank">6b9ca2a</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2023-12-27
+</td>
+<td>
+Added scripts for quantifying allelic bias
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -751,12 +802,14 @@ length(ase_probes)</code></pre>
 <pre class="r"><code># Only keeping SNPs we need
 gt_ase_snps &lt;- gt[which(rownames(gt) %in% c(ld_snp_info$gene_body_snp, ld_snp_info$esnp)),]
 rm(gt)
+
 #write.csv(gt_ase_snps, &quot;/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv&quot;)
 #gt_ase_snps &lt;- as.matrix(read.csv(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv&quot;, row.names = &quot;X&quot;))
 
 # Converting genotypes to dosage
 gt_ase_snps &lt;- gsub(&quot;0\\/0&quot;, 0, gt_ase_snps)
 gt_ase_snps &lt;- gsub(&quot;0\\/1&quot;, 1, gt_ase_snps)
+gt_ase_snps &lt;- gsub(&quot;1\\/0&quot;, 1, gt_ase_snps)
 gt_ase_snps &lt;- gsub(&quot;1\\/1&quot;, 2, gt_ase_snps)
 class(gt_ase_snps) &lt;- &quot;numeric&quot;
 gt_ase_snps &lt;- as.data.frame(gt_ase_snps)
@@ -817,16 +870,20 @@ gt_data$eSNP_ALT &lt;- plyr::mapvalues(x = gt_data$esnp,
                                     to = gt_metadata$ALT)
 
 # A vector of all gene_tag_SNP -pairs
-gene_tagSNPs &lt;- unique(paste0(gt_linked_snps$gene, &quot;_&quot;, gt_linked_snps$gene_body_snp))</code></pre>
+gene_tagSNPs &lt;- unique(paste0(gt_linked_snps$gene, &quot;_&quot;, gt_linked_snps$gene_body_snp))
+
+#write.csv(gt_data, &quot;/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv&quot;)
+#gt_data &lt;- as.matrix(read.csv(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv&quot;, row.names = &quot;X&quot;))</code></pre>
 </div>
 <div id="obtaining-pseudo-bulk-expression-values"
 class="section level3">
 <h3>Obtaining pseudo-bulk expression values</h3>
 <pre class="r"><code>pseudobulk &lt;- lapply(unique(seurat_object$annotation_3), function(ct){
   seurat_subset &lt;- subset(seurat_object, subset = annotation_3 == ct)
-  exp &lt;- AverageExpression(seurat_object,
+  exp &lt;- AverageExpression(seurat_subset,
                            group.by = &quot;Sample_Name&quot;,
-                           assay = &quot;RNA&quot;)
+                           assay = &quot;RNA&quot;,
+                           slot = &quot;counts&quot;)
   
   as.data.frame(exp$RNA)
 })</code></pre>
@@ -849,13 +906,13 @@ ase_res &lt;- lapply(names(pseudobulk), function(ct){
   exp_data &lt;- pseudobulk[[ct]]
   
   # Creating a dataframe for the results
-  corr_res &lt;- data.frame(matrix(NA, ncol = ncol(exp_data),
+  ratio_res &lt;- data.frame(matrix(NA, ncol = ncol(exp_data),
                                 nrow = length(gene_tagSNPs)))
-  rownames(corr_res) &lt;- gene_tagSNPs
-  colnames(corr_res) &lt;- colnames(exp_data)
+  rownames(ratio_res) &lt;- gene_tagSNPs
+  colnames(ratio_res) &lt;- colnames(exp_data)
   
   # Looping through every locus, calculating the allelic ratio
-  for(i in rownames(corr_res)){
+  for(i in rownames(ratio_res)){
     # Finding the probe names for REF and ALT
     locus_info &lt;- ld_snp_info %&gt;%
       filter(gene_tagSNP == i) %&gt;%
@@ -864,12 +921,12 @@ ase_res &lt;- lapply(names(pseudobulk), function(ct){
     # Calculating the ratio
     ref_exp &lt;- exp_data[locus_info$probe1,]
     alt_exp &lt;- exp_data[locus_info$probe2,]
-    corr_res[i,] &lt;- alt_exp/ref_exp
+    ratio_res[i,] &lt;- alt_exp/ref_exp
   }
   
-  corr_res$celltype &lt;- ct
+  ratio_res$celltype &lt;- ct
   
-  corr_res
+  ratio_res
 })
 
 names(ase_res) &lt;- names(pseudobulk)</code></pre>
@@ -888,7 +945,7 @@ significance</h3>
   wilcox_res &lt;- data.frame(matrix(NA, ncol = 4,
                                   nrow = length(gene_tagSNPs)))
   rownames(wilcox_res) &lt;- gene_tagSNPs
-  colnames(wilcox_res) &lt;- c(&quot;2vs0_p&quot;, &quot;1_2vs0_p&quot;, &quot;2vs0_p_adj&quot;, &quot;1_2vs0_p_adj&quot;)
+  colnames(wilcox_res) &lt;- c(&quot;p_2vs0&quot;, &quot;p_1_2vs0&quot;, &quot;p_adj_2vs0&quot;, &quot;p_adj_1_2vs0&quot;)
   
   # Looping through every locus, calculating the allelic ratio
   for(i in rownames(wilcox_res)){
@@ -899,6 +956,9 @@ significance</h3>
       dplyr::select(-c(&quot;celltype&quot;)) %&gt;%
       t() %&gt;% as.data.frame() %&gt;%
       rownames_to_column(var = &quot;Sample_Name&quot;)
+    ct_ase_vals &lt;- ct_ase_vals[complete.cases(ct_ase_vals),]
+    ct_ase_vals &lt;- ct_ase_vals %&gt;%
+      filter_if(~is.numeric(.), all_vars(!is.infinite(.)))
     # Adding genotype information
     gt_vals &lt;- gt_data %&gt;% filter(gene_body_snp == tagSNP)
     # gt_vals[which(gt_vals$linked_SNP_GT==0), &quot;Sample_Name&quot;]
@@ -906,1382 +966,46 @@ significance</h3>
     ase_01 &lt;- ct_ase_vals %&gt;% filter(Sample_Name %in% gt_vals[which(gt_vals$linked_SNP_GT==1), &quot;Sample_Name&quot;])
     ase_11 &lt;- ct_ase_vals %&gt;% filter(Sample_Name %in% gt_vals[which(gt_vals$linked_SNP_GT==2), &quot;Sample_Name&quot;])
     
-    if(nrow(ase_11)==0 | nrow(ase_00)==0){
+    if(length(unique(c(ase_00[,i], ase_01[,i], ase_11[,i])))&lt;=1){
       next
-    }
-    if(length(unique(c(ase_00[,i], ase_01[,i], ase_11[,i])))==1){
+    } else if (nrow(ase_11)==0 &amp; nrow(ase_01)==0){
       next
+    } else if (nrow(ase_00)==0){
+      next
+    } else if (nrow(ase_11)==0 | nrow(ase_01)==0){
+      wres1 &lt;- wilcox.test(c(ase_11[,i], ase_01[,i]), ase_00[,i], alternative = &quot;two.sided&quot;)
+      wilcox_res[i, c(&quot;p_1_2vs0&quot;)] &lt;- wres1[[&quot;p.value&quot;]]
+      
+      next
+    } else {
+      wres1 &lt;- wilcox.test(c(ase_11[,i], ase_01[,i]), ase_00[,i], alternative = &quot;two.sided&quot;)
+      wres2 &lt;- wilcox.test(ase_11[,i], ase_00[,i], alternative = &quot;two.sided&quot;)
+    
+      wilcox_res[i, c(&quot;p_1_2vs0&quot;)] &lt;- wres1[[&quot;p.value&quot;]]
+      wilcox_res[i, c(&quot;p_2vs0&quot;)] &lt;- wres2[[&quot;p.value&quot;]]
     }
-    
-    wres1 &lt;- wilcox.test(c(ase_11[,i], ase_01[,i]), ase_00[,i], alternative = &quot;two.sided&quot;)
-    wres2 &lt;- wilcox.test(ase_11[,i], ase_00[,i], alternative = &quot;two.sided&quot;)
-    
-    wilcox_res[i, c(&quot;1_2vs0_p&quot;)] &lt;- wres1[[&quot;p.value&quot;]]
-    wilcox_res[i, c(&quot;2vs0_p&quot;)] &lt;- wres2[[&quot;p.value&quot;]]
   }
   
   wilcox_res$celltype &lt;- ct
   # Adjusting for multiple comparisons
-  wilcox_res[&quot;1_2vs0_p_adj&quot;] &lt;- p.adjust(wilcox_res[,&quot;1_2vs0_p&quot;],
-                                            n = length(wilcox_res[,&quot;1_2vs0_p&quot;]))
-  wilcox_res[&quot;2vs0_p&quot;] &lt;- p.adjust(wilcox_res[,&quot;2vs0_p&quot;],
-                                      n = length(wilcox_res[,&quot;2vs0_p&quot;]))
+  wilcox_res[&quot;p_adj_1_2vs0&quot;] &lt;- p.adjust(wilcox_res[,&quot;p_1_2vs0&quot;],
+                                         n = length(wilcox_res[,&quot;p_1_2vs0&quot;]),
+                                         method = &quot;fdr&quot;)
+  wilcox_res[&quot;p_adj_2vs0&quot;] &lt;- p.adjust(wilcox_res[,&quot;p_2vs0&quot;],
+                                       n = length(wilcox_res[,&quot;p_2vs0&quot;]),
+                                       method = &quot;fdr&quot;)
   
   wilcox_res
-})</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
+})
 
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(ase_11[, i], ase_00[, i], alternative =
-&quot;two.sided&quot;): cannot compute exact p-value with ties</code></pre>
-<pre><code>Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties
-
-Warning in wilcox.test.default(c(ase_11[, i], ase_01[, i]), ase_00[, i], :
-cannot compute exact p-value with ties</code></pre>
-<pre class="r"><code>names(ase_sigtest) &lt;- names(ase_res)
+names(ase_sigtest) &lt;- names(ase_res)
 
 # Saving the results for later
-#saveRDS(ase_sigtest, &quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ase_sigtest.rds&quot;)</code></pre>
+saveRDS(ase_sigtest, &quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ase_sigtest.rds&quot;)</code></pre>
+</div>
+<div id="testing-between-all-groups-using-kruskalwallis-rank-sum-test"
+class="section level3">
+<h3>Testing between all groups using Kruskal–Wallis rank-sum test</h3>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2324,7 +1048,7 @@ other attached packages:
 [13] SummarizedExperiment_1.30.2 Biobase_2.60.0             
 [15] GenomicRanges_1.52.0        GenomeInfoDb_1.36.0        
 [17] IRanges_2.34.0              S4Vectors_0.38.1           
-[19] MatrixGenerics_1.12.0       matrixStats_1.0.0          
+[19] MatrixGenerics_1.12.3       matrixStats_1.0.0          
 [21] BiocGenerics_0.46.0         googlesheets4_1.1.0        
 [23] workflowr_1.7.1             ggrepel_0.9.3              
 [25] ggpubr_0.6.0                plyr_1.8.8                 
@@ -2368,7 +1092,7 @@ loaded via a namespace (and not attached):
  [82] colorspace_2.1-0         DBI_1.1.3                tidyselect_1.2.0        
  [85] processx_3.8.1           bit_4.0.5                compiler_4.3.0          
  [88] curl_5.0.0               git2r_0.32.0             hdf5r_1.3.8             
- [91] xml2_1.3.4               DelayedArray_0.26.3      plotly_4.10.2           
+ [91] xml2_1.3.4               DelayedArray_0.26.7      plotly_4.10.2           
  [94] rtracklayer_1.60.0       scales_1.2.1             lmtest_0.9-40           
  [97] callr_3.7.3              rappdirs_0.3.3           digest_0.6.31           
 [100] goftest_1.2-3            spatstat.utils_3.0-3     rmarkdown_2.22          

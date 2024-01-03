@@ -47,28 +47,46 @@ all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, m
 
 ```{r}
 
-ase_res <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ase_sigtest.rds")
+# Wilcoxon test results for allelic bias
+ase_sigtest <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ase_sigtest.rds")
+
+# Plot order
+plot_order <- all_celltypes_annot %>%
+  dplyr::select("lineage", "annotation_3") %>%
+  distinct() %>%
+  arrange(lineage, annotation_3) %>%
+  dplyr::select(annotation_3) %>% unlist() %>% as.character()
+
+ase_sigtest <- ase_sigtest[plot_order]
 
 ```
 
-### For each cell type, plotting the *p*-value distribution
+### For each cell type, plotting the nominal *p*-value distribution
 
-```{r, fig.height=11, fig.width=8}
+```{r, fig.height=11, results='hide', warning=F, message=F}
 
-hist_list_1_2vs0 <- lapply(names(ase_res), function(ct){
-  ggplot(ase_res[[ct]], aes(x = p_1_2vs0)) +
-    geom_histogram(binwidth = 1) +
+hist_list_1_2vs0 <- lapply(names(ase_sigtest), function(ct){
+  ggplot(ase_sigtest[[ct]], aes(x = p_1_2vs0, fill = celltype)) +
+    geom_histogram(binwidth = 0.1) +
+    xlim(0, 1.05) +
+    scale_fill_manual(values = annotation_3_col) +
     xlab("0/1 & 1/1 vs. 0/0") +
     ggtitle(ct) +
-    theme_bw()
+    theme_bw() +
+    my_theme +
+    NoLegend()
 })
 
-hist_list_2vs0 <- lapply(names(ase_res), function(ct){
-  ggplot(ase_res[[ct]], aes(x = p_2vs0)) +
-    geom_histogram(binwidth = 1) +
+hist_list_2vs0 <- lapply(names(ase_sigtest), function(ct){
+  ggplot(ase_sigtest[[ct]], aes(x = p_2vs0, fill = celltype)) +
+    geom_histogram(binwidth = 0.1) +
+    xlim(0, 1.05) +
+    scale_fill_manual(values = annotation_3_col) +
     xlab("1/1 vs. 0/0") +
     ggtitle(ct) +
-    theme_bw()
+    theme_bw() +
+    my_theme +
+    NoLegend()
 })
 
 patchwork::wrap_plots(hist_list_1_2vs0, ncol = 4)
@@ -76,4 +94,72 @@ patchwork::wrap_plots(hist_list_1_2vs0, ncol = 4)
 patchwork::wrap_plots(hist_list_2vs0, ncol = 4)
 
 ```
+
+### For each cell type, plotting the FDR-adjusted *p*-value distribution
+
+```{r, fig.height=11, results='hide', warning=F, message=F}
+
+hist_list_1_2vs0 <- lapply(names(ase_sigtest), function(ct){
+  ggplot(ase_sigtest[[ct]], aes(x = p_adj_1_2vs0, fill = celltype)) +
+    geom_histogram(binwidth = 0.1) +
+    xlim(0, 1.05) +
+    scale_fill_manual(values = annotation_3_col) +
+    xlab("0/1 & 1/1 vs. 0/0 FDR(p)") +
+    ggtitle(ct) +
+    theme_bw() +
+    my_theme +
+    NoLegend()
+})
+
+hist_list_2vs0 <- lapply(names(ase_sigtest), function(ct){
+  ggplot(ase_sigtest[[ct]], aes(x = p_adj_2vs0, fill = celltype)) +
+    geom_histogram(binwidth = 0.1) +
+    xlim(0, 1.05) +
+    scale_fill_manual(values = annotation_3_col) +
+    xlab("1/1 vs. 0/0 FDR(p)") +
+    ggtitle(ct) +
+    theme_bw() +
+    my_theme +
+    NoLegend()
+})
+
+patchwork::wrap_plots(hist_list_1_2vs0, ncol = 4)
+
+patchwork::wrap_plots(hist_list_2vs0, ncol = 4)
+
+```
+
+### Examining the most significant loci
+
+```{r}
+
+# Subsetting significant loci
+ase_sig <- lapply(names(ase_sigtest), function(ct){
+  ase_sigtest[[ct]] %>% filter(p_adj_1_2vs0 <= 0.05 | p_adj_2vs0 <= 0.05)
+})
+
+ase_sig <- do.call("rbind", ase_sig)
+
+ase_sig
+
+```
+
+### Plotting allelic bias
+
+#### Importing allelic bias and genotype data
+
+```{r}
+
+ase_res <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ase_res.rds")
+gt_data <- as.matrix(read.csv("/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv", row.names = "X"))
+
+```
+
+### Comparing to ct-eQTL results
+
+```{r}
+
+
+```
+
 

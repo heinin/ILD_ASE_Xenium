@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-### First pass annotations on the epithelial lineage
+## First pass annotations on the epithelial lineage
 
 ### Packages and environment variables
 

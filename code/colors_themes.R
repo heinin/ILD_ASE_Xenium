@@ -217,19 +217,23 @@ annotation_2_col <- c(epi_col, imm_col, endo_col, mesen_col)
 
 epi_cts_annotation_3 <- all_celltypes_annot %>%
   filter(lineage == "Epithelial") %>%
-  dplyr::select(annotation_3) %>% unlist() %>% as.character()
+  arrange(annotation_3) %>%
+  dplyr::select(annotation_3) %>% unlist() %>% as.character() %>% unique()
 
 imm_cts_annotation_3 <- all_celltypes_annot %>%
   filter(lineage == "Immune") %>%
-  dplyr::select(annotation_3) %>% unlist() %>% as.character()
+  arrange(annotation_3) %>%
+  dplyr::select(annotation_3) %>% unlist() %>% as.character() %>% unique()
 
 endo_cts_annotation_3 <- all_celltypes_annot %>%
   filter(lineage == "Endothelial") %>%
-  dplyr::select(annotation_3) %>% unlist() %>% as.character()
+  arrange(annotation_3) %>%
+  dplyr::select(annotation_3) %>% unlist() %>% as.character() %>% unique()
 
 mesen_cts_annotation_3 <- all_celltypes_annot %>%
   filter(lineage == "Mesenchymal") %>%
-  dplyr::select(annotation_3) %>% unlist() %>% as.character()
+  arrange(annotation_3) %>%
+  dplyr::select(annotation_3) %>% unlist() %>% as.character() %>% unique()
 
 epi_annotation_3_col <- colorRampPalette(c("#B9EAF2", "#1E5B89"))(length(epi_cts_annotation_3))
 names(epi_annotation_3_col) <- epi_cts_annotation_3[order(epi_cts_annotation_3)]

@@ -63,7 +63,6 @@ DefaultAssay(seurat_object) <- "RNA"
 
 table(seurat_object$lineage)
 table(seurat_object$annotation_1)
-unique(seurat_object$annotation_1)
 
 # Reformatting some cell type names
 seurat_object$annotation_2 <- mapvalues(x = seurat_object$annotation_1,
@@ -86,8 +85,8 @@ seurat_object[["sp"]] <- CreateDimReducObject(embeddings = position_xy,
                                               assay = DefaultAssay(seurat_object))
 
 # Saving the object for reclustering with Scanpy
-#saveRDS(seurat_object, "/scratch/hnatri/ILD/ILD_spatial_ASE/ILD_ASE_Xenium_annotated.rds")
-seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+#saveRDS(seurat_object, "/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+#seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
 
 ```
 

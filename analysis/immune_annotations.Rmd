@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-### First pass annotations on the immune lineage
+## First pass annotations on the immune lineage
 
 ### Packages and environment variables
 
