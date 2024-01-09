@@ -29,6 +29,8 @@ Information on eQTL and tag-SNPs can be found in this [spreadsheet](https://docs
 8. [Post-annotation visualization and comparative analysis](post_annotation_visualization.html)
 9. [Quantifying allelic imbalance](ASE.html)
 10. [Visualizing the ASE analysis results](visualize_ASE.html)
+11. [Sample-level pseudobulk](samplelevel_pseudobulk.html)
+12. [ASE and non-ASE probe readcount correlation](ase_readcounts.html)
 
 ### Contact
 

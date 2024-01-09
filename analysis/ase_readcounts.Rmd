@@ -1,0 +1,184 @@
+---
+title: "Comparing ASE and non-ASE read counts"
+author: "heinin"
+date: "2024-01-08"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Packages and environment variables
+
+```{r, results='hide', warning=F, message=F}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(VariantAnnotation)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, merged")
+
+```
+
+### Importing data
+
+```{r}
+
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+```
+
+### Importing eQTL and tag-SNP info
+
+```{r}
+
+gs4_deauth()
+gtables  <- gs4_get("https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing")
+sheet_names(gtables)
+ld_snp_info <- read_sheet(gtables, sheet = "More candidates, SNP info with exon number")
+ld_snp_info <- as.data.frame(ld_snp_info)
+
+# Adding probe names
+ld_snp_info$probe <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$alt, sep = "-")
+ld_snp_info$probe1 <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$ref, sep = "-")
+ld_snp_info$probe2 <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$alt, sep = "-")
+
+```
+
+### Selecting the genes to plot
+
+```{r}
+
+# Obtaining the expression matrix
+pseudobulk <- AverageExpression(seurat_object,
+                                group.by = "Sample_Name",
+                                assay = "RNA",
+                                slot = "counts")
+
+pseudobulk <- as.data.frame(t(pseudobulk$RNA))
+
+# Which eGenes were included in the base panel?
+intersect(ld_snp_info$gene, colnames(pseudobulk))
+
+ld_snp_info <- ld_snp_info %>% filter(gene %in% colnames(pseudobulk))
+pseudobulk <- pseudobulk %>% dplyr::select(c(ld_snp_info$gene,
+                                             ld_snp_info$probe1,
+                                             ld_snp_info$probe2))
+
+# Numbers of probe pairs for each gene
+table(ld_snp_info$gene)
+
+```
+
+### Plotting the ASE probe read counts against the non-ASE probes
+
+```{r, fig.height=4, fig.width=12, results='hide', warning=F, message=F}
+
+# Assembling a dataframe with a gene-tag-SNP pair, gene, probe1, and, probe2 
+# columns with pseudobulk counts for each sample
+
+# A list of plots for each gene-tag-SNP pair
+ld_snp_info$gene_tagSNP <- paste0(ld_snp_info$gene, "_", ld_snp_info$gene_body_snp)
+ld_snp_info <- ld_snp_info %>%
+  dplyr::select(-c("R2", "gene_snp", "esnp_loc", "esnp")) %>% distinct()
+
+plot_list <- lapply(ld_snp_info$gene_tagSNP, function(xx){
+  gene <- strsplit(xx, "_")[[1]][1]
+  tagSNP <- strsplit(xx, "_")[[1]][2]
+  probe1 <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(probe1) %>% as.character()
+  probe2 <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(probe2) %>% as.character()
+  exp_data <- pseudobulk %>% dplyr::select(c(gene, probe1, probe2))
+  exp_data$probe_sum <- exp_data[,probe1] + exp_data[,probe2]
+  colnames(exp_data) <- gsub("-", "_", colnames(exp_data))
+  probe1 <- gsub("-", "_", probe1)
+  probe2 <- gsub("-", "_", probe2)
+  
+  p1 <- ggplot(exp_data, aes_string(x = gene, y = probe1)) +
+    geom_point() +
+    geom_smooth(method='lm') +
+    ggtitle("Probe 1 (REF)") +
+    theme_bw()
+  p2 <- ggplot(exp_data, aes_string(x = gene, y = probe2)) +
+    geom_point() +
+    geom_smooth(method='lm') +
+    ggtitle("Probe 2 (ALT)") +
+    theme_bw()
+  p3 <- ggplot(exp_data, aes_string(x = gene, y = "probe_sum")) +
+    geom_point() +
+    geom_smooth(method='lm') +
+    ggtitle("Probe sum") +
+    theme_bw()
+    
+  (p1 + p2 + p3)
+})
+
+plot_list
+
+```
+
+### Sample plots with log2-transformed counts
+
+```{r, fig.height=4, fig.width=12, results='hide', warning=F, message=F}
+
+plot_list <- lapply(ld_snp_info$gene_tagSNP, function(xx){
+  gene <- strsplit(xx, "_")[[1]][1]
+  tagSNP <- strsplit(xx, "_")[[1]][2]
+  probe1 <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(probe1) %>% as.character()
+  probe2 <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(probe2) %>% as.character()
+  exp_data <- pseudobulk %>% dplyr::select(c(gene, probe1, probe2))
+  exp_data$probe_sum <- exp_data[,probe1] + exp_data[,probe2]
+  colnames(exp_data) <- gsub("-", "_", colnames(exp_data))
+  probe1 <- gsub("-", "_", probe1)
+  probe2 <- gsub("-", "_", probe2)
+  
+  p1 <- exp_data %>%
+    mutate_if(is.numeric, log2) %>%
+    ggplot(aes_string(x = gene, y = probe1)) +
+           geom_point() +
+           geom_smooth(method='lm') +
+           ggtitle("Probe 1 (REF)") +
+           theme_bw()
+  p2 <- exp_data %>%
+    mutate_if(is.numeric, log2) %>%
+    ggplot(aes_string(x = gene, y = probe2)) +
+           geom_point() +
+           geom_smooth(method='lm') +
+           ggtitle("Probe 2 (ALT)") +
+           theme_bw()
+  p3 <- exp_data %>%
+    mutate_if(is.numeric, log2) %>%
+    ggplot(aes_string(x = gene, y = "probe_sum")) +
+           geom_point() +
+           geom_smooth(method='lm') +
+           ggtitle("Probe sum") +
+           theme_bw()
+    
+  (p1 + p2 + p3)
+})
+
+plot_list
+
+```
