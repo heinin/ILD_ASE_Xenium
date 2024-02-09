@@ -390,13 +390,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-01-02
+<strong>Last updated:</strong> 2024-02-08
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 2
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ILD_ASE_Xenium/</code> <span
@@ -419,21 +419,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -574,15 +571,15 @@ code/utilities.R
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7ctargetblank6b9ca2aa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsheininghpLRgVwS7Z48swjRrQoBOAaVz2kQoFlP0cEwwugithubcomheininILDASEXeniumtreec33f0b28c9999a14d481050335b009d8b9d163b9targetblankc33f0b2a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c" target="_blank">6b9ca2a</a>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/tree/c33f0b28c9999a14d481050335b009d8b9d163b9" target="_blank">c33f0b2</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7ctargetblank6b9ca2aa"
+id="strongRepositoryversionstrongahrefhttpsheininghpLRgVwS7Z48swjRrQoBOAaVz2kQoFlP0cEwwugithubcomheininILDASEXeniumtreec33f0b28c9999a14d481050335b009d8b9d163b9targetblankc33f0b2a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -592,7 +589,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c" target="_blank">6b9ca2a</a>.
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/tree/c33f0b28c9999a14d481050335b009d8b9d163b9" target="_blank">c33f0b2</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -606,14 +603,13 @@ depends on. Below is the status of the Git repository when the results
 were generated:
 </p>
 <pre><code>
+Untracked files:
+    Untracked:  analysis/aggregate_multiSNP.Rmd
+
 Unstaged changes:
-    Modified:   analysis/ASE.Rmd
-    Modified:   analysis/endo_mesen_annotations.Rmd
-    Modified:   analysis/epithelial_annotations.Rmd
-    Modified:   analysis/immune_annotations.Rmd
-    Modified:   analysis/post_annotation_visualization.Rmd
-    Modified:   analysis/visualize_ASE.Rmd
-    Modified:   code/colors_themes.R
+    Modified:   analysis/Xenium_preprocessing.Rmd
+    Modified:   analysis/ase_readcounts.Rmd
+    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -664,7 +660,58 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/analysis/visualize_ASE.Rmd" target="_blank">6b9ca2a</a>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/c33f0b28c9999a14d481050335b009d8b9d163b9/analysis/visualize_ASE.Rmd" target="_blank">c33f0b2</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-02-09
+</td>
+<td>
+Adding scripts for plotting spatial exp
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/db2fd02bd648a85b7cbe2050c92eb7c4dd6b8b42/analysis/visualize_ASE.Rmd" target="_blank">db2fd02</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-01-03
+</td>
+<td>
+Updated analysis scripts
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/db2fd02bd648a85b7cbe2050c92eb7c4dd6b8b42/docs/visualize_ASE.html" target="_blank">db2fd02</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-01-03
+</td>
+<td>
+Updated analysis scripts
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/analysis/visualize_ASE.Rmd" target="_blank">6b9ca2a</a>
 </td>
 <td>
 heinin
@@ -681,7 +728,7 @@ Added scripts for quantifying allelic bias
 html
 </td>
 <td>
-<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/docs/visualize_ASE.html" target="_blank">6b9ca2a</a>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/docs/visualize_ASE.html" target="_blank">6b9ca2a</a>
 </td>
 <td>
 heinin
@@ -715,7 +762,8 @@ Added scripts for quantifying allelic bias
                                 library(ggrepel)
                                 library(workflowr)
                                 library(googlesheets4)
-                                library(VariantAnnotation)})
+                                library(VariantAnnotation)
+                                library(data.table)})
 
 setwd(&quot;/home/hnatri/ILD_ASE_Xenium/&quot;)
 set.seed(9999)
@@ -776,8 +824,82 @@ hist_list_2vs0 &lt;- lapply(names(ase_sigtest), function(ct){
 
 patchwork::wrap_plots(hist_list_1_2vs0, ncol = 4)</code></pre>
 <p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/db2fd02bd648a85b7cbe2050c92eb7c4dd6b8b42/docs/figure/visualize_ASE.Rmd/unnamed-chunk-3-1.png" target="_blank">db2fd02</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-01-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>patchwork::wrap_plots(hist_list_2vs0, ncol = 4)</code></pre>
 <p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-2">
+Past versions of unnamed-chunk-3-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/db2fd02bd648a85b7cbe2050c92eb7c4dd6b8b42/docs/figure/visualize_ASE.Rmd/unnamed-chunk-3-2.png" target="_blank">db2fd02</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-01-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div
 id="for-each-cell-type-plotting-the-fdr-adjusted-p-value-distribution"
@@ -810,8 +932,82 @@ hist_list_2vs0 &lt;- lapply(names(ase_sigtest), function(ct){
 
 patchwork::wrap_plots(hist_list_1_2vs0, ncol = 4)</code></pre>
 <p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/db2fd02bd648a85b7cbe2050c92eb7c4dd6b8b42/docs/figure/visualize_ASE.Rmd/unnamed-chunk-4-1.png" target="_blank">db2fd02</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-01-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>patchwork::wrap_plots(hist_list_2vs0, ncol = 4)</code></pre>
 <p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-4-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-2">
+Past versions of unnamed-chunk-4-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/db2fd02bd648a85b7cbe2050c92eb7c4dd6b8b42/docs/figure/visualize_ASE.Rmd/unnamed-chunk-4-2.png" target="_blank">db2fd02</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-01-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="examining-the-most-significant-loci" class="section level3">
 <h3>Examining the most significant loci</h3>
@@ -830,15 +1026,439 @@ NFKB1_rs35726481   0.1475899 9.181774e-04          1  0.029687736      AT2</code
 </div>
 <div id="plotting-allelic-bias" class="section level3">
 <h3>Plotting allelic bias</h3>
-<div id="importing-allelic-bias-and-genotype-data"
-class="section level4">
-<h4>Importing allelic bias and genotype data</h4>
+<p>Importing allelic bias and genotype data</p>
 <pre class="r"><code>ase_res &lt;- readRDS(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/ase_res.rds&quot;)
-gt_data &lt;- as.matrix(read.csv(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv&quot;, row.names = &quot;X&quot;))</code></pre>
+gt_data &lt;- as.matrix(read.csv(&quot;/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv&quot;, row.names = &quot;X&quot;))
+
+gt_data &lt;- cbind(gt_data, paste0(gt_data[,&quot;gene&quot;], &quot;_&quot;, gt_data[,&quot;gene_body_snp&quot;]))
+colnames(gt_data)[length(colnames(gt_data))] &lt;- &quot;gene_bodySNP&quot;
+
+gt_data &lt;- cbind(gt_data, paste0(gt_data[,&quot;gene&quot;], &quot;_&quot;, gt_data[,&quot;esnp&quot;]))
+colnames(gt_data)[length(colnames(gt_data))] &lt;- &quot;gene_esnp&quot;
+
+# Sanity check
+dim(ase_res[[1]])</code></pre>
+<pre><code>[1] 97 35</code></pre>
+<pre class="r"><code>length(intersect(rownames(ase_res[[1]]), gt_data[,&quot;gene_bodySNP&quot;]))</code></pre>
+<pre><code>[1] 97</code></pre>
+<p>Combining ASE and genotype data</p>
+<pre class="r"><code>ase_res &lt;- lapply(ase_res, function(xx){
+  xx &lt;- xx %&gt;% pivot_longer(cols = setdiff(colnames(xx), c(&quot;celltype&quot;, &quot;lineage&quot;)),
+                            names_to = &quot;Sample_Name&quot;,
+                            values_to = &quot;allelic_bias&quot;)
+
+  xx &lt;- merge(xx, gt_data, by = &quot;Sample_Name&quot;)
+  
+  xx
+  })</code></pre>
+<p>Plotting</p>
+<pre class="r"><code>sort(unique(ase_res[[1]]$gene_bodySNP))</code></pre>
+<pre><code> [1] &quot;ACTA2_rs11202915&quot;    &quot;ACTA2_rs139137711&quot;   &quot;AKR1C1_rs11252856&quot;  
+ [4] &quot;AKR1C1_rs3890643&quot;    &quot;AKR1C1_rs7083234&quot;    &quot;AKR1C1_rs75391810&quot;  
+ [7] &quot;AKR1C2_rs12764498&quot;   &quot;AKR1C2_rs68057779&quot;   &quot;ANKRD28_rs34705070&quot; 
+[10] &quot;ANKRD28_rs4419368&quot;   &quot;ANKRD28_rs6772168&quot;   &quot;CD247_rs1214596&quot;    
+[13] &quot;CD247_rs1723018&quot;     &quot;CRELD2_rs12171243&quot;   &quot;CRELD2_rs1608&quot;      
+[16] &quot;CRELD2_rs58888255&quot;   &quot;CRELD2_rs7410765&quot;    &quot;CST3_rs3088162&quot;     
+[19] &quot;CST3_rs71334202&quot;     &quot;DEFB1_rs2293960&quot;     &quot;DEFB1_rs2977773&quot;    
+[22] &quot;DEFB1_rs5743462&quot;     &quot;DMBT1_rs2277235&quot;     &quot;DMBT1_rs3013244&quot;    
+[25] &quot;DMBT1_rs7072966&quot;     &quot;DSP_rs10484326&quot;      &quot;EPCAM_rs4399765&quot;    
+[28] &quot;EPCAM_rs55931899&quot;    &quot;EPCAM_rs7608471&quot;     &quot;EREG_rs1017734&quot;     
+[31] &quot;EREG_rs1017736&quot;      &quot;FAS_rs1926194&quot;       &quot;FAS_rs9658742&quot;      
+[34] &quot;GCLM_rs718874&quot;       &quot;GCLM_rs718875&quot;       &quot;HERPUD1_rs11864751&quot; 
+[37] &quot;HERPUD1_rs2518058&quot;   &quot;HERPUD1_rs3903056&quot;   &quot;HERPUD1_rs8056195&quot;  
+[40] &quot;IL4R_rs11645013&quot;     &quot;IL4R_rs12445247&quot;     &quot;ITGB1_rs1187068&quot;    
+[43] &quot;ITGB1_rs1187101&quot;     &quot;ITGB1_rs1187102&quot;     &quot;ITGB1_rs1187104&quot;    
+[46] &quot;ITGB1_rs2245844&quot;     &quot;ITGB1_rs2488319&quot;     &quot;KANSL1_rs1029463&quot;   
+[49] &quot;KANSL1_rs2668670&quot;    &quot;KANSL1_rs2696609&quot;    &quot;KANSL1_rs371996525&quot; 
+[52] &quot;KANSL1_rs542050069&quot;  &quot;KANSL1_rs546433642&quot;  &quot;KANSL1_rs549599956&quot; 
+[55] &quot;KANSL1_rs558642106&quot;  &quot;KANSL1_rs563326240&quot;  &quot;KANSL1_rs569247938&quot; 
+[58] &quot;KANSL1_rs577973995&quot;  &quot;MGST1_rs11056929&quot;    &quot;MGST1_rs11056933&quot;   
+[61] &quot;MMP7_rs10750646&quot;     &quot;MMP7_rs12575975&quot;     &quot;MUC5B_rs75101148&quot;   
+[64] &quot;NFKB1_rs1598858&quot;     &quot;NFKB1_rs230507&quot;      &quot;NFKB1_rs230535&quot;     
+[67] &quot;NFKB1_rs35726481&quot;    &quot;NFKB1_rs7340881&quot;     &quot;NUCB2_rs214908&quot;     
+[70] &quot;NUCB2_rs498327&quot;      &quot;NUCB2_rs75833251&quot;    &quot;NUTF2_rs28670302&quot;   
+[73] &quot;NUTF2_rs57721459&quot;    &quot;PDIA4_rs10085877&quot;    &quot;PDIA4_rs12704057&quot;   
+[76] &quot;PDIA4_rs56932055&quot;    &quot;SCGB3A2_rs13163344&quot;  &quot;SCGB3A2_rs138215727&quot;
+[79] &quot;SFTA2_rs12528271&quot;    &quot;SFTA2_rs2240803&quot;     &quot;SFTPD_rs3934643&quot;    
+[82] &quot;SFTPD_rs58606426&quot;    &quot;SLC25A37_rs2928672&quot;  &quot;SLC25A37_rs2978483&quot; 
+[85] &quot;SLC25A37_rs35318617&quot; &quot;SLC25A37_rs7844887&quot;  &quot;SNCA_rs2619344&quot;     
+[88] &quot;SNCA_rs2737017&quot;      &quot;SPARCL1_rs10027069&quot;  &quot;SPARCL1_rs4693825&quot;  
+[91] &quot;SPARCL1_rs4693826&quot;   &quot;STAT1_rs4853532&quot;     &quot;STAT1_rs7575823&quot;    
+[94] &quot;UCHL3_rs8192757&quot;     &quot;UCHL3_rs9600498&quot;     &quot;WWTR1_rs17195631&quot;   
+[97] &quot;WWTR1_rs75045913&quot;   </code></pre>
+<pre class="r"><code>for(ct in names(ase_res)){
+  print(ct)
+  
+  plot_list &lt;- lapply(sort(unique(ase_res[[ct]]$gene_bodySNP)), function(xx){
+    p_data &lt;- ase_res[[ct]] %&gt;% filter(gene_bodySNP == xx) %&gt;%
+      filter_at(vars(allelic_bias), all_vars(!is.infinite(.)))
+  
+    p &lt;- p_data %&gt;% ggplot(aes(x = linked_SNP_GT, y = allelic_bias)) +
+      geom_violin() +
+      stat_compare_means(method = &quot;wilcox.test&quot;, size = 2,
+                         label.y = (max(p_data$allelic_bias, na.rm = T)+10)) +
+      ylim(0, (max(p_data$allelic_bias, na.rm = T)+70)) +
+      #geom_jitter() +
+      theme_minimal() +
+      ggtitle(xx) +
+      xlab(&quot;Linked SNP dosage&quot;) +
+      ylab(&quot;Allelic bias (ALT/REF)&quot;) +
+      manuscript_theme
+    
+    p$layers[[2]]$aes_params$textsize &lt;- 2
+    
+    p
+})
+
+print(patchwork::wrap_plots(plot_list, ncol = 3))
+}</code></pre>
+<pre><code>[1] &quot;AT2&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Epi_SFTPD-/KRT15+&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Epi_NS_C4&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Ciliated&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-4.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Epi_KRT15-/MUC5B+&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-5.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Macro_C5&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-6.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Epi_NS_C2&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-7.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;AT1&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-8.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Endo_NS_C1&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-9.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Mesen_NS_C1&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-10.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Epi_NS_C3&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-11.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Epi_NS_C1&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-12.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Macro&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-13.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Fibroblast&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-14.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Neutrophil&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-15.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;T_CD8+&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-16.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Bcells&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-17.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Endo_NS_C2&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-18.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Lymphatic&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-19.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Systemic venous&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-20.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Arteriole&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-21.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Capillary&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-22.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Adventitial FB&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-23.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Mesothelial&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-24.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Alveolar FB&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-25.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;Pericyte&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-26.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>[1] &quot;SMC&quot;</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-8-27.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
+<div id="calculating-effect-size-for-allelic-bias-across-genotypes"
+class="section level3">
+<h3>Calculating effect size for allelic bias across genotypes</h3>
+<pre class="r"><code>ase_lm &lt;- lapply(names(ase_res), function(ct){
+  #print(ct)
+  
+  res_list &lt;- lapply(sort(unique(ase_res[[ct]]$gene_bodySNP)), function(xx){
+    p_data &lt;- ase_res[[ct]] %&gt;% filter(gene_bodySNP == xx) %&gt;%
+      filter_at(vars(allelic_bias), all_vars(!is.infinite(.)))
+  
+    lm_res &lt;- lm(allelic_bias~linked_SNP_GT, p_data)
+    lm_res &lt;- summary(lm_res)
+    
+    return(c(xx, lm_res$adj.r.squared, lm_res$coefficients[,4][[1]]))
+})
+
+res_df &lt;- data.frame(do.call(rbind, res_list))
+colnames(res_df) &lt;- c(&quot;gene_bodySNP&quot;, &quot;adjR2&quot;, &quot;pval&quot;)
+res_df$celltype &lt;- ct
+
+res_df
+
+})
+
+names(ase_lm) &lt;- names(ase_res)</code></pre>
 </div>
 <div id="comparing-to-ct-eqtl-results" class="section level3">
 <h3>Comparing to ct-eQTL results</h3>
+<p>mashR results for each celltype</p>
+<pre class="r"><code># SNP info
+mashr_snp_info &lt;- fread(&quot;/tgen_labs/banovich/IPF/eQTL/2022-08-10_38celltypes-mashr/filtered_MAF-HWE-INDPW_snp-info.txt&quot;, header=T)
+
+# Gene info
+genes_gtf &lt;- read.table(&quot;/tgen_labs/banovich/SingleCell/CellRanger/3_1_0/Ensemble_93/PipelineData/Projects/IPF/References/refdata-cellranger-GRCh38-3.0.0/genes/genes.gtf&quot;, sep = &quot;\t&quot;)
+
+gene_ids &lt;- gsub(&quot;;&quot;, &quot;&quot;, sapply(strsplit(genes_gtf$V9,&quot; &quot;), `[`, 2))
+gene_names &lt;- gsub(&quot;;&quot;, &quot;&quot;, sapply(strsplit(genes_gtf$V9,&quot; &quot;), `[`, 6))
+genes_gtf$feature_id &lt;- gene_ids
+genes_gtf$feature_name &lt;- gene_names
+genes_gtf &lt;- dplyr::filter(genes_gtf, V3 == &quot;gene&quot;)
+genes_gtf &lt;- dplyr::select(genes_gtf, V1, V4, V5, feature_id, feature_name)
+colnames(genes_gtf) &lt;- c(&quot;chr&quot;, &quot;start&quot;, &quot;stop&quot;, &quot;ensembl&quot;, &quot;gene&quot;)
+
+# mashR results
+#celltypes &lt;- list.files(&quot;/tgen_labs/banovich/IPF/eQTL/2022-08-10_38celltypes-mashr/2022-08-10_gene-aggregated-means&quot;)
+#celltypes &lt;- gsub(&quot;_agg.tsv&quot;, &quot;&quot;, celltypes)
+#celltypes &lt;- c(&quot;epithelial_AT2&quot;)
+spatial_vs_mashr &lt;- read_sheet(ct_annot, sheet = &quot;Spatial vs. mashr cell types&quot;)
+celltypes &lt;- setdiff(spatial_vs_mashr$mashr, c(NA))
+
+mashr_res &lt;- lapply(celltypes, function(celltype){
+    eqtl_stats &lt;- fread(paste0(&quot;/tgen_labs/banovich/IPF/eQTL/2022-08-10_38celltypes-mashr/&quot;, celltype, &quot;.tsv&quot;),
+                        header=T, sep=&quot;\t&quot;)
+    eqtl_stats &lt;- distinct(eqtl_stats)
+    
+    eqtl_stats$gene_name &lt;- plyr::mapvalues(x = eqtl_stats$feature_id,
+                                           from = genes_gtf$ensembl,
+                                           to = genes_gtf$gene)
+
+    eqtl_stats
+})
+
+names(mashr_res) &lt;- celltypes</code></pre>
+<p>Gene + eSNP combinations to look at</p>
+<pre class="r"><code>head(ase_res[[1]])</code></pre>
+<pre><code>  Sample_Name celltype    lineage allelic_bias       esnp                 probe
+1     THD0016      AT2 Epithelial     2.333333  rs3890643   AKR1C1-10-4979609-C
+2     THD0016      AT2 Epithelial     2.333333   rs356199     SNCA-4-89823097-T
+3     THD0016      AT2 Epithelial     2.333333  rs9501340    SFTA2-6-30953180-A
+4     THD0016      AT2 Epithelial     2.333333   rs356199     SNCA-4-89824087-T
+5     THD0016      AT2 Epithelial     2.333333 rs55726180 HERPUD1-16-56932504-G
+6     THD0016      AT2 Epithelial     2.333333  rs9543963   UCHL3-13-75573767-T
+  linked_SNP_GT    gene chr       pos probe_var gene_body_snp eSNP_GT tag_REF
+1             1  AKR1C1  10   4979609         C    rs11252856       1       A
+2             2    SNCA   4  89823097         T     rs2619344       1       C
+3             2   SFTA2   6  30953180         A     rs2240803       2       G
+4             2    SNCA   4  89824087         T     rs2737017       1       C
+5             0 HERPUD1  16  56932504         G     rs8056195       0       C
+6             0   UCHL3  13  75573767         T     rs9600498       0       G
+  tag_ALT eSNP_REF eSNP_ALT      gene_bodySNP          gene_esnp
+1       C        A        G AKR1C1_rs11252856   AKR1C1_rs3890643
+2       T        G        A    SNCA_rs2619344      SNCA_rs356199
+3       A        G        A   SFTA2_rs2240803    SFTA2_rs9501340
+4       T        G        A    SNCA_rs2737017      SNCA_rs356199
+5       G        G        A HERPUD1_rs8056195 HERPUD1_rs55726180
+6       T        C        T   UCHL3_rs9600498    UCHL3_rs9543963</code></pre>
+<pre class="r"><code>sort(unique(ase_res[[1]]$gene_esnp))</code></pre>
+<pre><code> [1] &quot;ACTA2_rs11202914&quot;   &quot;AKR1C1_rs3890643&quot;   &quot;AKR1C1_rs7076886&quot;  
+ [4] &quot;AKR1C2_rs76216796&quot;  &quot;ANKRD28_rs61538149&quot; &quot;CD247_rs1773560&quot;   
+ [7] &quot;CRELD2_rs73443974&quot;  &quot;CST3_rs6048928&quot;     &quot;DEFB1_rs2977775&quot;   
+[10] &quot;DMBT1_rs2981750&quot;    &quot;DSP_rs3799525&quot;      &quot;EPCAM_rs7608471&quot;   
+[13] &quot;EPCAM_rs77131614&quot;   &quot;EREG_rs2367707&quot;     &quot;FAS_rs11591675&quot;    
+[16] &quot;GCLM_rs718873&quot;      &quot;HERPUD1_rs1366544&quot;  &quot;HERPUD1_rs55726180&quot;
+[19] &quot;IL4R_rs2107356&quot;     &quot;ITGB1_rs11597869&quot;   &quot;ITGB1_rs1187104&quot;   
+[22] &quot;ITGB1_rs1775114&quot;    &quot;ITGB1_rs2488319&quot;    &quot;KANSL1_rs60814418&quot; 
+[25] &quot;MGST1_rs10772933&quot;   &quot;MMP7_rs1996352&quot;     &quot;MUC5B_rs78526728&quot;  
+[28] &quot;NFKB1_rs11097786&quot;   &quot;NFKB1_rs13118067&quot;   &quot;NUCB2_rs11024115&quot;  
+[31] &quot;NUCB2_rs4757495&quot;    &quot;NUTF2_rs11860715&quot;   &quot;PDIA4_rs2616857&quot;   
+[34] &quot;PDIA4_rs3779039&quot;    &quot;SCGB3A2_rs62378652&quot; &quot;SFTA2_rs9501340&quot;   
+[37] &quot;SFTPD_rs7923963&quot;    &quot;SLC25A37_rs2928673&quot; &quot;SLC25A37_rs7015818&quot;
+[40] &quot;SNCA_rs356199&quot;      &quot;SPARCL1_rs1049544&quot;  &quot;STAT1_rs1400657&quot;   
+[43] &quot;UCHL3_rs9543963&quot;    &quot;WWTR1_rs28431222&quot;  </code></pre>
+<pre class="r"><code>names(ase_lm)</code></pre>
+<pre><code> [1] &quot;AT2&quot;               &quot;Epi_SFTPD-/KRT15+&quot; &quot;Epi_NS_C4&quot;        
+ [4] &quot;Ciliated&quot;          &quot;Epi_KRT15-/MUC5B+&quot; &quot;Macro_C5&quot;         
+ [7] &quot;Epi_NS_C2&quot;         &quot;AT1&quot;               &quot;Endo_NS_C1&quot;       
+[10] &quot;Mesen_NS_C1&quot;       &quot;Epi_NS_C3&quot;         &quot;Epi_NS_C1&quot;        
+[13] &quot;Macro&quot;             &quot;Fibroblast&quot;        &quot;Neutrophil&quot;       
+[16] &quot;T_CD8+&quot;            &quot;Bcells&quot;            &quot;Endo_NS_C2&quot;       
+[19] &quot;Lymphatic&quot;         &quot;Systemic venous&quot;   &quot;Arteriole&quot;        
+[22] &quot;Capillary&quot;         &quot;Adventitial FB&quot;    &quot;Mesothelial&quot;      
+[25] &quot;Alveolar FB&quot;       &quot;Pericyte&quot;          &quot;SMC&quot;              </code></pre>
+<pre class="r"><code>names(mashr_res)</code></pre>
+<pre><code> [1] &quot;epithelial_AT2&quot;              &quot;epithelial_Ciliated&quot;        
+ [3] &quot;epithelial_AT1&quot;              &quot;immune_Bcells&quot;              
+ [5] &quot;immune_CD8NKT&quot;               &quot;endothelial_Lymphatic&quot;      
+ [7] &quot;endothelial_peribronchiolar&quot; &quot;endothelial_arteriole&quot;      
+ [9] &quot;endothelial_capillary&quot;       &quot;mesenchymal_MatrixFB&quot;       
+[11] &quot;mesenchymal_Mesothelial&quot;     &quot;mesenchymal_WNT2+FB&quot;        
+[13] &quot;mesenchymal_Pericyte&quot;        &quot;mesenchymal_SMC&quot;            </code></pre>
+<p>First, looking at AT2 cells</p>
+<pre class="r"><code>at2 &lt;- mashr_res[[&quot;epithelial_AT2&quot;]] %&gt;%
+  mutate(gene_esnp = paste0(gene_name, &quot;_&quot;, snp_rsid)) %&gt;%
+  as.data.frame()
+
+head(ase_lm[[&quot;AT2&quot;]])</code></pre>
+<pre><code>       gene_bodySNP                 adjR2                 pval celltype
+1  ACTA2_rs11202915 -0.000560091855305034 8.76779607744798e-15      AT2
+2 ACTA2_rs139137711 -0.000560091855305034 8.76779607744798e-15      AT2
+3 AKR1C1_rs11252856 -0.000543535051681365 2.58495024403576e-16      AT2
+4  AKR1C1_rs3890643 -0.000546587266758936 2.85924507299824e-14      AT2
+5  AKR1C1_rs7083234  -0.00054998572079068  1.4976865067656e-13      AT2
+6 AKR1C1_rs75391810 -0.000539848198319426 5.73556024615241e-16      AT2</code></pre>
+<pre class="r"><code># Adding eQTL info
+at2$gene_bodySNP &lt;- plyr::mapvalues(x = at2$gene_esnp,
+                                    from = ase_res[[1]]$gene_esnp,
+                                    to = ase_res[[1]]$gene_bodySNP)
+
+at2 &lt;- merge(at2, ase_lm[[&quot;AT2&quot;]], by = &quot;gene_bodySNP&quot;) %&gt;%
+  dplyr::select(c(&quot;gene_bodySNP&quot;, &quot;gene_esnp&quot;, &quot;feature_id&quot;, &quot;snp_id&quot;,
+           &quot;posterior_means&quot;, &quot;lfsr&quot;, &quot;gene_name&quot;, &quot;adjR2&quot;, &quot;pval&quot;)) %&gt;%
+  distinct() %&gt;%
+  filter(complete.cases(.))
+
+at2 %&gt;% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;) +
+  theme_minimal() +
+  xlab(&quot;ASE regression R2&quot;) +
+  ylab(&quot;mashR posterior means&quot;) +
+  ggtitle(&quot;AT2&quot;)</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Looking across all cell types shared between data types</p>
+<pre class="r"><code>plot_list &lt;- lapply(setdiff(spatial_vs_mashr$mashr, c(NA)), function(ct){
+  #message(ct)
+  ct_mashr &lt;- mashr_res[[ct]] %&gt;%
+    mutate(gene_esnp = paste0(gene_name, &quot;_&quot;, snp_rsid)) %&gt;%
+    as.data.frame()
+
+  # Adding eQTL info
+  ct_mashr$gene_bodySNP &lt;- plyr::mapvalues(x = ct_mashr$gene_esnp,
+                                           from = ase_res[[1]]$gene_esnp,
+                                           to = ase_res[[1]]$gene_bodySNP,
+                                           warn_missing = F)
+  
+  ase_name &lt;- spatial_vs_mashr %&gt;% filter(mashr == ct) %&gt;%
+    dplyr::select(spatial) %&gt;% as.character()
+  
+  ct_mashr &lt;- merge(ct_mashr, ase_lm[[ase_name]], by = &quot;gene_bodySNP&quot;) %&gt;%
+    dplyr::select(c(&quot;gene_bodySNP&quot;, &quot;gene_esnp&quot;, &quot;feature_id&quot;, &quot;snp_id&quot;,
+             &quot;posterior_means&quot;, &quot;lfsr&quot;, &quot;gene_name&quot;, &quot;adjR2&quot;, &quot;pval&quot;)) %&gt;%
+    distinct() %&gt;%
+    filter(complete.cases(.))
+  
+  ct_mashr %&gt;% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+    geom_point() +
+    geom_smooth(method = &quot;lm&quot;) +
+    theme_minimal() +
+    xlab(&quot;ASE regression R2&quot;) +
+    ylab(&quot;mashR posterior means&quot;) +
+    ggtitle(ase_name) +
+    manuscript_theme
+})
+
+patchwork::wrap_plots(plot_list, ncol = 3)</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="muc5b-across-samples-in-at2" class="section level1">
+<h1>MUC5B across samples in AT2</h1>
+<pre class="r"><code>at2_mashr &lt;- mashr_res[[&quot;epithelial_AT2&quot;]] %&gt;%
+  mutate(gene_esnp = paste0(gene_name, &quot;_&quot;, snp_rsid)) %&gt;%
+  as.data.frame()
+
+# Adding eQTL info
+at2_mashr$gene_bodySNP &lt;- plyr::mapvalues(x = at2_mashr$gene_esnp,
+                                         from = ase_res[[1]]$gene_esnp,
+                                         to = ase_res[[1]]$gene_bodySNP,
+                                         warn_missing = F)
+
+at2_mashr &lt;- merge(at2_mashr, ase_lm[[&quot;AT2&quot;]], by = &quot;gene_bodySNP&quot;) %&gt;%
+  dplyr::select(c(&quot;gene_bodySNP&quot;, &quot;gene_esnp&quot;, &quot;feature_id&quot;, &quot;snp_id&quot;,
+           &quot;posterior_means&quot;, &quot;lfsr&quot;, &quot;gene_name&quot;, &quot;adjR2&quot;, &quot;pval&quot;)) %&gt;%
+  distinct() %&gt;%
+  filter(complete.cases(.),
+         gene_name == &quot;MUC5B&quot;)
+
+at2_mashr %&gt;% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;) +
+  theme_minimal() +
+  xlab(&quot;ASE regression R2&quot;) +
+  ylab(&quot;mashR posterior means&quot;) +
+  #ggtitle(ase_name) +
+  manuscript_theme</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="muc5b-expression-by-probe-snp-genotype-in-each-cell-type"
+class="section level3">
+<h3>MUC5B expression by probe-SNP genotype in each cell type</h3>
+<div id="importing-data-1" class="section level4">
+<h4>Importing data</h4>
+<pre class="r"><code>seurat_object &lt;- readRDS(&quot;/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds&quot;)</code></pre>
+<p>Adding</p>
+<pre class="r"><code>MUC5B_gt &lt;- gt_data %&gt;% as.data.frame() %&gt;%
+  filter(gene == &quot;MUC5B&quot;) %&gt;%
+  dplyr::select(gene_body_snp,
+         esnp,
+         gene,
+         Sample_Name,
+         linked_SNP_GT,
+         eSNP_GT) %&gt;% distinct()
+
+head(MUC5B_gt)</code></pre>
+<pre><code>    gene_body_snp       esnp  gene Sample_Name linked_SNP_GT eSNP_GT
+91     rs75101148 rs78526728 MUC5B     THD0001             0       0
+188    rs75101148 rs78526728 MUC5B     THD0002             0       0
+285    rs75101148 rs78526728 MUC5B     THD0005             0       0
+382    rs75101148 rs78526728 MUC5B     THD0006             0       0
+479    rs75101148 rs78526728 MUC5B     THD0007             0       0
+576    rs75101148 rs78526728 MUC5B     THD0008             0       0</code></pre>
+<pre class="r"><code>seurat_object$MUC5B_linked_gt &lt;- plyr::mapvalues(x = seurat_object$Sample_Name,
+                                                 from = MUC5B_gt$Sample_Name,
+                                                 to = as.character(MUC5B_gt$linked_SNP_GT))
+seurat_object$MUC5B_eSNP_gt &lt;- plyr::mapvalues(x = seurat_object$Sample_Name,
+                                               from = MUC5B_gt$Sample_Name,
+                                               to = as.character(MUC5B_gt$eSNP_GT))
+
+VlnPlot(seurat_object,
+        features = rownames(seurat_object)[grep(&quot;MUC5B&quot;, rownames(seurat_object))],
+        group.by = &quot;annotation_1&quot;,
+        split.by = &quot;MUC5B_linked_gt&quot;,
+        ncol = 1,
+        pt.size = 0) &amp;
+  theme_bw() &amp;
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
+<p><img src="figure/visualize_ASE.Rmd/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="proportions-of-eqtl-that-have-the-same-sign-in-spatial-ase"
+class="section level3">
+<h3>Proportions of eQTL that have the same sign in spatial ASE</h3>
+<pre class="r"><code>res_list &lt;- lapply(setdiff(spatial_vs_mashr$mashr, c(NA)), function(ct){
+  ct_mashr &lt;- mashr_res[[ct]] %&gt;%
+    mutate(gene_esnp = paste0(gene_name, &quot;_&quot;, snp_rsid)) %&gt;%
+    as.data.frame()
+
+  # Adding eQTL info
+  ct_mashr$gene_bodySNP &lt;- plyr::mapvalues(x = ct_mashr$gene_esnp,
+                                           from = ase_res[[1]]$gene_esnp,
+                                           to = ase_res[[1]]$gene_bodySNP,
+                                           warn_missing = F)
+  
+  ase_name &lt;- spatial_vs_mashr %&gt;% filter(mashr == ct) %&gt;%
+    dplyr::select(spatial) %&gt;% as.character()
+  
+  ct_mashr &lt;- merge(ct_mashr, ase_lm[[ase_name]], by = &quot;gene_bodySNP&quot;) %&gt;%
+    dplyr::select(c(&quot;gene_bodySNP&quot;, &quot;gene_esnp&quot;, &quot;feature_id&quot;, &quot;snp_id&quot;,
+             &quot;posterior_means&quot;, &quot;lfsr&quot;, &quot;gene_name&quot;, &quot;adjR2&quot;, &quot;pval&quot;)) %&gt;%
+    distinct() %&gt;%
+    filter(complete.cases(.))
+  
+  ct_mashr$celltype &lt;- ct
+  
+  ct_mashr
+})
+
+res_df &lt;- data.frame(do.call(rbind, res_list))
+
+same_sign &lt;- res_df %&gt;% filter((posterior_means &lt; 0 &amp; adjR2 &lt; 0) |
+                                 (posterior_means &gt; 0 &amp; adjR2 &gt; 0))
+
+nrow(same_sign)/nrow(res_df)*100</code></pre>
+<pre><code>[1] 56.92851</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -850,7 +1470,7 @@ Session information
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.3.0 (2023-04-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.2 LTS
+Running under: Ubuntu 22.04.3 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -872,16 +1492,16 @@ attached base packages:
 [8] methods   base     
 
 other attached packages:
- [1] ComplexHeatmap_2.16.0       RColorBrewer_1.1-3         
+ [1] ComplexHeatmap_2.18.0       RColorBrewer_1.1-3         
  [3] viridis_0.6.3               viridisLite_0.4.2          
- [5] ggthemes_5.0.0              VariantAnnotation_1.46.0   
- [7] Rsamtools_2.16.0            Biostrings_2.68.1          
- [9] XVector_0.40.0              SummarizedExperiment_1.30.2
-[11] Biobase_2.60.0              GenomicRanges_1.52.0       
-[13] GenomeInfoDb_1.36.0         IRanges_2.34.0             
-[15] S4Vectors_0.38.1            MatrixGenerics_1.12.3      
-[17] matrixStats_1.0.0           BiocGenerics_0.46.0        
-[19] googlesheets4_1.1.0         workflowr_1.7.1            
+ [5] ggthemes_4.2.4              data.table_1.14.8          
+ [7] VariantAnnotation_1.48.1    Rsamtools_2.18.0           
+ [9] Biostrings_2.70.1           XVector_0.42.0             
+[11] SummarizedExperiment_1.32.0 Biobase_2.62.0             
+[13] GenomicRanges_1.54.1        GenomeInfoDb_1.38.5        
+[15] IRanges_2.36.0              S4Vectors_0.40.2           
+[17] MatrixGenerics_1.14.0       matrixStats_1.0.0          
+[19] BiocGenerics_0.48.1         googlesheets4_1.1.0        
 [21] ggrepel_0.9.3               ggpubr_0.6.0               
 [23] plyr_1.8.8                  lubridate_1.9.2            
 [25] forcats_1.0.0               stringr_1.5.0              
@@ -889,66 +1509,70 @@ other attached packages:
 [29] readr_2.1.4                 tidyr_1.3.0                
 [31] tibble_3.2.1                ggplot2_3.4.2              
 [33] tidyverse_2.0.0             SeuratDisk_0.0.0.9021      
-[35] Seurat_4.9.9.9048           SeuratObject_4.9.9.9084    
+[35] Seurat_5.0.1                SeuratObject_5.0.1         
 [37] sp_1.6-1                    cli_3.6.1                  
+[39] workflowr_1.7.1            
 
 loaded via a namespace (and not attached):
   [1] fs_1.6.2                 spatstat.sparse_3.0-1    bitops_1.0-7            
   [4] doParallel_1.0.17        httr_1.4.6               tools_4.3.0             
-  [7] sctransform_0.3.5        backports_1.4.1          utf8_1.2.3              
- [10] R6_2.5.1                 lazyeval_0.2.2           uwot_0.1.14             
- [13] GetoptLong_1.0.5         withr_2.5.0              prettyunits_1.1.1       
- [16] gridExtra_2.3            progressr_0.13.0         spatstat.explore_3.2-1  
- [19] fastDummies_1.6.3        labeling_0.4.2           sass_0.4.6              
- [22] spatstat.data_3.0-1      ggridges_0.5.4           pbapply_1.7-0           
- [25] parallelly_1.36.0        BSgenome_1.68.0          rstudioapi_0.14         
- [28] RSQLite_2.3.1            shape_1.4.6              generics_0.1.3          
- [31] BiocIO_1.10.0            ica_1.0-3                spatstat.random_3.1-5   
- [34] car_3.1-2                Matrix_1.5-4.1           fansi_1.0.4             
- [37] abind_1.4-5              lifecycle_1.0.3          whisker_0.4.1           
- [40] yaml_2.3.7               carData_3.0-5            BiocFileCache_2.8.0     
- [43] Rtsne_0.16               blob_1.2.4               promises_1.2.0.1        
- [46] crayon_1.5.2             miniUI_0.1.1.1           lattice_0.21-8          
- [49] cowplot_1.1.1            GenomicFeatures_1.52.2   KEGGREST_1.40.0         
- [52] pillar_1.9.0             knitr_1.43               rjson_0.2.21            
- [55] future.apply_1.11.0      codetools_0.2-19         leiden_0.4.3            
- [58] glue_1.6.2               getPass_0.2-2            data.table_1.14.8       
- [61] vctrs_0.6.2              png_0.1-8                spam_2.9-1              
- [64] cellranger_1.1.0         gtable_0.3.3             cachem_1.0.8            
- [67] xfun_0.39                S4Arrays_1.0.4           mime_0.12               
- [70] survival_3.5-5           gargle_1.4.0             iterators_1.0.14        
- [73] ellipsis_0.3.2           fitdistrplus_1.1-11      ROCR_1.0-11             
- [76] nlme_3.1-162             bit64_4.0.5              progress_1.2.2          
- [79] filelock_1.0.3           RcppAnnoy_0.0.20         rprojroot_2.0.3         
- [82] bslib_0.4.2              irlba_2.3.5.1            KernSmooth_2.23-21      
- [85] colorspace_2.1-0         DBI_1.1.3                tidyselect_1.2.0        
- [88] processx_3.8.1           bit_4.0.5                compiler_4.3.0          
- [91] curl_5.0.0               git2r_0.32.0             hdf5r_1.3.8             
- [94] xml2_1.3.4               DelayedArray_0.26.7      plotly_4.10.2           
- [97] rtracklayer_1.60.0       scales_1.2.1             lmtest_0.9-40           
-[100] callr_3.7.3              rappdirs_0.3.3           digest_0.6.31           
-[103] goftest_1.2-3            spatstat.utils_3.0-3     rmarkdown_2.22          
-[106] htmltools_0.5.5          pkgconfig_2.0.3          highr_0.10              
-[109] dbplyr_2.3.2             fastmap_1.1.1            GlobalOptions_0.1.2     
-[112] rlang_1.1.1              htmlwidgets_1.6.2        shiny_1.7.4             
-[115] farver_2.1.1             jquerylib_0.1.4          zoo_1.8-12              
-[118] jsonlite_1.8.5           BiocParallel_1.34.2      RCurl_1.98-1.12         
-[121] magrittr_2.0.3           GenomeInfoDbData_1.2.10  dotCall64_1.0-2         
-[124] patchwork_1.1.2          munsell_0.5.0            Rcpp_1.0.10             
-[127] reticulate_1.34.0        stringi_1.7.12           zlibbioc_1.46.0         
-[130] MASS_7.3-60              parallel_4.3.0           listenv_0.9.0           
-[133] deldir_1.0-9             splines_4.3.0            tensor_1.5              
-[136] circlize_0.4.15          hms_1.1.3                ps_1.7.5                
-[139] igraph_1.4.3             spatstat.geom_3.2-1      ggsignif_0.6.4          
-[142] RcppHNSW_0.4.1           reshape2_1.4.4           biomaRt_2.56.1          
-[145] XML_3.99-0.14            evaluate_0.21            foreach_1.5.2           
-[148] tzdb_0.4.0               httpuv_1.6.11            RANN_2.6.1              
-[151] polyclip_1.10-4          clue_0.3-64              future_1.32.0           
-[154] scattermore_1.1          broom_1.0.4              xtable_1.8-4            
-[157] restfulr_0.0.15          RSpectra_0.16-1          rstatix_0.7.2           
-[160] later_1.3.1              googledrive_2.1.0        GenomicAlignments_1.36.0
-[163] memoise_2.0.1            AnnotationDbi_1.62.1     cluster_2.1.4           
-[166] timechange_0.2.0         globals_0.16.2          </code></pre>
+  [7] sctransform_0.4.1        backports_1.4.1          utf8_1.2.3              
+ [10] R6_2.5.1                 mgcv_1.8-42              lazyeval_0.2.2          
+ [13] uwot_0.1.14              GetoptLong_1.0.5         withr_2.5.0             
+ [16] prettyunits_1.1.1        gridExtra_2.3            progressr_0.13.0        
+ [19] spatstat.explore_3.2-1   fastDummies_1.7.3        labeling_0.4.2          
+ [22] sass_0.4.6               spatstat.data_3.0-1      ggridges_0.5.4          
+ [25] pbapply_1.7-0            parallelly_1.36.0        BSgenome_1.70.1         
+ [28] rstudioapi_0.14          RSQLite_2.3.1            shape_1.4.6             
+ [31] generics_0.1.3           BiocIO_1.12.0            ica_1.0-3               
+ [34] spatstat.random_3.1-5    car_3.1-2                Matrix_1.6-5            
+ [37] ggbeeswarm_0.7.2         fansi_1.0.4              abind_1.4-5             
+ [40] lifecycle_1.0.3          whisker_0.4.1            yaml_2.3.7              
+ [43] carData_3.0-5            SparseArray_1.2.3        BiocFileCache_2.10.1    
+ [46] Rtsne_0.16               blob_1.2.4               promises_1.2.0.1        
+ [49] crayon_1.5.2             miniUI_0.1.1.1           lattice_0.21-8          
+ [52] cowplot_1.1.1            GenomicFeatures_1.54.3   KEGGREST_1.42.0         
+ [55] pillar_1.9.0             knitr_1.43               rjson_0.2.21            
+ [58] future.apply_1.11.0      codetools_0.2-19         leiden_0.4.3            
+ [61] glue_1.6.2               getPass_0.2-4            vctrs_0.6.2             
+ [64] png_0.1-8                spam_2.9-1               cellranger_1.1.0        
+ [67] gtable_0.3.3             cachem_1.0.8             xfun_0.39               
+ [70] S4Arrays_1.2.0           mime_0.12                survival_3.5-5          
+ [73] gargle_1.4.0             iterators_1.0.14         ellipsis_0.3.2          
+ [76] fitdistrplus_1.1-11      ROCR_1.0-11              nlme_3.1-162            
+ [79] bit64_4.0.5              progress_1.2.2           filelock_1.0.2          
+ [82] RcppAnnoy_0.0.20         rprojroot_2.0.3          bslib_0.4.2             
+ [85] irlba_2.3.5.1            vipor_0.4.5              KernSmooth_2.23-21      
+ [88] colorspace_2.1-0         DBI_1.1.3                ggrastr_1.0.2           
+ [91] tidyselect_1.2.0         processx_3.8.1           bit_4.0.5               
+ [94] compiler_4.3.0           curl_5.0.0               git2r_0.32.0            
+ [97] hdf5r_1.3.8              xml2_1.3.4               DelayedArray_0.28.0     
+[100] plotly_4.10.2            rtracklayer_1.62.0       scales_1.2.1            
+[103] lmtest_0.9-40            callr_3.7.3              rappdirs_0.3.3          
+[106] digest_0.6.31            goftest_1.2-3            spatstat.utils_3.0-3    
+[109] rmarkdown_2.22           htmltools_0.5.5          pkgconfig_2.0.3         
+[112] highr_0.10               dbplyr_2.3.2             fastmap_1.1.1           
+[115] GlobalOptions_0.1.2      rlang_1.1.1              htmlwidgets_1.6.2       
+[118] shiny_1.7.4              farver_2.1.1             jquerylib_0.1.4         
+[121] zoo_1.8-12               jsonlite_1.8.5           BiocParallel_1.36.0     
+[124] RCurl_1.98-1.12          magrittr_2.0.3           GenomeInfoDbData_1.2.11 
+[127] dotCall64_1.0-2          patchwork_1.1.2          munsell_0.5.0           
+[130] Rcpp_1.0.10              reticulate_1.29          stringi_1.7.12          
+[133] zlibbioc_1.48.0          MASS_7.3-60              parallel_4.3.0          
+[136] listenv_0.9.0            deldir_1.0-9             splines_4.3.0           
+[139] tensor_1.5               circlize_0.4.15          hms_1.1.3               
+[142] ps_1.7.5                 igraph_1.4.3             spatstat.geom_3.2-1     
+[145] ggsignif_0.6.4           RcppHNSW_0.5.0           reshape2_1.4.4          
+[148] biomaRt_2.58.2           XML_3.99-0.14            evaluate_0.21           
+[151] foreach_1.5.2            tzdb_0.4.0               httpuv_1.6.11           
+[154] RANN_2.6.1               polyclip_1.10-4          clue_0.3-64             
+[157] future_1.32.0            scattermore_1.2          broom_1.0.4             
+[160] xtable_1.8-4             restfulr_0.0.15          RSpectra_0.16-1         
+[163] rstatix_0.7.2            later_1.3.1              googledrive_2.1.0       
+[166] beeswarm_0.4.0           GenomicAlignments_1.38.2 memoise_2.0.1           
+[169] AnnotationDbi_1.64.1     cluster_2.1.4            timechange_0.2.0        
+[172] globals_0.16.2          </code></pre>
+</div>
 </div>
 </div>
 
