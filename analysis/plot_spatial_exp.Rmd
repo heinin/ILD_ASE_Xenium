@@ -1,0 +1,104 @@
+---
+title: "Plotting ASE in the spatial context"
+author: "heinin"
+date: "2024-02-06"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+### Packages and environment variables
+
+```{r, results='hide', warning=F, message=F}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(VariantAnnotation)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, merged")
+
+```
+
+### Importing data
+
+```{r}
+
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+```
+
+### Cell type DimPlots by sample
+
+```{r, results="hide"}
+# Looping through each sample, plotting
+plot_list <- lapply(unique(seurat_object$Sample_Name), function(sample){
+  DimPlot(subset(seurat_object, subset = Sample_Name %in% c(sample)),
+          reduction = "sp",
+          group.by = "annotation_3",
+          cols = annotation_3_col,
+          #label = TRUE,
+          raster = T,
+          pt.size = 2) +
+    coord_fixed(ratio = 1) +
+    theme_bw() +
+    ggtitle(sample) +
+    NoLegend() +
+    my_theme
+})
+
+#patchwork::wrap_plots(plot_list, ncol = 3)
+plot_list
+
+```
+
+### MUC5B feature plots
+
+```{r, results="hide", fig.height=4, fig.width=18}
+# Features to plot
+rownames(seurat_object)[grep("MUC5B", rownames(seurat_object))]
+plot_features <- c("MUC5B", "MUC5B-11-1246742-A", "MUC5B-11-1246742-G")
+
+# Looping through each sample, plotting
+feature_plot_list <- lapply(unique(seurat_object$Sample_Name), function(sample){
+  FeaturePlot(subset(seurat_object, subset = Sample_Name %in% c(sample)),
+          reduction = "sp",
+          features = plot_features,
+          #label = TRUE,
+          raster = T,
+          pt.size = 2,
+          ncol = 3) &
+    coord_fixed(ratio = 1) &
+    theme_bw() &
+    ggtitle(sample) &
+    #NoLegend() &
+    my_theme
+})
+
+#patchwork::wrap_plots(plot_list, ncol = 3)
+feature_plot_list
+
+```

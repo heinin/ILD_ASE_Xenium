@@ -24,7 +24,8 @@ suppressPackageStartupMessages({library(cli)
                                 library(ggrepel)
                                 library(workflowr)
                                 library(googlesheets4)
-                                library(VariantAnnotation)})
+                                library(VariantAnnotation)
+                                library(data.table)})
 
 setwd("/home/hnatri/ILD_ASE_Xenium/")
 set.seed(9999)
@@ -146,20 +147,339 @@ ase_sig
 
 ### Plotting allelic bias
 
-#### Importing allelic bias and genotype data
+Importing allelic bias and genotype data
 
 ```{r}
 
 ase_res <- readRDS("/scratch/hnatri/ILD/ILD_spatial_ASE/ase_res.rds")
 gt_data <- as.matrix(read.csv("/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv", row.names = "X"))
 
+gt_data <- cbind(gt_data, paste0(gt_data[,"gene"], "_", gt_data[,"gene_body_snp"]))
+colnames(gt_data)[length(colnames(gt_data))] <- "gene_bodySNP"
+
+gt_data <- cbind(gt_data, paste0(gt_data[,"gene"], "_", gt_data[,"esnp"]))
+colnames(gt_data)[length(colnames(gt_data))] <- "gene_esnp"
+
+# Sanity check
+dim(ase_res[[1]])
+length(intersect(rownames(ase_res[[1]]), gt_data[,"gene_bodySNP"]))
+
 ```
+
+Combining ASE and genotype data
+
+```{r}
+ase_res <- lapply(ase_res, function(xx){
+  xx <- xx %>% pivot_longer(cols = setdiff(colnames(xx), c("celltype", "lineage")),
+                            names_to = "Sample_Name",
+                            values_to = "allelic_bias")
+
+  xx <- merge(xx, gt_data, by = "Sample_Name")
+  
+  xx
+  })
+
+```
+
+Plotting
+
+```{r, fig.height=52, warning=F, message=F}
+
+sort(unique(ase_res[[1]]$gene_bodySNP))
+
+for(ct in names(ase_res)){
+  print(ct)
+  
+  plot_list <- lapply(sort(unique(ase_res[[ct]]$gene_bodySNP)), function(xx){
+    p_data <- ase_res[[ct]] %>% filter(gene_bodySNP == xx) %>%
+      filter_at(vars(allelic_bias), all_vars(!is.infinite(.)))
+  
+    p <- p_data %>% ggplot(aes(x = linked_SNP_GT, y = allelic_bias)) +
+      geom_violin() +
+      stat_compare_means(method = "wilcox.test", size = 2,
+                         label.y = (max(p_data$allelic_bias, na.rm = T)+10)) +
+      ylim(0, (max(p_data$allelic_bias, na.rm = T)+70)) +
+      #geom_jitter() +
+      theme_minimal() +
+      ggtitle(xx) +
+      xlab("Linked SNP dosage") +
+      ylab("Allelic bias (ALT/REF)") +
+      manuscript_theme
+    
+    p$layers[[2]]$aes_params$textsize <- 2
+    
+    p
+})
+
+print(patchwork::wrap_plots(plot_list, ncol = 3))
+}
+
+```
+
+### Calculating effect size for allelic bias across genotypes
+```{r}
+
+ase_lm <- lapply(names(ase_res), function(ct){
+  #print(ct)
+  
+  res_list <- lapply(sort(unique(ase_res[[ct]]$gene_bodySNP)), function(xx){
+    p_data <- ase_res[[ct]] %>% filter(gene_bodySNP == xx) %>%
+      filter_at(vars(allelic_bias), all_vars(!is.infinite(.)))
+  
+    lm_res <- lm(allelic_bias~linked_SNP_GT, p_data)
+    lm_res <- summary(lm_res)
+    
+    return(c(xx, lm_res$adj.r.squared, lm_res$coefficients[,4][[1]]))
+})
+
+res_df <- data.frame(do.call(rbind, res_list))
+colnames(res_df) <- c("gene_bodySNP", "adjR2", "pval")
+res_df$celltype <- ct
+
+res_df
+
+})
+
+names(ase_lm) <- names(ase_res)
+
+```
+
 
 ### Comparing to ct-eQTL results
 
-```{r}
+mashR results for each celltype
 
+```{r, warning=F, message=F}
+
+# SNP info
+mashr_snp_info <- fread("/tgen_labs/banovich/IPF/eQTL/2022-08-10_38celltypes-mashr/filtered_MAF-HWE-INDPW_snp-info.txt", header=T)
+
+# Gene info
+genes_gtf <- read.table("/tgen_labs/banovich/SingleCell/CellRanger/3_1_0/Ensemble_93/PipelineData/Projects/IPF/References/refdata-cellranger-GRCh38-3.0.0/genes/genes.gtf", sep = "\t")
+
+gene_ids <- gsub(";", "", sapply(strsplit(genes_gtf$V9," "), `[`, 2))
+gene_names <- gsub(";", "", sapply(strsplit(genes_gtf$V9," "), `[`, 6))
+genes_gtf$feature_id <- gene_ids
+genes_gtf$feature_name <- gene_names
+genes_gtf <- dplyr::filter(genes_gtf, V3 == "gene")
+genes_gtf <- dplyr::select(genes_gtf, V1, V4, V5, feature_id, feature_name)
+colnames(genes_gtf) <- c("chr", "start", "stop", "ensembl", "gene")
+
+# mashR results
+#celltypes <- list.files("/tgen_labs/banovich/IPF/eQTL/2022-08-10_38celltypes-mashr/2022-08-10_gene-aggregated-means")
+#celltypes <- gsub("_agg.tsv", "", celltypes)
+#celltypes <- c("epithelial_AT2")
+spatial_vs_mashr <- read_sheet(ct_annot, sheet = "Spatial vs. mashr cell types")
+celltypes <- setdiff(spatial_vs_mashr$mashr, c(NA))
+
+mashr_res <- lapply(celltypes, function(celltype){
+    eqtl_stats <- fread(paste0("/tgen_labs/banovich/IPF/eQTL/2022-08-10_38celltypes-mashr/", celltype, ".tsv"),
+                        header=T, sep="\t")
+    eqtl_stats <- distinct(eqtl_stats)
+    
+    eqtl_stats$gene_name <- plyr::mapvalues(x = eqtl_stats$feature_id,
+                                           from = genes_gtf$ensembl,
+                                           to = genes_gtf$gene)
+
+    eqtl_stats
+})
+
+names(mashr_res) <- celltypes
 
 ```
 
+Gene + eSNP combinations to look at
 
+```{r}
+
+head(ase_res[[1]])
+sort(unique(ase_res[[1]]$gene_esnp))
+
+names(ase_lm)
+names(mashr_res)
+
+```
+
+First, looking at AT2 cells
+
+```{r, fig.height=4, warning=F, message=F}
+
+at2 <- mashr_res[["epithelial_AT2"]] %>%
+  mutate(gene_esnp = paste0(gene_name, "_", snp_rsid)) %>%
+  as.data.frame()
+
+head(ase_lm[["AT2"]])
+
+# Adding eQTL info
+at2$gene_bodySNP <- plyr::mapvalues(x = at2$gene_esnp,
+                                    from = ase_res[[1]]$gene_esnp,
+                                    to = ase_res[[1]]$gene_bodySNP)
+
+at2 <- merge(at2, ase_lm[["AT2"]], by = "gene_bodySNP") %>%
+  dplyr::select(c("gene_bodySNP", "gene_esnp", "feature_id", "snp_id",
+           "posterior_means", "lfsr", "gene_name", "adjR2", "pval")) %>%
+  distinct() %>%
+  filter(complete.cases(.))
+
+at2 %>% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  xlab("ASE regression R2") +
+  ylab("mashR posterior means") +
+  ggtitle("AT2")
+
+```
+
+Looking across all cell types shared between data types
+
+```{r, fig.height=10, warning=F, message=F}
+
+plot_list <- lapply(setdiff(spatial_vs_mashr$mashr, c(NA)), function(ct){
+  #message(ct)
+  ct_mashr <- mashr_res[[ct]] %>%
+    mutate(gene_esnp = paste0(gene_name, "_", snp_rsid)) %>%
+    as.data.frame()
+
+  # Adding eQTL info
+  ct_mashr$gene_bodySNP <- plyr::mapvalues(x = ct_mashr$gene_esnp,
+                                           from = ase_res[[1]]$gene_esnp,
+                                           to = ase_res[[1]]$gene_bodySNP,
+                                           warn_missing = F)
+  
+  ase_name <- spatial_vs_mashr %>% filter(mashr == ct) %>%
+    dplyr::select(spatial) %>% as.character()
+  
+  ct_mashr <- merge(ct_mashr, ase_lm[[ase_name]], by = "gene_bodySNP") %>%
+    dplyr::select(c("gene_bodySNP", "gene_esnp", "feature_id", "snp_id",
+             "posterior_means", "lfsr", "gene_name", "adjR2", "pval")) %>%
+    distinct() %>%
+    filter(complete.cases(.))
+  
+  ct_mashr %>% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+    geom_point() +
+    geom_smooth(method = "lm") +
+    theme_minimal() +
+    xlab("ASE regression R2") +
+    ylab("mashR posterior means") +
+    ggtitle(ase_name) +
+    manuscript_theme
+})
+
+patchwork::wrap_plots(plot_list, ncol = 3)
+
+```
+
+# MUC5B across samples in AT2
+
+```{r, fig.height=10, warning=F, message=F}
+
+at2_mashr <- mashr_res[["epithelial_AT2"]] %>%
+  mutate(gene_esnp = paste0(gene_name, "_", snp_rsid)) %>%
+  as.data.frame()
+
+# Adding eQTL info
+at2_mashr$gene_bodySNP <- plyr::mapvalues(x = at2_mashr$gene_esnp,
+                                         from = ase_res[[1]]$gene_esnp,
+                                         to = ase_res[[1]]$gene_bodySNP,
+                                         warn_missing = F)
+
+at2_mashr <- merge(at2_mashr, ase_lm[["AT2"]], by = "gene_bodySNP") %>%
+  dplyr::select(c("gene_bodySNP", "gene_esnp", "feature_id", "snp_id",
+           "posterior_means", "lfsr", "gene_name", "adjR2", "pval")) %>%
+  distinct() %>%
+  filter(complete.cases(.),
+         gene_name == "MUC5B")
+
+at2_mashr %>% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal() +
+  xlab("ASE regression R2") +
+  ylab("mashR posterior means") +
+  #ggtitle(ase_name) +
+  manuscript_theme
+
+```
+
+### MUC5B expression by probe-SNP genotype in each cell type
+
+#### Importing data
+
+```{r}
+
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+```
+
+Adding 
+
+```{r, fig.width=12, warning=F, message=F}
+
+MUC5B_gt <- gt_data %>% as.data.frame() %>%
+  filter(gene == "MUC5B") %>%
+  dplyr::select(gene_body_snp,
+         esnp,
+         gene,
+         Sample_Name,
+         linked_SNP_GT,
+         eSNP_GT) %>% distinct()
+
+head(MUC5B_gt)
+
+seurat_object$MUC5B_linked_gt <- plyr::mapvalues(x = seurat_object$Sample_Name,
+                                                 from = MUC5B_gt$Sample_Name,
+                                                 to = as.character(MUC5B_gt$linked_SNP_GT))
+seurat_object$MUC5B_eSNP_gt <- plyr::mapvalues(x = seurat_object$Sample_Name,
+                                               from = MUC5B_gt$Sample_Name,
+                                               to = as.character(MUC5B_gt$eSNP_GT))
+
+VlnPlot(seurat_object,
+        features = rownames(seurat_object)[grep("MUC5B", rownames(seurat_object))],
+        group.by = "annotation_1",
+        split.by = "MUC5B_linked_gt",
+        ncol = 1,
+        pt.size = 0) &
+  theme_bw() &
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+  
+
+```
+
+### Proportions of eQTL that have the same sign in spatial ASE
+
+```{r}
+
+res_list <- lapply(setdiff(spatial_vs_mashr$mashr, c(NA)), function(ct){
+  ct_mashr <- mashr_res[[ct]] %>%
+    mutate(gene_esnp = paste0(gene_name, "_", snp_rsid)) %>%
+    as.data.frame()
+
+  # Adding eQTL info
+  ct_mashr$gene_bodySNP <- plyr::mapvalues(x = ct_mashr$gene_esnp,
+                                           from = ase_res[[1]]$gene_esnp,
+                                           to = ase_res[[1]]$gene_bodySNP,
+                                           warn_missing = F)
+  
+  ase_name <- spatial_vs_mashr %>% filter(mashr == ct) %>%
+    dplyr::select(spatial) %>% as.character()
+  
+  ct_mashr <- merge(ct_mashr, ase_lm[[ase_name]], by = "gene_bodySNP") %>%
+    dplyr::select(c("gene_bodySNP", "gene_esnp", "feature_id", "snp_id",
+             "posterior_means", "lfsr", "gene_name", "adjR2", "pval")) %>%
+    distinct() %>%
+    filter(complete.cases(.))
+  
+  ct_mashr$celltype <- ct
+  
+  ct_mashr
+})
+
+res_df <- data.frame(do.call(rbind, res_list))
+
+same_sign <- res_df %>% filter((posterior_means < 0 & adjR2 < 0) |
+                                 (posterior_means > 0 & adjR2 > 0))
+
+nrow(same_sign)/nrow(res_df)*100
+
+```
