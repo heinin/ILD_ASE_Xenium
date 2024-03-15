@@ -101,7 +101,7 @@ length(intersect(ld_snp_info$probe2, ase_probes))
 gt_ase_snps <- gt[which(rownames(gt) %in% c(ld_snp_info$gene_body_snp, ld_snp_info$esnp)),]
 rm(gt)
 
-#write.csv(gt_ase_snps, "/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv")
+write.csv(gt_ase_snps, "/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv")
 #gt_ase_snps <- as.matrix(read.csv("/scratch/hnatri/ILD/ILD_spatial_ASE/gt_ase_snps.csv", row.names = "X"))
 
 # Converting genotypes to dosage
@@ -169,6 +169,8 @@ gt_data$eSNP_ALT <- plyr::mapvalues(x = gt_data$esnp,
 
 # A vector of all gene_tag_SNP -pairs
 gene_tagSNPs <- unique(paste0(gt_linked_snps$gene, "_", gt_linked_snps$gene_body_snp))
+
+head(gt_data)
 
 write.csv(gt_data, "/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv")
 #gt_data <- as.matrix(read.csv("/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv", row.names = "X"))

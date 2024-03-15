@@ -28,9 +28,14 @@ Information on eQTL and tag-SNPs can be found in this [spreadsheet](https://docs
 7. [Endothelial and mesenchymal cell type annotation](endo_mesen_annotations.html)
 8. [Post-annotation visualization and comparative analysis](post_annotation_visualization.html)
 9. [Quantifying allelic imbalance](ASE.html)
-10. [Visualizing the ASE analysis results](visualize_ASE.html)
+10. [Visualizing the ASE results](visualize_ASE.html)
 11. [Sample-level pseudobulk](samplelevel_pseudobulk.html)
 12. [ASE and non-ASE probe readcount correlation](ase_readcounts.html)
+13. [Plotting ASE in the spatial context](plot_spatial_exp.html)
+
+### To do
+
+Lineage-level pseudobulk.
 
 ### Contact
 

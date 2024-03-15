@@ -1,0 +1,341 @@
+---
+title: "Aggregating ASE across multiple SNPs"
+author: "heinin"
+date: "2024-02-05"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+
+### Packages and environment variables
+
+```{r, results='hide', warning=F, message=F}
+
+suppressPackageStartupMessages({library(cli)
+                                library(Seurat)
+                                library(SeuratObject)
+                                library(SeuratDisk)
+                                library(tidyverse)
+                                library(tibble)
+                                library(plyr)
+                                library(dplyr)
+                                library(ggplot2)
+                                library(ggpubr)
+                                library(ggrepel)
+                                library(workflowr)
+                                library(googlesheets4)
+                                library(VariantAnnotation)})
+
+setwd("/home/hnatri/ILD_ASE_Xenium/")
+set.seed(9999)
+options(ggrepel.max.overlaps = Inf)
+
+# Colors, themes, cell type markers, and plot functions
+source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+
+# Cell type annotations
+gs4_deauth()
+ct_annot  <- gs4_get("https://docs.google.com/spreadsheets/d/1SDfhxf6SjllxXEtNPf32ZKTEqHC9QJW3BpRYZFhpqFE/edit?usp=sharing")
+sheet_names(ct_annot)
+all_celltypes_annot <- read_sheet(ct_annot, sheet = "All celltypes, annotated, merged")
+
+```
+
+### Importing data
+
+```{r}
+
+seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_annotated.rds")
+
+```
+
+### Importing eQTL and tag-SNP info
+
+```{r}
+
+gs4_deauth()
+gtables  <- gs4_get("https://docs.google.com/spreadsheets/d/1f7HtQC07PWa1ij9UxTmgrEMX2OnHDVcrpn7Oa_VNIms/edit?usp=sharing")
+sheet_names(gtables)
+ld_snp_info <- read_sheet(gtables, sheet = "More candidates, SNP info with exon number")
+ld_snp_info <- as.data.frame(ld_snp_info)
+
+# Adding probe names
+ld_snp_info$probe <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$alt, sep = "-")
+ld_snp_info$probe1 <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$ref, sep = "-")
+ld_snp_info$probe2 <- paste(ld_snp_info$gene, ld_snp_info$chr, ld_snp_info$linked_snp_pos, ld_snp_info$alt, sep = "-")
+
+```
+
+### Selecting the genes to plot
+
+```{r}
+
+# Obtaining the expression matrix
+pseudobulk <- AverageExpression(seurat_object,
+                                group.by = "Sample_Name",
+                                assay = "RNA",
+                                slot = "counts")
+
+# Calculating counts per million
+#pseudobulk <- RelativeCounts(pseudobulk$RNA, scale.factor = 1e6)
+
+pseudobulk <- as.data.frame(t(pseudobulk$RNA))
+
+ld_snp_info <- ld_snp_info %>% filter(probe1 %in% colnames(pseudobulk) |
+                                        probe2 %in% colnames(pseudobulk))
+
+```
+
+### Aggregating all REF/ALT counts
+
+```{r}
+
+# Assembling a dataframe with a gene-tag-SNP pair, gene, probe1, and, probe2 
+# columns with pseudobulk counts for each sample
+
+# A list of plots for each gene-tag-SNP pair
+ld_snp_info$gene_tagSNP <- paste0(ld_snp_info$gene, "_", ld_snp_info$gene_body_snp)
+ld_snp_info <- ld_snp_info %>%
+  dplyr::select(-c("R2", "gene_snp", "esnp_loc")) %>% distinct()
+
+data_list <- lapply(ld_snp_info$gene_tagSNP, function(xx){
+  gene <- strsplit(xx, "_")[[1]][1]
+  tagSNP <- strsplit(xx, "_")[[1]][2]
+  probe1 <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(probe1) %>% unique() %>% as.character()
+  probe2 <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(probe2) %>% unique() %>% as.character()
+  eSNP <- ld_snp_info %>% filter(gene_tagSNP == xx) %>% dplyr::select(esnp) %>% unique() %>% as.character()
+  exp_data <- pseudobulk %>% dplyr::select(c(probe1, probe2))
+  #exp_data$probe_sum <- exp_data[,probe1] + exp_data[,probe2]
+  colnames(exp_data) <- gsub("-", "_", colnames(exp_data))
+  probe1 <- gsub("-", "_", probe1)
+  probe2 <- gsub("-", "_", probe2)
+  colnames(exp_data) <- gsub(probe1, "REFprobeCounts", colnames(exp_data))
+  colnames(exp_data) <- gsub(probe2, "ALTprobeCounts", colnames(exp_data))
+  #colnames(exp_data) <- c("REFprobeCounts", "ALTprobeCounts")
+  exp_data$gene <- gene
+  exp_data$tagSNP <- tagSNP
+  exp_data$eSNP <- eSNP
+  exp_data$Sample_Name <- rownames(exp_data)
+  rownames(exp_data) <- NULL
+ 
+  exp_data
+})
+
+# To a dataframe
+exp_data <- do.call("rbind", data_list)
+
+```
+
+### Plotting. Each plot item is a sample+probe pair.
+
+```{r}
+
+# Read counts stats for REF and ALT probes
+summary(exp_data$REFprobeCounts)
+summary(exp_data$ALTprobeCounts)
+
+# Total numbers of reads mapping to REF and ALT probes
+sum(exp_data$REFprobeCounts)
+sum(exp_data$ALTprobeCounts)
+
+# Numbers of instances with average read count >1
+exp_data %>% summarise(alt_below_one = count(ALTprobeCounts<1),
+                       ref_below_one = count(REFprobeCounts<1),
+                       alt_above_one = count(ALTprobeCounts>1),
+                       ref_above_one = count(REFprobeCounts>1))
+
+# Scatterplot of read counts
+exp_data %>%
+  ggplot(aes(x = REFprobeCounts, y = ALTprobeCounts)) + 
+    geom_point() +
+    theme_classic()
+
+# Histogram of average read counts
+exp_data %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                          names_to = "probe", values_to = "aveCounts") %>%
+  ggplot(aes(x = aveCounts, fill = probe)) + 
+    geom_histogram(binwidth = 1) +
+    theme_classic()
+
+# filtering out values <1
+exp_data %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                          names_to = "probe", values_to = "aveCounts") %>%
+  filter(aveCounts>1) %>%
+  ggplot(aes(x = aveCounts, fill = probe)) + 
+    geom_histogram(binwidth = 1) +
+    theme_classic()
+
+exp_data %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                          names_to = "probe", values_to = "aveCounts") %>%
+  ggplot(aes(x = probe, y = log2(aveCounts), fill = probe)) +
+    geom_violin() +
+    theme_classic()
+
+exp_data %>% mutate(ratio_alt_ref = ALTprobeCounts/REFprobeCounts) %>%
+    ggplot(aes(x = ratio_alt_ref)) + 
+      geom_histogram() +
+      theme_classic()
+
+exp_data %>% mutate(ratio_alt_ref = REFprobeCounts/ALTprobeCounts) %>%
+    ggplot(aes(x = ratio_alt_ref)) + 
+      geom_histogram() +
+      theme_classic()
+
+p1 <- exp_data %>% mutate(ratio_alt_ref = ALTprobeCounts/REFprobeCounts) %>%
+    ggplot(aes(x = ratio_alt_ref)) + 
+      geom_histogram() +
+      theme_classic() +
+      xlim(c(0, 40)) +
+      ylim(c(0, 1200))
+
+p2 <- exp_data %>% mutate(ratio_ref_alt = REFprobeCounts/ALTprobeCounts) %>%
+    ggplot(aes(x = ratio_ref_alt)) + 
+      geom_histogram() +
+      theme_classic() +
+      xlim(c(0, 40)) +
+      ylim(c(0, 1200))
+
+p1 + p2
+
+
+```
+
+### Adding genotype information
+
+```{r}
+
+# Genotype data from ASE.rds
+gt_data <- read.csv("/scratch/hnatri/ILD/ILD_spatial_ASE/gt_data.csv", row.names = "X")
+
+#gt_data$eSNP_GT <- as.numeric(gt_data$eSNP_GT)
+#gt_data$linked_SNP_GT <- as.numeric(gt_data$linked_SNP_GT)
+
+colnames(gt_data) <- gsub("gene_body_snp", "tagSNP", colnames(gt_data))
+
+intersect(gt_data$Sample_Name, exp_data$Sample_Name)
+intersect(gt_data$tagSNP, exp_data$tagSNP)
+
+setdiff(gt_data$tagSNP, exp_data$tagSNP)
+setdiff(exp_data$tagSNP, gt_data$tagSNP)
+
+setdiff(gt_data$Sample_Name, exp_data$Sample_Name)
+setdiff(exp_data$Sample_Name, gt_data$Sample_Name)
+
+gt_data <- as.data.frame(gt_data)
+
+exp_gt_data <- exp_data %>% full_join(gt_data, by = c("tagSNP", "Sample_Name"))
+
+```
+
+### Plotting by genotype
+
+```{r}
+
+summary(exp_gt_data$ALTprobeCounts)
+summary(exp_gt_data$REFprobeCounts)
+
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  ggplot(aes(y = ALTprobeCounts, x = REFprobeCounts, color = eSNP_dosage)) + 
+  geom_point() +
+  theme_classic()
+
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  ggplot(aes(y = log(ALTprobeCounts), x = log(REFprobeCounts), color = eSNP_dosage)) + 
+  geom_point() +
+  theme_classic()
+
+exp_gt_data %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                             names_to = "which_probe", values_to = "aveCounts") %>%
+  mutate(eSNP_dosage = as.character(eSNP_GT)) %>% #dplyr::select(aveCounts) %>% unique()
+  ggplot(aes(y = log(aveCounts), x = which_probe, fill = which_probe)) + 
+    geom_violin(position = position_dodge(width = 0.9)) +
+    #geom_point(position = position_jitterdodge(seed = 1, dodge.width = 0.9)) +
+    theme_classic() +
+    xlab("eSNP gt") +
+    ylab("Average log(CPM)")
+
+exp_gt_data %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                             names_to = "which_probe", values_to = "aveCounts") %>%
+  mutate(eSNP_dosage = as.character(eSNP_GT)) %>% #dplyr::select(aveCounts) %>% unique()
+  ggplot(aes(y = log(aveCounts), x = eSNP_dosage, fill = which_probe)) + 
+    geom_violin(position = position_dodge(width = 0.9)) +
+    #geom_point(position = position_jitterdodge(seed = 1, dodge.width = 0.9)) +
+    theme_classic() +
+    xlab("eSNP gt") +
+    ylab("Average log(CPM)")
+
+```
+
+### Examining instances where ALT probe reads > REF probe reads
+
+```{r}
+
+exp_gt_data %>% filter(ALTprobeCounts > REFprobeCounts) %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                             names_to = "which_probe", values_to = "aveCounts") %>%
+  mutate(eSNP_dosage = as.character(eSNP_GT)) %>% #dplyr::select(aveCounts) %>% unique()
+  ggplot(aes(y = log(aveCounts), x = eSNP_dosage, fill = which_probe)) + 
+    geom_violin(position = position_dodge(width = 0.9)) +
+    #geom_point(position = position_jitterdodge(seed = 1, dodge.width = 0.9)) +
+    theme_classic() +
+    xlab("eSNP gt") +
+    ylab("Average log(counts)") +
+    ggtitle("Samples/loci where ALTprobeCounts > REFprobeCounts")
+
+exp_gt_data %>% filter(REFprobeCounts > ALTprobeCounts) %>% pivot_longer(cols = c("ALTprobeCounts", "REFprobeCounts"),
+                             names_to = "which_probe", values_to = "aveCounts") %>%
+  mutate(eSNP_dosage = as.character(eSNP_GT)) %>% #dplyr::select(aveCounts) %>% unique()
+  ggplot(aes(y = log(aveCounts), x = eSNP_dosage, fill = which_probe)) + 
+    geom_violin(position = position_dodge(width = 0.9)) +
+    #geom_point(position = position_jitterdodge(seed = 1, dodge.width = 0.9)) +
+    theme_classic() +
+    xlab("eSNP gt") +
+    ylab("Average log(counts)") +
+    ggtitle("Samples/loci where REFprobeCounts > ALTprobeCounts")
+
+```
+
+### Inspecting subsets from the scatterplot
+
+```{r}
+
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  ggplot(aes(y = ALTprobeCounts, x = REFprobeCounts, color = eSNP_dosage)) + 
+  geom_point() +
+  theme_classic()
+
+# Probes with samples with high ALT counts and zero REF counts
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  ggplot(aes(y = ALTprobeCounts, x = REFprobeCounts, color = eSNP_dosage)) + 
+  geom_point() +
+  theme_classic() +
+  geom_vline(xintercept = 0.2) +
+  geom_hline(yintercept = 1.8)
+
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  filter(REFprobeCounts < 0.2,
+         ALTprobeCounts > 1.8) %>%
+  dplyr::select(c("gene.x", "tagSNP", "eSNP", "Sample_Name", "probe")) %>%
+  distinct()
+
+# Plotting STAT1
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  filter(gene.x == "STAT1",
+         eSNP == "rs1400657") %>%
+  ggplot(aes(x = eSNP_dosage, y = ALTprobeCounts/REFprobeCounts, color = eSNP_dosage)) +
+  geom_violin() +
+  theme_classic()
+
+exp_gt_data %>% mutate(eSNP_dosage = as.character(eSNP_GT)) %>%
+  filter(gene.x == "STAT1",
+         eSNP == "rs1400657") %>%
+  ggplot(aes(y = ALTprobeCounts, x = REFprobeCounts, color = eSNP_dosage)) + 
+  geom_point() +
+  theme_classic()
+
+```
+
+### TODO: Aggregating REF/ALT for eQTL with multiple tag-SNPs
+

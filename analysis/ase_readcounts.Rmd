@@ -33,7 +33,7 @@ options(ggrepel.max.overlaps = Inf)
 # Colors, themes, cell type markers, and plot functions
 source("/home/hnatri/ILD_ASE_Xenium/code/colors_themes.R")
 source("/home/hnatri/ILD_ASE_Xenium/code/plot_functions.R")
-source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")
+source("/home/hnatri/ILD_ASE_Xenium/code/utilities.R")wflow_open("analysis/first-analysis.Rmd")
 
 # Cell type annotations
 gs4_deauth()
