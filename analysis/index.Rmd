@@ -32,10 +32,7 @@ Information on eQTL and tag-SNPs can be found in this [spreadsheet](https://docs
 11. [Sample-level pseudobulk](samplelevel_pseudobulk.html)
 12. [ASE and non-ASE probe readcount correlation](ase_readcounts.html)
 13. [Plotting ASE in the spatial context](plot_spatial_exp.html)
-
-### To do
-
-Lineage-level pseudobulk.
+14. [Aggregating REF/ALT across loci and samples](aggregate_multiSNP.html)
 
 ### Contact
 
