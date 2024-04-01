@@ -370,7 +370,7 @@ patchwork::wrap_plots(plot_list, ncol = 3)
 
 ```
 
-# MUC5B across samples in AT2
+### MUC5B across samples in AT2
 
 ```{r, fig.height=10, warning=F, message=F}
 
@@ -391,14 +391,14 @@ at2_mashr <- merge(at2_mashr, ase_lm[["AT2"]], by = "gene_bodySNP") %>%
   filter(complete.cases(.),
          gene_name == "MUC5B")
 
-at2_mashr %>% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  theme_minimal() +
-  xlab("ASE regression R2") +
-  ylab("mashR posterior means") +
-  #ggtitle(ase_name) +
-  manuscript_theme
+#at2_mashr %>% ggplot(aes(x = as.numeric(adjR2), y = posterior_means)) +
+#  geom_point() +
+#  geom_smooth(method = "lm") +
+#  theme_minimal() +
+#  xlab("ASE regression R2") +
+#  ylab("mashR posterior means") +
+#  #ggtitle(ase_name) +
+#  manuscript_theme
 
 ```
 
@@ -412,9 +412,8 @@ seurat_object <- readRDS("/tgen_labs/banovich/IPF/Spatial_ASE/ILD_ASE_Xenium_ann
 
 ```
 
-Adding 
 
-```{r, fig.width=12, warning=F, message=F}
+```{r, fig.width=12, fig.height=12, warning=F, message=F}
 
 MUC5B_gt <- gt_data %>% as.data.frame() %>%
   filter(gene == "MUC5B") %>%
