@@ -289,7 +289,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -300,8 +300,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -310,13 +310,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-03-15
+<strong>Last updated:</strong> 2024-04-01
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>ILD_ASE_Xenium/</code> <span
@@ -339,36 +339,33 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsheininghpdRmdXNyd2XoVL5REzYYjIHU9lcBWes1Zm8gzgithubcomheininILDASEXeniumtree98cd12252a877480ce2846b0b272f1d37e384a7atargetblank98cd122a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree80aea7705ad5765f0747022cec1cffc9dadeaf77targetblank80aea77a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/tree/98cd12252a877480ce2846b0b272f1d37e384a7a" target="_blank">98cd122</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/80aea7705ad5765f0747022cec1cffc9dadeaf77" target="_blank">80aea77</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsheininghpdRmdXNyd2XoVL5REzYYjIHU9lcBWes1Zm8gzgithubcomheininILDASEXeniumtree98cd12252a877480ce2846b0b272f1d37e384a7atargetblank98cd122a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomheininILDASEXeniumtree80aea7705ad5765f0747022cec1cffc9dadeaf77targetblank80aea77a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -378,7 +375,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/tree/98cd12252a877480ce2846b0b272f1d37e384a7a" target="_blank">98cd122</a>.
+<a href="https://github.com/heinin/ILD_ASE_Xenium/tree/80aea7705ad5765f0747022cec1cffc9dadeaf77" target="_blank">80aea77</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -393,7 +390,7 @@ were generated:
 </p>
 <pre><code>
 Unstaged changes:
-    Modified:   analysis/index.Rmd
+    Modified:   analysis/ase_readcounts.Rmd
 
 </code></pre>
 <p>
@@ -443,7 +440,41 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/98cd12252a877480ce2846b0b272f1d37e384a7a/analysis/index.Rmd" target="_blank">98cd122</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/02cbea512534b4317a19aaa34c7fecb559b0b2f6/analysis/index.Rmd" target="_blank">02cbea5</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-03-15
+</td>
+<td>
+Updated index
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/02cbea512534b4317a19aaa34c7fecb559b0b2f6/docs/index.html" target="_blank">02cbea5</a>
+</td>
+<td>
+heinin
+</td>
+<td>
+2024-03-15
+</td>
+<td>
+Updated index
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/98cd12252a877480ce2846b0b272f1d37e384a7a/analysis/index.Rmd" target="_blank">98cd122</a>
 </td>
 <td>
 heinin
@@ -460,7 +491,7 @@ t
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/823a250b1fdeb7e74d9228ad0d6238797f2c0dfd/analysis/index.Rmd" target="_blank">823a250</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/823a250b1fdeb7e74d9228ad0d6238797f2c0dfd/analysis/index.Rmd" target="_blank">823a250</a>
 </td>
 <td>
 heinin
@@ -477,7 +508,7 @@ Added sample-level pseudobulk and ASE vs. non-ASE read count correlation
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/823a250b1fdeb7e74d9228ad0d6238797f2c0dfd/docs/index.html" target="_blank">823a250</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/823a250b1fdeb7e74d9228ad0d6238797f2c0dfd/docs/index.html" target="_blank">823a250</a>
 </td>
 <td>
 heinin
@@ -494,7 +525,7 @@ Added sample-level pseudobulk and ASE vs. non-ASE read count correlation
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/analysis/index.Rmd" target="_blank">6b9ca2a</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/analysis/index.Rmd" target="_blank">6b9ca2a</a>
 </td>
 <td>
 heinin
@@ -511,7 +542,7 @@ Added scripts for quantifying allelic bias
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/docs/index.html" target="_blank">6b9ca2a</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/6b9ca2ae6f542794f7cfb5c2fc9f7fb9921c5b7c/docs/index.html" target="_blank">6b9ca2a</a>
 </td>
 <td>
 heinin
@@ -528,7 +559,7 @@ Added scripts for quantifying allelic bias
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/83e2df31fef55150a70df224afa7133617171e7b/analysis/index.Rmd" target="_blank">83e2df3</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/83e2df31fef55150a70df224afa7133617171e7b/analysis/index.Rmd" target="_blank">83e2df3</a>
 </td>
 <td>
 heinin
@@ -545,7 +576,7 @@ Adding lineage level annotations
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/83e2df31fef55150a70df224afa7133617171e7b/docs/index.html" target="_blank">83e2df3</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/83e2df31fef55150a70df224afa7133617171e7b/docs/index.html" target="_blank">83e2df3</a>
 </td>
 <td>
 heinin
@@ -562,7 +593,7 @@ Adding lineage level annotations
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/b1f446f89d63003e748cd8ec629dea8f8c4caec7/analysis/index.Rmd" target="_blank">b1f446f</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/b1f446f89d63003e748cd8ec629dea8f8c4caec7/analysis/index.Rmd" target="_blank">b1f446f</a>
 </td>
 <td>
 heinin
@@ -579,7 +610,7 @@ Selecting PCs. Added utilities.
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/b1f446f89d63003e748cd8ec629dea8f8c4caec7/docs/index.html" target="_blank">b1f446f</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/b1f446f89d63003e748cd8ec629dea8f8c4caec7/docs/index.html" target="_blank">b1f446f</a>
 </td>
 <td>
 heinin
@@ -596,7 +627,7 @@ Selecting PCs. Added utilities.
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/analysis/index.Rmd" target="_blank">ae3f716</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/analysis/index.Rmd" target="_blank">ae3f716</a>
 </td>
 <td>
 heinin
@@ -613,7 +644,7 @@ Splitting merged samples
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/index.html" target="_blank">ae3f716</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/ae3f716ad36e27e165fc6a6184a4e0cd410dcb00/docs/index.html" target="_blank">ae3f716</a>
 </td>
 <td>
 heinin
@@ -630,7 +661,7 @@ Splitting merged samples
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/d4aa602b5f48409f35d70b5c8632b994a05ec82b/docs/index.html" target="_blank">d4aa602</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/d4aa602b5f48409f35d70b5c8632b994a05ec82b/docs/index.html" target="_blank">d4aa602</a>
 </td>
 <td>
 heinin
@@ -647,7 +678,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/8dfc461e8af7927d074586d5d48ae87039eafd18/analysis/index.Rmd" target="_blank">8dfc461</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/8dfc461e8af7927d074586d5d48ae87039eafd18/analysis/index.Rmd" target="_blank">8dfc461</a>
 </td>
 <td>
 heinin
@@ -664,7 +695,7 @@ wflow_publish("/home/hnatri/ILD_ASE_Xenium/analysis/index.Rmd")
 html
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/9f3994fb7443bdfbe5ff511ccae5bda57ffbb489/docs/index.html" target="_blank">9f3994f</a>
+<a href="https://rawcdn.githack.com/heinin/ILD_ASE_Xenium/9f3994fb7443bdfbe5ff511ccae5bda57ffbb489/docs/index.html" target="_blank">9f3994f</a>
 </td>
 <td>
 heinin
@@ -681,7 +712,7 @@ Build site.
 Rmd
 </td>
 <td>
-<a href="https://heinin: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@github.com/heinin/ILD_ASE_Xenium/blob/dd825ab80ed0571c2965ea6e1ce76913eba99ded/analysis/index.Rmd" target="_blank">dd825ab</a>
+<a href="https://github.com/heinin/ILD_ASE_Xenium/blob/dd825ab80ed0571c2965ea6e1ce76913eba99ded/analysis/index.Rmd" target="_blank">dd825ab</a>
 </td>
 <td>
 heinin
